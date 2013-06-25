@@ -9,6 +9,8 @@ var app = new window.engine.Application({
     this.loader.foo(500);
     this.assets.addImage("horsie.png");
     this.assets.addImage("knight.png");
+    this.assets.addImage("arm.png");
+    this.assets.addImage("grass.jpg");
   },
 
   /* and when the assets are loaded select the game screen */

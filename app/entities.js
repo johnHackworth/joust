@@ -11,7 +11,8 @@ window.entities = window.entities || {};
     for(var i = 0, l = this.length; i < l; i++) {
       for(var j = 0, ll = this.length; j < ll; j++) {
         if(i != j) {
-          if(this[i].isNear(this[j].getPosition()) &&
+          if(this[i].isNear && this[i].blockType === this[j].blockType &&
+              this[i].isNear(this[j].getPosition()) &&
              this[i].isFront(this[j].getPosition())
           ) {
             this[i].notifyNear(this[j]);

@@ -24,6 +24,7 @@ window.entities = window.entities || {};
 
   Knight.prototype = {
     MAX_TURN: Math.PI / 4,
+    blockType: 3,
     oncreate: function() {
 
       var image = app.assets.image("knight")
@@ -50,6 +51,9 @@ window.entities = window.entities || {};
 
 
       this.horse.intendedDirection = this.intendedDirection;
+      if(this.arm) {
+        this.arm.intendedDirection = this.direction;
+      }
 
       this.turn();
 
@@ -131,7 +135,13 @@ window.entities = window.entities || {};
       /* tell the collection that there are some dead animals in the ventilation */
       this.collection.dirty = true;
     },
-
+    getArmPosition: function() {
+      var angle_rad = this.direction; //angle_degrees * Math.PI / 180;
+      var cosa = Math.cos(angle_rad);
+      var sina = Math.sin(angle_rad);
+      return [ this.horse.x + cosa - sina ,
+               this.horse.y + sina + cosa ];
+    },
     isFront: function(point) {
       var angle = utils.atanxy(point[0] - this.x, point[1] - this.y);
       return Math.abs(angle - this.direction) < (Math.PI / 4)

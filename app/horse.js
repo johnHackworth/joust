@@ -23,6 +23,7 @@ window.entities = window.entities || {};
   };
 
   Horse.prototype = {
+    blockType: 1,
     oncreate: function() {
 
       var image = app.assets.image("horsie")
