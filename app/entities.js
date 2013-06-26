@@ -24,8 +24,26 @@ window.entities = window.entities || {};
       }
     }
   };
+  GameObjects.prototype.notifyHits = function() {
+    for(var i = 0, l = this.length; i < l; i++) {
+      for(var j = 0, ll = this.length; j < ll; j++) {
+        if(this[i].type == 'arm' && this[j].type=='knight') {
+          if(
+            this[i].owner != this[j] &&
+            (Math.abs(this[i].getFrontPosition()[0] - this[j].horse.getSaddlePosition()[0]) < 10) &&
+            (Math.abs(this[i].getFrontPosition()[1] - this[j].horse.getSaddlePosition()[1]) < 10)
+
+          ) {
+            this[j].hitBy(this[i]);
+          }
+        }
+
+      }
+    }
+  }
   GameObjects.prototype.step = function(delta) {
     this.notifyNear();
+    this.notifyHits();
     return window.engine.Collection.prototype.step.call(this, delta);
   }
 

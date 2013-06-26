@@ -70,7 +70,9 @@ window.onload = function() {
         y - this.hero.horse.y
       );
       this.intendedDirection = Math.round(this.intendedDirection * 100) / 100
-
+    },
+    onclick: function() {
+      this.hero.spurHorse();
     }
 
   });

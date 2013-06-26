@@ -15,7 +15,7 @@ window.entities = window.entities || {};
       player: false,
       color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
     }, args);
-    this.size = [30, 3];
+    this.size = [30, 5];
     this.owner = args.owner;
     this.owner.arm = this;
 
@@ -23,6 +23,7 @@ window.entities = window.entities || {};
   };
 
   Arm.prototype = {
+    type: 'arm',
     image: 'arm',
     blockType: 2,
     oncreate: function() {
@@ -101,6 +102,14 @@ window.entities = window.entities || {};
 
     isFront: function() {
       return false;
+    },
+
+    getFrontPosition: function() {
+      var angle_rad = this.direction; //angle_degrees * Math.PI / 180;
+      var cosa = Math.cos(angle_rad);
+      var sina = Math.sin(angle_rad);
+      return [ this.x + cosa * this.size[0] - sina * this.size[1] ,
+               this.y + sina * this.size[0] + cosa * this.size[1]];
     }
 
 

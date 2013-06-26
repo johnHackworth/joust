@@ -15,6 +15,7 @@ window.entities = window.entities || {};
          so can ants move more naturally */
       brainDelta: 0,
       player: false,
+      spurred: false,
       color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
     }, args);
     this.size = [20, 5];
@@ -32,6 +33,13 @@ window.entities = window.entities || {};
     },
 
     step: function(delta) {
+      if(this.spurredLeft) {
+        this.spurredLeft--;
+        this.spurred = true;
+      } else {
+        this.spurred = false;
+      }
+
       /* decrease brain cooldown  */
       this.brainDelta -= delta;
 
@@ -47,14 +55,12 @@ window.entities = window.entities || {};
         this.brainDelta = Math.random() * 2000;
       }
 
-      /* accelerate the speed with the age
-         just to increase the probability for
-         going out of screen
-      */
-
       this.speed += 30 * delta / 5000;
       if(this.speed > this.maxSpeed) {
         this.speed = this.maxSpeed * ( (0.10 * Math.random()) + 0.90);
+      }
+      if(this.spurred) {
+        this.speed = this.speed * 1.5;
       }
       // this.speed = 0
 
@@ -75,16 +81,6 @@ window.entities = window.entities || {};
       } else {
         this.speed = 0;
         this.intendedDirection *= -1;
-      }
-      /* if the ant is out of screen... kill it.... with fire
-           and spawn new baby ant */
-      if (this.x < 0 || this.y < 0 || this.x > app.width || this.y > app.height) {
-
-        /* mark for removal and tell the collection that there is something to be removed */
-        this.remove();
-
-        /* order the game to spawn new ant */
-        app.game.spawnHorse();
       }
     },
 
@@ -194,15 +190,28 @@ window.entities = window.entities || {};
                this.y + sina + cosa ];
     },
     notifyFront: function(otherHorse) {
-      if(this.isFront(otherHorse.getPosition()) > 0) {
-       this.intendedDirection += Math.PI;
+      if(this.spurred) {
+
       } else {
-        this.intendedDirection -= Math.PI;
+        if(this.isFront(otherHorse.getPosition()) > 0) {
+         this.intendedDirection += Math.PI;
+        } else {
+          this.intendedDirection -= Math.PI;
+        }
       }
     },
 
     notifyNear: function(otherHorse) {
-      this.speed = Math.floor(this.speed / 3);
+      if(this.spurred) {
+        this.speed = Math.floor(this.speed / 2);
+      } else {
+        this.speed = Math.floor(this.speed / 3);
+      }
+    },
+
+    spur: function() {
+      this.spurred = true;
+      this.spurredLeft = 100;
     }
 
   };

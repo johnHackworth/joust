@@ -23,6 +23,7 @@ window.entities = window.entities || {};
   };
 
   Knight.prototype = {
+    type: 'knight',
     MAX_TURN: Math.PI / 4,
     blockType: 3,
     oncreate: function() {
@@ -170,6 +171,15 @@ window.entities = window.entities || {};
 
     notifyNear: function(otherHorse) {
       this.speed = Math.floor(this.speed / 3);
+    },
+
+    spurHorse: function() {
+      this.horse.spur();
+    },
+
+    hitBy: function(arm) {
+      console.log(this.horse.x, arm.x);
+      console.log('OUCH')
     }
 
   };
