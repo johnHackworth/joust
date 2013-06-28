@@ -31,11 +31,18 @@ window.entities = window.entities || {};
       var image = app.assets.image("knight")
       var wrapper = cq(image).blend(this.color, "addition", 1.0).resizePixel(2);
       this.image = wrapper.canvas;
+      var imageOuch = app.assets.image("ouch")
+      var wrapperOuch = cq(imageOuch).resizePixel(2);
+      this.imageOuch = wrapperOuch.canvas;
+
     },
 
     step: function(delta) {
       /* decrease brain cooldown  */
       this.brainDelta -= delta;
+      if(this.ouchTime) {
+        this.ouchTime--;
+      }
 
       /* if cooldown goes below zero - think ant, think! */
       if (this.brainDelta < 0) {
@@ -125,6 +132,12 @@ window.entities = window.entities || {};
         .translate(saddlePoint[0], saddlePoint[1])
         .rotate(this.direction)
         .drawImage(this.image, -this.image.width / 2, -this.image.height / 2)
+      if(this.ouchTime) {
+        app.layer
+          .drawImage(this.imageOuch, -this.imageOuch.width / 4, -this.imageOuch.height / 4)
+
+      }
+      app.layer
         .restore();
     },
 
@@ -178,8 +191,7 @@ window.entities = window.entities || {};
     },
 
     hitBy: function(arm) {
-      console.log(this.horse.x, arm.x);
-      console.log('OUCH')
+      this.ouchTime = 5;
     }
 
   };

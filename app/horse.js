@@ -9,7 +9,7 @@ window.entities = window.entities || {};
       /* direction the ant is facing (in radians) */
       direction: 0,
       speed: 6,
-      maxSpeed: 95,
+      maxSpeed: 125,
       turning: 0.02,
       /* brain cooldown - AI will be called in random periods of time
          so can ants move more naturally */
@@ -26,13 +26,24 @@ window.entities = window.entities || {};
   Horse.prototype = {
     blockType: 1,
     oncreate: function() {
-
-      var image = app.assets.image("horsie")
-      var wrapper = cq(image).blend(this.color, "addition", 1.0).resizePixel(2);
-      this.image = wrapper.canvas;
+      this.stepNumber = 0;
+      this.stepRound = 0;
+      var image1 = app.assets.image("horsie1")
+      var wrapper = cq(image1).blend(this.color, "addition", 1.0).resizePixel(2);
+      this.image1 = wrapper.canvas;
+      var image2 = app.assets.image("horsie2")
+      var wrapper2 = cq(image2).blend(this.color, "addition", 1.0).resizePixel(2);
+      this.image2 = wrapper2.canvas;
+      var image3 = app.assets.image("horsie3")
+      var wrapper3 = cq(image3).blend(this.color, "addition", 1.0).resizePixel(2);
+      this.image3 = wrapper3.canvas;
+      var image4 = app.assets.image("horsie4")
+      var wrapper4 = cq(image4).blend(this.color, "addition", 1.0).resizePixel(2);
+      this.image4 = wrapper4.canvas;
     },
 
     step: function(delta) {
+      this.stepNumber++;
       if(this.spurredLeft) {
         this.spurredLeft--;
         this.spurred = true;
@@ -120,13 +131,23 @@ window.entities = window.entities || {};
     },
 
     render: function(delta) {
-
+      var round = 1;
+      if(this.speed < 25) {
+        round = 1 + (Math.floor(this.stepNumber / 20) % 4);
+      } else if(this.speed < 50) {
+        round = 1 + (Math.floor(this.stepNumber / 16) % 4);
+      } else if(this.speed < 100) {
+        round = 1 + (Math.floor(this.stepNumber / 12) % 4);
+      } else {
+        round = 1 + (Math.floor(this.stepNumber / 10) % 4);
+      }
+      var image = 'image' + round;
       app.layer
         .fillStyle(this.color)
         .save()
         .translate(this.x, this.y)
         .rotate(this.direction)
-        .drawImage(this.image, -this.image.width / 2, -this.image.height / 2)
+        .drawImage(this['image'+round], -this.image1.width / 2, -this.image1.height / 2)
         .restore();
     },
 
