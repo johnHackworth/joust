@@ -117,10 +117,19 @@ window.entities = window.entities || {};
         this.direction = angHorse + this.MAX_TURN;
       } else if(
         (angHorse - angRider > 0) &&
+        (angHorse - angRider < Math.PI) &&
         (angHorse - angRider > this.MAX_TURN)
       ) {
         changed = true;
         this.direction = angHorse - this.MAX_TURN;
+      } else if(
+        (angHorse - angRider > 0) &&
+        (angHorse - angRider >= Math.PI) &&
+        (angHorse - angRider > this.MAX_TURN)
+      ) {
+        /** fallo aquí **/
+        changed = true;
+        this.direction = angHorse + this.MAX_TURN;
       }
     },
 

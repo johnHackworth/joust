@@ -19,7 +19,7 @@ window.entities = window.entities || {};
       color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
     }, args);
     this.size = [20, 5];
-
+    this.baseTurning = this.turning;
     this.oncreate();
   };
 
@@ -47,8 +47,10 @@ window.entities = window.entities || {};
       if(this.spurredLeft) {
         this.spurredLeft--;
         this.spurred = true;
+        this.turning = this.baseTurning / 2;
       } else {
         this.spurred = false;
+        this.turning = this.baseTurning;
       }
 
       /* decrease brain cooldown  */
