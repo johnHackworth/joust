@@ -60,11 +60,34 @@ window.onload = function() {
         .save()
         .drawImage(this.image, 0, 0)
         .drawImage(this.image, this.image.width, 0)
-        .restore();
       /* call render method of each entity in the collection */
       this.entities.call("render", delta);
+
+      app.layer
+        .save()
+        .fillStyle('#FFFFFF')
+        .font('arial 24px #000000')
+
+        .wrappedText(this.hero.name, 30,30, 200)
+        .restore();
+
+
+      app.layer
+        .save()
+        .fillStyle('#FFFFFF')
+        .font('arial 24px #000000')
+        .wrappedText('( ' + this.hero.health +' / ' + this.hero.maxHealth + ')', 30,50, 200)
+        .restore();
+
     },
     onmousemove: function(x, y) {
+      this.hero.intendedDirection = utils.atanxy(
+        x - this.hero.horse.x,
+        y - this.hero.horse.y
+      );
+      this.intendedDirection = Math.round(this.intendedDirection * 100) / 100
+    },
+    ontouchmove: function(x, y) {
       this.hero.intendedDirection = utils.atanxy(
         x - this.hero.horse.x,
         y - this.hero.horse.y

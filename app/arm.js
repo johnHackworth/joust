@@ -110,6 +110,10 @@ window.entities = window.entities || {};
       var sina = Math.sin(angle_rad);
       return [ this.x + cosa * this.size[0] - sina * this.size[1] ,
                this.y + sina * this.size[0] + cosa * this.size[1]];
+    },
+
+    getDamageTo: function(knight) {
+      return 1;
     }
 
 

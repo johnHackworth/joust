@@ -12,11 +12,13 @@ window.entities = window.entities || {};
          so can ants move more naturally */
       brainDelta: 0,
       player: false,
-
       turning: 0.1,
       color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
     }, args);
+    this.name = args.name || this._DEFAULT_NAME;
     this.size = [5, 5];
+    this.health = args.health || this._DEFAULT_HEALTH;
+    this.maxHealth = this.health;
     this.x = this.horse.x;
     this.y = this.horse.y;
     this.oncreate();
@@ -25,6 +27,8 @@ window.entities = window.entities || {};
   Knight.prototype = {
     type: 'knight',
     MAX_TURN: Math.PI / 4,
+    _DEFAULT_HEALTH: 25,
+    _DEFAULT_NAME: 'knight',
     blockType: 3,
     oncreate: function() {
 
@@ -201,6 +205,7 @@ window.entities = window.entities || {};
 
     hitBy: function(arm) {
       this.ouchTime = 5;
+      this.health -= arm.getDamageTo(this);
     }
 
   };
