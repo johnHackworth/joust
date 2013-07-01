@@ -1,8 +1,8 @@
 var app = new window.engine.Application({
 
   /* get width and height of a window */
-  width: window.innerWidth,
-  height: window.innerHeight,
+  width: 800,
+  height: 600,
 
   /* for now we don't do anything on creation */
   oncreate: function() {
@@ -19,7 +19,14 @@ var app = new window.engine.Application({
 
   /* and when the assets are loaded select the game screen */
   onready: function() {
-    this.selectScene(this.game);
+    var self = this;
+    document.getElementById('fightButton').addEventListener('click', function(ev) {
+      var playerName = document.getElementById('name').value;
+      self.game.setHeroName(playerName);
+      document.getElementById('presentation').setAttribute('class','hidden');
+      self.selectScene(self.game);
+    })
+    // this.selectScene(this.game);
   }
 
 });

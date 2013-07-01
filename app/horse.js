@@ -8,8 +8,9 @@ window.entities = window.entities || {};
 
       /* direction the ant is facing (in radians) */
       direction: 0,
-      speed: 6,
-      maxSpeed: 125,
+      speed: -10,
+      maxSpeed: 100,
+      currentMaxSpeed: 100,
       turning: 0.02,
       /* brain cooldown - AI will be called in random periods of time
          so can ants move more naturally */
@@ -25,6 +26,7 @@ window.entities = window.entities || {};
 
   Horse.prototype = {
     blockType: 1,
+    energy: 5,
     oncreate: function() {
       this.stepNumber = 0;
       this.stepRound = 0;
@@ -60,20 +62,25 @@ window.entities = window.entities || {};
       if (this.brainDelta < 0) {
 
         // /* take some random direction (in radians) */
-        // if(!this.player) {
-        //   this.intendedDirection = Math.random() * Math.PI * 2;
-        //   this.intendedDirection = Math.round(this.intendedDirection * 100) / 100;
-        // }
+        if(!this.knight) {
+          this.intendedDirection = Math.random() * Math.PI * 2;
+          this.intendedDirection = Math.round(this.intendedDirection * 100) / 100;
+        }
         /* delay next ai invocation */
         this.brainDelta = Math.random() * 2000;
       }
 
       this.speed += 30 * delta / 5000;
-      if(this.speed > this.maxSpeed) {
-        this.speed = this.maxSpeed * ( (0.10 * Math.random()) + 0.90);
+      if(this.speed > this.currentMaxSpeed) {
+        this.speed = this.currentMaxSpeed * ( (0.10 * Math.random()) + 0.90);
       }
       if(this.spurred) {
-        this.speed = this.speed * 1.5;
+        this.speed = this.speed * 1.30;
+        this.energy--;
+      }
+
+      if(this.energy <= 0) {
+        this.speed = 2 * this.speed / 3
       }
       // this.speed = 0
 
@@ -154,6 +161,16 @@ window.entities = window.entities || {};
     },
 
     checkBorders: function() {
+      if(
+        this.x > (7 * app.width/8) ||
+        this.x < (app.width/8) ||
+        this.y > (7 * app.height/8) ||
+        this.y < (app.height/8)) {
+        this.currentMaxSpeed = this.maxSpeed / 2;
+      } else {
+        this.currentMaxSpeed = this.maxSpeed;
+      }
+
       if(this.x > (7 * app.width/8)) {
         this.intendedDirection = Math.PI
       }

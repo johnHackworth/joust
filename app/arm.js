@@ -113,7 +113,13 @@ window.entities = window.entities || {};
     },
 
     getDamageTo: function(knight) {
-      return 1;
+      var clashAngle = Math.abs(this.owner.getDirection() - knight.getDirection());
+      var inertia = this.owner.getInertia();
+      var damage =  Math.floor(10 * inertia * -1 * Math.cos(clashAngle));
+      if(damage <= 0) {
+        damage = 0;
+      }
+      return damage;
     }
 
 

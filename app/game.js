@@ -1,5 +1,6 @@
 window.onload = function() {
   app.game = new window.engine.Scene({
+    playerName: 'knight',
     oncreate: function() {
 
       var image = app.assets.image('grass')
@@ -8,7 +9,7 @@ window.onload = function() {
       /* create new collection of entities */
       this.entities = new window.entities.GameObjects(this);
 
-      for(var i = 0; i < 1; i++) {
+      for(var i = 0; i < 8; i++) {
         var horse = this.spawnHorse();
         var knight = this.spawnKnight(horse);
         this.spawnArm(knight);
@@ -22,6 +23,7 @@ window.onload = function() {
       });
       this.hero = this.entities.add(window.entities.Knight, {
         horse: this.heroHorse,
+        name: this.playerName,
         player: true,
         color: '#330000'
       })
@@ -37,6 +39,10 @@ window.onload = function() {
         y: posy,
         direction: Math.PI
       });
+    },
+    setHeroName: function(name) {
+      this.playerName = name;
+      this.hero.name = name;
     },
     spawnKnight: function(horse) {
       return this.entities.add(window.entities.Knight, {

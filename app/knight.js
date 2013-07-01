@@ -15,6 +15,7 @@ window.entities = window.entities || {};
       turning: 0.1,
       color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
     }, args);
+
     this.name = args.name || this._DEFAULT_NAME;
     this.size = [5, 5];
     this.health = args.health || this._DEFAULT_HEALTH;
@@ -27,7 +28,7 @@ window.entities = window.entities || {};
   Knight.prototype = {
     type: 'knight',
     MAX_TURN: Math.PI / 4,
-    _DEFAULT_HEALTH: 25,
+    _DEFAULT_HEALTH: 10,
     _DEFAULT_NAME: 'knight',
     blockType: 3,
     oncreate: function() {
@@ -42,6 +43,7 @@ window.entities = window.entities || {};
     },
 
     step: function(delta) {
+      if(this.dead) return;
       /* decrease brain cooldown  */
       this.brainDelta -= delta;
       if(this.ouchTime) {
@@ -61,8 +63,9 @@ window.entities = window.entities || {};
         this.brainDelta = Math.random() * 2000;
       }
 
-
-      this.horse.intendedDirection = this.intendedDirection;
+      if(this.horse) {
+        this.horse.intendedDirection = this.intendedDirection;
+      }
       if(this.arm) {
         this.arm.intendedDirection = this.direction;
       }
@@ -110,6 +113,7 @@ window.entities = window.entities || {};
     },
 
     maxTurn: function() {
+      if(this.dead) return;
       var angRider = this.direction;
       var angHorse = this.horse.direction;
       var changed = false;
@@ -138,20 +142,57 @@ window.entities = window.entities || {};
     },
 
     render: function(delta) {
-      var saddlePoint = this.horse.getSaddlePosition();
+      if(!this.dead && this.horse && this.horse.getSaddlePosition) {
+        var saddlePoint = this.horse.getSaddlePosition();
+        this.x = saddlePoint[0];
+        this.y = saddlePoint[1];
+      }
       app.layer
         .fillStyle(this.color)
         .save()
-        .translate(saddlePoint[0], saddlePoint[1])
+        .translate(this.x, this.y)
         .rotate(this.direction)
         .drawImage(this.image, -this.image.width / 2, -this.image.height / 2)
       if(this.ouchTime) {
         app.layer
-          .drawImage(this.imageOuch, -this.imageOuch.width / 4, -this.imageOuch.height / 4)
-
+          .drawImage(this.imageOuch, -this.imageOuch.width / 4, -this.imageOuch.height / 4);
       }
       app.layer
         .restore();
+
+      if(this.ouchTime) {
+        app.layer
+          .fillStyle('#AA0000')
+          .font('arial 24px #000000')
+          .wrappedText("" + this.currentDamage,
+            this.x - 3,
+            this.y - 10,
+            20)
+      }
+
+      if(!this.dead) {
+        app.layer.beginPath();
+        var xEnergy = this.health / this.maxHealth;
+        app.layer.context.fillStyle = "rgba(" +
+          (200 - (200*xEnergy)) +
+          ", " +
+          (200 * xEnergy) +
+          ", 0, 0.6)";
+        app.layer.context.strokeStyle = "#555555";
+        app.layer.fillRect(
+          this.x - 15,
+          this.y - 20,
+          30 * xEnergy,
+          5);
+        app.layer.moveTo(this.x - 15, this.y - 20);
+        app.layer.lineTo(this.x - 15 + 30 * xEnergy, this.y - 20);
+        app.layer.lineTo(this.x - 15 + 30 * xEnergy, this.y - 16);
+        app.layer.lineTo(this.x - 15, this.y - 16);
+        app.layer.lineTo(this.x - 15, this.y - 20);
+        app.layer.stroke();
+        app.layer
+          .restore();
+      }
     },
 
     remove: function() {
@@ -188,10 +229,16 @@ window.entities = window.entities || {};
     },
 
     notifyFront: function(otherHorse) {
-      if(this.isFront(otherHorse.getPosition()) > 0) {
-       this.intendedDirection += Math.PI;
+      if(otherHorse.knight) {
+        this.arm.intendedDirection = otherHorse.getSaddlePosition();
+        this.spurHorse();
       } else {
-        this.intendedDirection -= Math.PI;
+        if(this.isFront(otherHorse.getPosition()) > 0) {
+         this.intendedDirection += Math.PI;
+        } else {
+          this.intendedDirection -= Math.PI;
+        }
+
       }
     },
 
@@ -204,8 +251,33 @@ window.entities = window.entities || {};
     },
 
     hitBy: function(arm) {
-      this.ouchTime = 5;
-      this.health -= arm.getDamageTo(this);
+      var damage = arm.getDamageTo(this);
+      if(this.ouchTime > 0) {
+        if(this.currentDamage < damage) {
+          this.ouchTime = 10;
+          this.health -= damage - this.currentDamage;
+          this.currentDamage = damage;
+        }
+      } else {
+        this.ouchTime = 10;
+        this.currentDamage = damage;
+        this.health -= this.currentDamage;
+      }
+
+      if(this.health < 0) {
+        this.arm.remove();
+        this.horse.knight = false;
+        // this.horse = false;
+        this.dead = true;
+      }
+    },
+    getInertia: function() {
+      var angle = Math.abs(this.arm.direction - this.horse.direction)
+      var speed = Math.cos(angle) * this.horse.speed;
+      return speed / 100;
+    },
+    getDirection: function() {
+      return this.horse.direction;º
     }
 
   };
