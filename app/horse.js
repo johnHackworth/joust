@@ -79,8 +79,10 @@ window.entities = window.entities || {};
         this.energy--;
       }
 
-      if(this.energy <= 0) {
-        this.speed = 2 * this.speed / 3
+      if(this.energy <= 0 && !this.exahusted) {
+        this.maxSpeed = 2 * this.maxSpeed / 3
+        this.currentMaxSpeed = 2 * this.currentMaxSpeed / 3;
+        this.exahusted = true;
       }
       // this.speed = 0
 

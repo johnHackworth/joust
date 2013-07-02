@@ -230,8 +230,11 @@ window.entities = window.entities || {};
 
     notifyFront: function(otherHorse) {
       if(otherHorse.knight) {
-        this.arm.intendedDirection = otherHorse.getSaddlePosition();
-        this.spurHorse();
+        if(!this.knight.player) {
+          this.arm.intendedDirection = otherHorse.getSaddlePosition();
+          this.spurHorse();
+          console.log('yeeeha')
+        }
       } else {
         if(this.isFront(otherHorse.getPosition()) > 0) {
          this.intendedDirection += Math.PI;
