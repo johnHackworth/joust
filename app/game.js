@@ -1,17 +1,17 @@
 window.onload = function() {
   app.game = new window.engine.Scene({
     playerName: 'knight',
-    oncreate: function() {
-
-      var image = app.assets.image('grass')
-      var wrapper = cq(image).blend('#333333', "addition", 1.0);
-      this.image = wrapper.canvas;
-      /* create new collection of entities */
-      this.entities = new window.entities.GameObjects(this);
-
+    onenter: function() {
+      this.knights = [];
       for(var i = 0; i < 8; i++) {
         var horse = this.spawnHorse();
-        var knight = this.spawnKnight(horse);
+        var pos = Math.floor(Math.random() * this.knightsData.length)
+        var knightData = this.knightsData.splice(pos, 1)[0] ;
+        knightData.horse = horse;
+        knightData.color = knightData.color1;
+        var knight = this.spawnKnight(knightData);
+        knight.shield = cq(this.spriteShields).blend(knight.color1, "addition", 1.0).canvas;
+        this.knights.push(knight);
         this.spawnArm(knight);
       }
       this.heroHorse = this.entities.add(window.entities.Horse, {
@@ -27,7 +27,21 @@ window.onload = function() {
         player: true,
         color: '#330000'
       })
+      this.hero.name = this.playerName;
       this.spawnArm(this.hero)
+
+    },
+    oncreate: function() {
+
+      var image = app.assets.image('grass')
+      var wrapper = cq(image).blend('#333333', "addition", 1.0);
+      this.image = wrapper.canvas;
+      /* create new collection of entities */
+      this.entities = new window.entities.GameObjects(this);
+
+
+      this.spriteShields = app.assets.image("shields");
+
 
     },
 
@@ -42,12 +56,10 @@ window.onload = function() {
     },
     setHeroName: function(name) {
       this.playerName = name;
-      this.hero.name = name;
+      this.heroHame = name;
     },
-    spawnKnight: function(horse) {
-      return this.entities.add(window.entities.Knight, {
-        horse: horse
-      });
+    spawnKnight: function(knightData) {
+      return this.entities.add(window.entities.Knight,knightData);
     },
     spawnArm: function(knight) {
       return this.entities.add(window.entities.Arm, {
@@ -69,21 +81,57 @@ window.onload = function() {
       /* call render method of each entity in the collection */
       this.entities.call("render", delta);
 
+      this.drawNames();
+
+
+    },
+    drawNames: function() {
       app.layer
         .save()
         .fillStyle('#FFFFFF')
         .font('arial 24px #000000')
-
         .wrappedText(this.hero.name, 30,30, 200)
         .restore();
 
-
       app.layer
         .save()
         .fillStyle('#FFFFFF')
         .font('arial 24px #000000')
-        .wrappedText('( ' + this.hero.health +' / ' + this.hero.maxHealth + ')', 30,50, 200)
+        .wrappedText('( ' + this.hero.health +' / ' + this.hero.maxHealth + ')', 30,45, 200)
         .restore();
+      for(var i = 0, l = this.knights.length; i < l; i++) {
+        app.layer
+          .save()
+          .fillStyle('#FFFFFF')
+          .font('arial 24px #000000')
+          .wrappedText(this.knights[i].name, 30,30+(i+1)*30, 200)
+          .restore();
+        var color = '#FFFFFF';
+        if(this.knights[i].ouchTime) {
+          color = '#FF7777';
+        }
+        app.layer
+          .save()
+          .fillStyle(color)
+          .font('arial 24px #000000')
+          .wrappedText('( ' + this.knights[i].health +' / ' + this.knights[i].maxHealth + ')', 30,45+ (i+1) * 30, 200)
+          .restore();
+        app.layer
+          .save()
+          .fillStyle('#FFFFFF')
+          .drawImage(
+            this.knights[i].shield,
+            0,
+            20 * (this.knights[i].shieldType-1),
+            20,
+            20,
+            5,
+            60 + i * 30,
+            20,
+            20
+          ).restore();
+      }
+
 
     },
     onmousemove: function(x, y) {

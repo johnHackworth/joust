@@ -15,7 +15,7 @@ window.entities = window.entities || {};
       turning: 0.1,
       color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
     }, args);
-
+    this.shieldType = args.shield || 1;
     this.name = args.name || this._DEFAULT_NAME;
     this.size = [5, 5];
     this.health = args.health || this._DEFAULT_HEALTH;

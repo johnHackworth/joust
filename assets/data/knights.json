@@ -1,0 +1,93 @@
+[
+  {
+    "name": "Jaime Lannister",
+    "shield": 2,
+    "color1": "#CC3333",
+    "color2": "#FFFFAA",
+    "horsemanship": 8,
+    "strength": 7,
+    "hability": 10
+  },
+  {
+    "name": "Gregor Clegane",
+    "shield": 4,
+    "color1": "#CCFF33",
+    "color2": "#FFAAFF",
+    "horsemanship": 4,
+    "strength": 10,
+    "hability": 6
+  },
+  {
+    "name": "Sandor Clegane",
+    "shield": 4,
+    "color1": "#CCFF33",
+    "color2": "#FFAAFF",
+    "horsemanship": 6,
+    "strength": 8,
+    "hability": 8
+  },
+  {
+    "name": "Oberyn Martell",
+    "shield": 3,
+    "color1": "#FFFF66",
+    "color2": "#A1FF33",
+    "horsemanship": 9,
+    "strength": 7,
+    "hability": 8
+  },
+  {
+    "name": "Loras Tyrrel",
+    "shield": 3,
+    "color1": "#00AA00",
+    "color2": "#55FF55",
+    "horsemanship": 9,
+    "strength": 6,
+    "hability": 10
+  },
+  {
+    "name": "Robb Stark",
+    "shield": 4,
+    "color1": "#FFFFF",
+    "color2": "#666666",
+    "horsemanship": 6,
+    "strength": 7,
+    "hability": 8
+  },
+  {
+    "name": "Thoros of Myr",
+    "shield": 1,
+    "color1": "#FF0000",
+    "color2": "#FFFF00",
+    "horsemanship": 5,
+    "strength": 6,
+    "hability": 6
+  },
+  {
+    "name": "The Black Fish",
+    "shield": 5,
+    "color1": "#333333",
+    "color2": "#3333AA",
+    "horsemanship": 6,
+    "strength": 7,
+    "hability": 8
+  },
+  {
+    "name": "Jon Umber",
+    "shield": 1,
+    "color1": "#CCCCCC",
+    "color2": "#FF0000",
+    "horsemanship": 3,
+    "strength": 9,
+    "hability": 4
+  },
+  {
+    "name": "Walder Frey",
+    "shield": 1,
+    "color1": "#5555CC",
+    "color2": "#888888",
+    "horsemanship": 3,
+    "strength": 6,
+    "hability": 2
+  }
+
+]
