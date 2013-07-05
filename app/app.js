@@ -15,10 +15,7 @@ var app = new window.engine.Application({
       }
     })
     this.loader.foo(2500);
-    this.assets.addImage("horsie1.png");
-    this.assets.addImage("horsie2.png");
-    this.assets.addImage("horsie3.png");
-    this.assets.addImage("horsie4.png");
+    this.assets.addImage("horses.png");
     this.assets.addImage("knight.png");
     this.assets.addImage("arm.png");
     this.assets.addImage("grass.jpg");

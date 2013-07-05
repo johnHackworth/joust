@@ -9,8 +9,8 @@ window.entities = window.entities || {};
       /* direction the ant is facing (in radians) */
       direction: 0,
       speed: -10,
-      maxSpeed: 100,
-      currentMaxSpeed: 100,
+      maxSpeed: 150,
+      currentMaxSpeed: 150,
       turning: 0.02,
       /* brain cooldown - AI will be called in random periods of time
          so can ants move more naturally */
@@ -19,7 +19,7 @@ window.entities = window.entities || {};
       spurred: false,
       color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
     }, args);
-    this.size = [20, 5];
+    this.size = [30, 10];
     this.baseTurning = this.turning;
     this.oncreate();
   };
@@ -30,18 +30,9 @@ window.entities = window.entities || {};
     oncreate: function() {
       this.stepNumber = 0;
       this.stepRound = 0;
-      var image1 = app.assets.image("horsie1")
-      var wrapper = cq(image1).blend(this.color, "addition", 1.0).resizePixel(2);
-      this.image1 = wrapper.canvas;
-      var image2 = app.assets.image("horsie2")
-      var wrapper2 = cq(image2).blend(this.color, "addition", 1.0).resizePixel(2);
-      this.image2 = wrapper2.canvas;
-      var image3 = app.assets.image("horsie3")
-      var wrapper3 = cq(image3).blend(this.color, "addition", 1.0).resizePixel(2);
-      this.image3 = wrapper3.canvas;
-      var image4 = app.assets.image("horsie4")
-      var wrapper4 = cq(image4).blend(this.color, "addition", 1.0).resizePixel(2);
-      this.image4 = wrapper4.canvas;
+      var image = app.assets.image("horses")
+      var wrapper = cq(image).resizePixel(1);
+      this.image = wrapper.canvas;
     },
 
     step: function(delta) {
@@ -70,7 +61,7 @@ window.entities = window.entities || {};
         this.brainDelta = Math.random() * 2000;
       }
 
-      this.speed += 30 * delta / 5000;
+      this.speed += 40 * delta / 5000;
       if(this.speed > this.currentMaxSpeed) {
         this.speed = this.currentMaxSpeed * ( (0.10 * Math.random()) + 0.90);
       }
@@ -144,21 +135,29 @@ window.entities = window.entities || {};
     render: function(delta) {
       var round = 1;
       if(this.speed < 25) {
-        round = 1 + (Math.floor(this.stepNumber / 20) % 4);
+        round = (Math.floor(this.stepNumber / 15) % 4);
       } else if(this.speed < 50) {
-        round = 1 + (Math.floor(this.stepNumber / 16) % 4);
-      } else if(this.speed < 100) {
-        round = 1 + (Math.floor(this.stepNumber / 12) % 4);
+        round = (Math.floor(this.stepNumber / 10) % 4);
+      } else if(this.speed < 75) {
+        round = (Math.floor(this.stepNumber / 5) % 4);
       } else {
-        round = 1 + (Math.floor(this.stepNumber / 10) % 4);
+        round = (Math.floor(this.stepNumber / 4) % 4);
       }
-      var image = 'image' + round;
       app.layer
         .fillStyle(this.color)
         .save()
         .translate(this.x, this.y)
         .rotate(this.direction)
-        .drawImage(this['image'+round], -this.image1.width / 2, -this.image1.height / 2)
+        .drawImage(this['image'],
+          0,
+          20 * round,
+          60,
+          15,
+         -60 / 2,
+         -15 / 2,
+          60,
+          15
+        )
         .restore();
     },
 
