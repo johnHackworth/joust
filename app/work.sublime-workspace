@@ -1,0 +1,931 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"kn",
+				"knights"
+			],
+			[
+				"kng",
+				"knightData"
+			],
+			[
+				"k",
+				"knightData"
+			],
+			[
+				"current",
+				"currentMaxSpeed"
+			],
+			[
+				"curre",
+				"currentMaxSpeed"
+			],
+			[
+				"selec",
+				"selectScene"
+			],
+			[
+				"_",
+				"_DEFAULT_HEALTH"
+			],
+			[
+				"p",
+				"PI"
+			],
+			[
+				"max",
+				"MAX_TURN"
+			],
+			[
+				"horse",
+				"horseDisplacement"
+			],
+			[
+				"M",
+				"MAX_TURN"
+			],
+			[
+				"displac",
+				"displacementY"
+			],
+			[
+				"laye",
+				"layerInitialized"
+			],
+			[
+				"currn",
+				"currentStep"
+			],
+			[
+				"sli",
+				"sliderLegend"
+			],
+			[
+				"cam",
+				"campaignForm"
+			],
+			[
+				"campai",
+				"campaignList"
+			],
+			[
+				"addMon",
+				"addMoneyButton"
+			],
+			[
+				"makePaymen",
+				"makePaymentAuth"
+			],
+			[
+				"payment",
+				"paymentService"
+			],
+			[
+				"ad",
+				"advertiser"
+			],
+			[
+				"min-",
+				"min-width"
+			],
+			[
+				"campa",
+				"campaignList"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"MARGIN-",
+				"margin-top"
+			],
+			[
+				"local",
+				"localStorage"
+			],
+			[
+				"shitt",
+				"shittyPerformance"
+			],
+			[
+				"shi",
+				"shittyPerformance"
+			],
+			[
+				"sh",
+				"shittyPerformance"
+			],
+			[
+				"portrait",
+				"portraitHeight"
+			],
+			[
+				"Tyr",
+				"Tyrell"
+			],
+			[
+				"lo",
+				"Loras"
+			],
+			[
+				"Tar",
+				"Targaryen"
+			],
+			[
+				"Th",
+				"Thorne"
+			],
+			[
+				"Mon",
+				"Monpatis"
+			],
+			[
+				"Ty",
+				"Tywin"
+			],
+			[
+				"cha",
+				"charData"
+			],
+			[
+				"curren",
+				"currentRelationLabels"
+			],
+			[
+				"paint",
+				"paintRelationLabel"
+			],
+			[
+				"leg",
+				"legendElement"
+			],
+			[
+				"legend",
+				"legendButton"
+			],
+			[
+				"height",
+				"max-height"
+			],
+			[
+				"select",
+				"selectCharacter"
+			],
+			[
+				"inpu",
+				"inputSearcher"
+			],
+			[
+				"season",
+				"seasonSelector"
+			],
+			[
+				"clear",
+				"clearBoard"
+			],
+			[
+				"port",
+				"portraitWidth"
+			],
+			[
+				"circle",
+				"circleCropper"
+			],
+			[
+				"portr",
+				"portraitHeight"
+			],
+			[
+				"portra",
+				"portraitWidth"
+			],
+			[
+				"proto",
+				"prototype"
+			],
+			[
+				"prev",
+				"previousOccuper"
+			],
+			[
+				"previous",
+				"previousChar"
+			],
+			[
+				"click",
+				"clickPortrait"
+			],
+			[
+				"facebook",
+				"facebookData"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/home/javi/work/hyperlocal/trunk/API.old/client/app/campaign/i18n/campaignEdit.i18n.json",
+			"settings":
+			{
+				"buffer_size": 24797,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/javi/work/hyperlocal/trunk/API.old/client/app/campaign/controllers/campaignWizard.controller.js",
+			"settings":
+			{
+				"buffer_size": 22233,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/javi/work/hyperlocal/trunk/API.old/client/app/campaign/controllers/campaignList.controller.js",
+			"settings":
+			{
+				"buffer_size": 7187,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/javi/work/hyperlocal/trunk/API.old/client/app/campaign/controllers/campaignEdit.controller.js",
+			"settings":
+			{
+				"buffer_size": 53796,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 171.0,
+		"selected_items":
+		[
+			[
+				"svn resolv",
+				"SVN: (File) Resolve, Interactive…"
+			],
+			[
+				"svn update",
+				"SVN: Update"
+			],
+			[
+				"svn commit",
+				"SVN: Commit…"
+			],
+			[
+				"svn upda",
+				"SVN: Update"
+			],
+			[
+				"svn com",
+				"SVN: Commit…"
+			],
+			[
+				"",
+				"File: New View into File"
+			],
+			[
+				"svn upd",
+				"SVN: Update"
+			],
+			[
+				"resolve",
+				"SVN: (File) Resolve, Interactive…"
+			],
+			[
+				"svn resol",
+				"SVN: Resolve Tree Conflict, Interactive…"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"git commit",
+				"Git: Commit"
+			],
+			[
+				"git add ",
+				"Git: Add..."
+			],
+			[
+				"git add",
+				"Git: Add Current File"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"g",
+				"Package Control: Add Channel"
+			],
+			[
+				"git",
+				"Package Control: Install Package"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 489.0
+	},
+	"console":
+	{
+		"height": 187.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/javi/work/hyperlocal/trunk/API/client/app/campaign/views/campaignForm.html",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/campaign/controllers/campaignEdit.controller.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/lib/common/controllers/base.controller.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/shop/controllers/shopEdition.controller.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/shop/controllers/wizard.controller.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/lib/utils/mapMaker.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/user/controllers/userEdition.controller.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/style/campaign.css",
+		"/home/javi/script actualización.txt",
+		"/home/javi/work/hyperlocal/trunk.old/API/client/app/campaign/i18n/campaignEdit.i18n.json",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/campaign/i18n/campaignEdit.i18n.json",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/campaign/views/wizard.html",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/campaign/controllers/campaignWizard.controller.js",
+		"/home/javi/work/hyperlocal/trunk/API/config/public.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/user/controllers/newUser.controller.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/user/i18n/userEdition.i18n.json",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/session/views/appFrame.html",
+		"/home/javi/work/hyperlocal/trunk/API/hyperlocalAPI.js",
+		"/home/javi/work/hyperlocal/trunk/API/config/config.js",
+		"/home/javi/work/hyperlocal/trunk/API/lib/campaign/services/campaign.js",
+		"/home/javi/work/hyperlocal/trunk/API/lib/campaign/routers/routers.js",
+		"/home/javi/work/hyperlocal/trunk/API/lib/user/routers/routers.js",
+		"/home/javi/work/hyperlocal/trunk/API/lib/user/services/payment.js",
+		"/home/javi/work/hyperlocal/trunk/API/lib/campaign/models/campaign.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/user/views/userEdition.html",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/campaign/i18n/campaignList.i18n.json",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/campaign/views/campaignList.html",
+		"/home/javi/work/hyperlocal/trunk/API/lib/common/bidder.js",
+		"/home/javi/work/hyperlocal/trunk/API/lib/common/errors.js",
+		"/home/javi/work/hyperlocal/trunk.old/API/client/app/campaign/controllers/campaignEdit.controller.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/style/main.css",
+		"/home/javi/work/hyperlocal/trunk.old/API/client/app/campaign/views/campaignList.html",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/campaign/controllers/campaignList.controller.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/campaign/models/campaign.model.js",
+		"/home/javi/work/hyperlocal/trunk.old/API/lib/campaign/services/campaign.js",
+		"/home/javi/work/hyperlocal/trunk.old/API/client/app/campaign/models/campaign.model.js",
+		"/home/javi/work/hyperlocal/trunk/API/lib/common/bannerCreator.js",
+		"/home/javi/work/hyperlocal/trunk/adServer/lib/ad/routers/ad.routers.js",
+		"/home/javi/work/hyperlocal/trunk/adServer/lib/images/routers/routers.js",
+		"/home/javi/work/hyperlocal/trunk/adServer/lib/ad/services/ad.service.js",
+		"/home/javi/work/hyperlocal/trunk/adServer/lib/common/bannerLocator.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/campaign/views/templates.html",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/session/controllers/app.controller.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/style/app.css",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/user/models/user.model.js",
+		"/home/javi/work/hyperlocal/trunk/API/config/categories.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/style/user.css",
+		"/home/javi/non-work/joust/app/game.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/html/dev.html",
+		"/home/javi/work/hyperlocal/trunk/API/client/html/landing.dev.html",
+		"/home/javi/work/hyperlocal/trunk/API/client/html/landing.en.html",
+		"/home/javi/non-work/joust/assets/data/knights.json",
+		"/home/javi/non-work/joust/app/app.js",
+		"/home/javi/non-work/joust/index.html",
+		"/home/javi/non-work/joust/app/knight.js",
+		"/home/javi/non-work/joust/app/horse.js",
+		"/home/javi/non-work/joust/assets/css/style.css",
+		"/home/javi/non-work/joust/app/arm.js",
+		"/home/javi/non-work/joust/app/presentation.js",
+		"/home/javi/non-work/joust/lib/engine/application.js",
+		"/home/javi/non-work/output.csv",
+		"/home/javi/non-work/joust/app/entities.js",
+		"/home/javi/non-work/csvGenerator.js",
+		"/home/javi/non-work/output.txt",
+		"/home/javi/non-work/joust/example/script/bullet.js",
+		"/home/javi/non-work/joust/lib/engine/collection.js",
+		"/home/javi/non-work/joust/example/index.html",
+		"/home/javi/non-work/joust/lib/engine/utils.js",
+		"/home/javi/non-work/joust/vendors/eveline.js",
+		"/home/javi/.cache/.fr-wAM3PR/script/engine/application.js",
+		"/home/javi/.cache/.fr-umAQHv/script/main.js",
+		"/home/javi/.cache/.fr-4fywLy/script/game.js",
+		"/home/javi/non-work/joust/lib/engine/scene.js",
+		"/home/javi/.cache/.fr-nZ9OzE/script/main.js",
+		"/home/javi/non-work/joust/lib/engine/engine.js",
+		"/home/javi/non-work/joust/lib/engine/assets.js",
+		"/home/javi/non-work/joust/lib/engine/loader.js",
+		"/home/javi/work/hyperlocal/trunk/API/package.json",
+		"/home/javi/non-work/vinyl/package.json",
+		"/home/javi/non-work/vinyl/main.js",
+		"/home/javi/non-work/vinyl/config/config.js",
+		"/home/javi/non-work/vinyl/lib/common/db.js",
+		"/home/javi/work/hyperlocal/trunk/API/mocha.opts",
+		"/home/javi/non-work/vinyl/mocha.opts",
+		"/home/javi/non-work/vinyl/test/artist/model/artist.model.js",
+		"/home/javi/non-work/vinyl/lib/artist/model/artist.model.js",
+		"/home/javi/work/hyperlocal/trunk/API/Gruntfile.js",
+		"/home/javi/non-work/vinyl/views/404.html",
+		"/home/javi/work/hyperlocal/trunk/API/client/landing.dev.html",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/routers/public.routers.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/user/views/newUser.html",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/session/i18n/landing.i18n.json",
+		"/home/javi/work/hyperlocal/trunk/API/lib/session/services/session.js",
+		"/home/javi/work/hyperlocal/trunk/API/lib/session/routers/routers.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/session/models/session.model.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/shop/i18n/shopEdit.i18n.json",
+		"/tmp/sublime-svn-1366874768/SVN",
+		"/tmp/sublime-svn-1366788180/SVN",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/session/controllers/login.controller.js",
+		"/tmp/sublime-svn-1366702577/SVN",
+		"/tmp/sublime-svn-1366615645/SVN",
+		"/tmp/sublime-svn-1366615606/SVN",
+		"/home/javi/work/hyperlocal/trunk/API/config/public.js.sample",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/campaign/models/campaigns.collection.js",
+		"/home/javi/work/hyperlocal/trunk/API/lib/user/models/payment.js",
+		"/home/javi/work/hyperlocal/trunk/API/test/user/services/payment.spec.js",
+		"/home/javi/work/hyperlocal/trunk/API/lib/user/services/user.js",
+		"/home/javi/work/hyperlocal/trunk/API/test/user/services/user.spec.js",
+		"/home/javi/work/hyperlocal/trunk/API/lib/user/models/user.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/dev.html",
+		"/home/javi/work/hyperlocal/trunk/API/client/app/public.js",
+		"/home/javi/work/hyperlocal/trunk/API/client/style/landing.css",
+		"/home/javi/work/hyperlocal/trunk/adServer/config/config.js",
+		"/home/javi/work/hyperlocal/trunk/API/config/config.js.sample",
+		"/tmp/sublime-svn-1366269616/SVN",
+		"/home/javi/work/hyperlocal/trunk/API/client/config/public.js",
+		"/tmp/sublime-svn-1366046089/SVN",
+		"/home/javi/non-work/RingQuest/vendors/requirejs/require.js",
+		"/home/javi/work/hyperlocal/trunk/adServer/test/ad/service/ad.service.spec.js",
+		"/home/javi/work/hyperlocal/trunk/adServer/lib/ad/models/ad.model.js",
+		"/home/javi/work/hyperlocal/trunk/adServer/views/map.html",
+		"/home/javi/work/hyperlocal/trunk/adServer/test/ad/models/advertiser.spec.js",
+		"/home/javi/work/hyperlocal/trunk/adServer/lib/ad/models/advertiser.model.js",
+		"/home/javi/work/hyperlocal/trunk/adServer/lib/ad/models/shop.model.js",
+		"/tmp/sublime-svn-1366010642/SVN",
+		"/home/javi/work/hyperlocal/trunk/API/client/userRegistration.html",
+		"/home/javi/work/hyperlocal/trunk/API/lib/userRegistration/routers/routers.js",
+		"/home/javi/work/hyperlocal/trunk/adServer/views/message.html"
+	],
+	"find":
+	{
+		"height": 48.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"/home/javi/work, *",
+			"/home/javi/work, *.js",
+			"/home/javi/work, *.css",
+			"/home/javi/work, *",
+			"/home/javi/work, *.js",
+			"/home/javi/work, *.css",
+			"/home/javi/work, *.js",
+			"/home/javi/work, *.html",
+			"/home/javi/work, *.js",
+			"/home/javi/work, *",
+			"/home/javi/work, *.html",
+			"/home/javi/work, *.css",
+			"/home/javi/work, *.js",
+			"/home/javi/work, *",
+			"/home/javi/work, *.js",
+			"/home/javi/work, *",
+			"/home/javi/work, *.css",
+			"/home/javi/non-work/joust",
+			"*",
+			"*.css",
+			"*.js",
+			"*.css",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"<<<",
+			"<<<<",
+			"===",
+			"<<<<",
+			"mine",
+			"geohash(",
+			"this.loader.hidden",
+			"bannerDistanceSimulator",
+			"creativityStepButton",
+			"bannerDistanceSimulator",
+			"cpyCampaignUrl",
+			"ur",
+			"código que tus futuros",
+			"saveShops",
+			"hasBeenClicked",
+			"/aboutUs",
+			"loadStep",
+			"step1",
+			"graphTitle",
+			"updateUser",
+			"cpyPay",
+			"pagar",
+			"wallet",
+			"funds",
+			"delete",
+			"requestData",
+			"delete",
+			"datepicker",
+			"statsDate",
+			"renderStats",
+			"deleteCampaign",
+			"delete",
+			"deleteC",
+			"bidder",
+			"running",
+			"templateInnerZones",
+			"clickmap",
+			"html(",
+			"templateInnerZones",
+			"inner",
+			"template",
+			"innerOpBox",
+			"approved",
+			"status",
+			"walletFunds",
+			"Error fetching campaign data",
+			"Error fetching campaign",
+			"fetching campaign data",
+			"cpyNoShopsSelected",
+			"zoneContainer",
+			"banner",
+			"title stepB",
+			"getBannerImage",
+			"lng",
+			"sketchBanner",
+			"maxCPM",
+			"€",
+			" %>",
+			"€",
+			"50",
+			"innerZones",
+			"Zones",
+			"zones",
+			"addShop",
+			"saveCa",
+			"loader",
+			"sector",
+			"miscellaneous",
+			"cpyMiscellaneous",
+			"Deportes",
+			"filter",
+			"loader",
+			"hide(",
+			"loader",
+			"window.location.",
+			"delete",
+			"confirm",
+			"errorManager",
+			"deportes",
+			"pagar",
+			"newFunds",
+			"funds",
+			"addFunds",
+			"completa",
+			"/client/",
+			"131",
+			"speed",
+			"30",
+			"knight",
+			"energy",
+			"maxSpeed",
+			"layer =",
+			"layer:",
+			"layer=",
+			"app.layer=",
+			"app.layer ",
+			"app.layer",
+			"app.layer =",
+			"canvas",
+			"getDamageTo",
+			"currentDamage",
+			"ouchTime",
+			"getSadd",
+			"this.horse",
+			"getSaddle",
+			"horse",
+			"knight",
+			"oeoe",
+			"cq",
+			"cq()",
+			"framework",
+			"cq().framework",
+			"2",
+			"500",
+			"this.spurred",
+			"spurred",
+			"app.layer",
+			"isFront:",
+			"isFront",
+			"getArmPosition",
+			"getsaddle",
+			"owner",
+			"context",
+			"horse",
+			"angHorse",
+			"angRider",
+			"this.hero",
+			"player"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"/client/html/",
+			"130",
+			"4",
+			"3",
+			"angKnight",
+			"angArm",
+			"this.turning",
+			"lib/engine",
+			"#CCC 0, #AAA 30%, #BBB 60%, #CCC 80%);",
+			".3s",
+			"all",
+			"1.131",
+			"3",
+			"0.75",
+			"all .3s linear;",
+			"haloButton",
+			"192.168.1.131",
+			"192.168.1.169",
+			"AdModel",
+			"192.168.1.131",
+			"0s",
+			"self",
+			"Melisandre",
+			"Brienne",
+			"Renly Baratheon",
+			"Stannis Baratheon",
+			"",
+			"\"court\": [\"Bronn\"]",
+			"\"Joffrey Baratheon\"",
+			"Illyrio Monpatis",
+			"1500000ms",
+			"Alliser",
+			"500000ms",
+			"background-position",
+			"all",
+			"160000ms",
+			"80000ms",
+			"42000ms",
+			"ease",
+			"all 6s linear;",
+			"span",
+			"this.correction",
+			"0.3",
+			"all 0.5s linear;",
+			"this.totalHeight",
+			"this.totalWidth",
+			"+ this.margin",
+			"attackers"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": false
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/home/javi/work/hyperlocal/trunk/API.old/client/app/campaign/i18n/campaignEdit.i18n.json",
+					"settings":
+					{
+						"buffer_size": 24797,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								24791,
+								24791
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 14714.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/home/javi/work/hyperlocal/trunk/API.old/client/app/campaign/controllers/campaignWizard.controller.js",
+					"settings":
+					{
+						"buffer_size": 22233,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								22025,
+								22025
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 19098.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/home/javi/work/hyperlocal/trunk/API.old/client/app/campaign/controllers/campaignList.controller.js",
+					"settings":
+					{
+						"buffer_size": 7187,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2828,
+								2828
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2205.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/home/javi/work/hyperlocal/trunk/API.old/client/app/campaign/controllers/campaignEdit.controller.js",
+					"settings":
+					{
+						"buffer_size": 53796,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								53785,
+								53785
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 51962.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 39.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.git":
+	{
+		"height": 168.0
+	},
+	"replace":
+	{
+		"height": 74.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"main.css",
+				"API/client/style/main.css"
+			],
+			[
+				"err",
+				"API/lib/common/errors.js"
+			],
+			[
+				"campaign.css",
+				"client/style/campaign.css"
+			],
+			[
+				"app.css",
+				"client/style/app.css"
+			],
+			[
+				"config",
+				"API/config/config.js"
+			],
+			[
+				"adserver/conf",
+				"adServer/config/config.js"
+			],
+			[
+				"publi",
+				"API/client/config/public.js"
+			],
+			[
+				"re",
+				"RingQuest/vendors/requirejs/require.js"
+			],
+			[
+				"public",
+				"API/client/config/public.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 282.0,
+	"status_bar_visible": true
+}

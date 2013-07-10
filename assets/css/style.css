@@ -11,3 +11,11 @@ canvas {
   height: 0;
   overflow: hidden;
 }
+
+.button {
+  border: 1px solid #666;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 2em;
+  width: 250px;
+}

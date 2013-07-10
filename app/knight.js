@@ -33,8 +33,9 @@ window.entities = window.entities || {};
     blockType: 3,
     oncreate: function() {
 
+      this.stepNumber = 0;
       var image = app.assets.image("knight")
-      var wrapper = cq(image).blend(this.color, "addition", 1.0).resizePixel(2);
+      var wrapper = cq(image).blend(this.color, "addition", 1.0).resizePixel(0.8);
       this.image = wrapper.canvas;
       var imageOuch = app.assets.image("ouch")
       var wrapperOuch = cq(imageOuch).resizePixel(2);
@@ -43,14 +44,17 @@ window.entities = window.entities || {};
     },
 
     step: function(delta) {
-      if(this.dead) return;
+      this.stepNumber++;
+
+      if(this.dead) {
+        return;
+      }
       /* decrease brain cooldown  */
       this.brainDelta -= delta;
       if(this.ouchTime) {
         this.ouchTime--;
       }
 
-      /* if cooldown goes below zero - think ant, think! */
       if (this.brainDelta < 0) {
 
         /* take some random direction (in radians) */
@@ -142,25 +146,50 @@ window.entities = window.entities || {};
     },
 
     render: function(delta) {
+      var round = 1;
+      if(this.stepNumber % 5 === 0) {
+        this.currentPosition = Math.floor(Math.random() * 3);
+      }
+      if(this.dead) {
+        this.currentPosition = 3;
+      }
       if(!this.dead && this.horse && this.horse.getSaddlePosition) {
         var saddlePoint = this.horse.getSaddlePosition();
         this.x = saddlePoint[0];
         this.y = saddlePoint[1];
+      } else {
+        if(this.stepNumber % 30 === 0) {
+          this.x = this.x + Math.cos(this.direction) * this.speed * delta / 1000;
+          this.y = this.y + Math.sin(this.direction) * this.speed * delta / 1000;
+        }
       }
       app.layer
         .fillStyle(this.color)
         .save()
         .translate(this.x, this.y)
         .rotate(this.direction)
-        .drawImage(this.image, -this.image.width / 2, -this.image.height / 2)
-      if(this.ouchTime) {
+        .drawImage(
+          this.image,
+          0,
+          23  * this.currentPosition,
+          15,
+          21,
+          -15 / 2,
+          -21 / 2,
+          15,
+          21)
+      if(this.ouchTime && !this.dead) {
         app.layer
-          .drawImage(this.imageOuch, -this.imageOuch.width / 4, -this.imageOuch.height / 4);
+          .drawImage(
+            this.imageOuch,
+            -this.imageOuch.width / 4,
+            -this.imageOuch.height / 4
+          );
       }
       app.layer
         .restore();
 
-      if(this.ouchTime) {
+      if(this.ouchTime && !this.dead) {
         app.layer
           .fillStyle('#AA0000')
           .font('arial 24px #000000')
@@ -267,12 +296,17 @@ window.entities = window.entities || {};
         this.health -= this.currentDamage;
       }
 
-      if(this.health < 0) {
+      if(this.health <= 0) {
         this.arm.remove();
         this.horse.knight = false;
         // this.horse = false;
-        this.dead = true;
+        this.die();
       }
+    },
+    die: function() {
+      this.speed = 20;
+      this.dead = true;
+      this.direction = (Math.random() * 2 * Math.PI)
     },
     getInertia: function() {
       var angle = Math.abs(this.arm.direction - this.horse.direction)

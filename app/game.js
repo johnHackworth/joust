@@ -100,21 +100,28 @@ window.onload = function() {
         .wrappedText('( ' + this.hero.health +' / ' + this.hero.maxHealth + ')', 30,45, 200)
         .restore();
       for(var i = 0, l = this.knights.length; i < l; i++) {
-        app.layer
-          .save()
-          .fillStyle('#FFFFFF')
-          .font('arial 24px #000000')
-          .wrappedText(this.knights[i].name, 30,30+(i+1)*30, 200)
-          .restore();
         var color = '#FFFFFF';
         if(this.knights[i].ouchTime) {
           color = '#FF7777';
+        }
+        if(this.knights[i].dead) {
+          color = '#333333';
         }
         app.layer
           .save()
           .fillStyle(color)
           .font('arial 24px #000000')
-          .wrappedText('( ' + this.knights[i].health +' / ' + this.knights[i].maxHealth + ')', 30,45+ (i+1) * 30, 200)
+          .wrappedText(this.knights[i].name, 30,30+(i+1)*30, 200)
+          .restore();
+
+        app.layer
+          .save()
+          .fillStyle(color)
+          .font('arial 24px #000000')
+          .wrappedText(this.knights[i].health > 0?
+            '( ' + this.knights[i].health  +' / ' + this.knights[i].maxHealth + ')' :
+            'out of combat'
+            , 30,45+ (i+1) * 30, 200)
           .restore();
         app.layer
           .save()
