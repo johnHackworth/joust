@@ -79,6 +79,7 @@ window.entities = window.entities || {};
 
 
       this.turn();
+
       // this.direction = 1
       /* move the ant towards its current direction */
       var newX = this.x + Math.cos(this.direction) * this.speed * delta / 1000;
@@ -132,7 +133,7 @@ window.entities = window.entities || {};
 
     },
 
-    render: function(delta) {
+    render: function(delta, center) {
       var round = 1;
       if(this.speed < 25) {
         round = (Math.floor(this.stepNumber / 15) % 4);
@@ -146,7 +147,7 @@ window.entities = window.entities || {};
       app.layer
         .fillStyle(this.color)
         .save()
-        .translate(this.x, this.y)
+        .translate(this.x - center[0], this.y - center[1])
         .rotate(this.direction)
         .drawImage(this['image'],
           0,

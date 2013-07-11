@@ -76,6 +76,17 @@ window.entities = window.entities || {};
 
       this.turn();
 
+      if(!this.dead && this.horse && this.horse.getSaddlePosition) {
+        var saddlePoint = this.horse.getSaddlePosition();
+        this.x = saddlePoint[0];
+        this.y = saddlePoint[1];
+      } else {
+        if(this.stepNumber % 30 === 0) {
+          this.x = this.x + Math.cos(this.direction) * this.speed * delta / 1000;
+          this.y = this.y + Math.sin(this.direction) * this.speed * delta / 1000;
+        }
+      }
+
     },
 
     turn: function() {
@@ -145,7 +156,7 @@ window.entities = window.entities || {};
       }
     },
 
-    render: function(delta) {
+    render: function(delta, center) {
       var round = 1;
       if(this.stepNumber % 5 === 0) {
         this.currentPosition = Math.floor(Math.random() * 3);
@@ -153,20 +164,11 @@ window.entities = window.entities || {};
       if(this.dead) {
         this.currentPosition = 3;
       }
-      if(!this.dead && this.horse && this.horse.getSaddlePosition) {
-        var saddlePoint = this.horse.getSaddlePosition();
-        this.x = saddlePoint[0];
-        this.y = saddlePoint[1];
-      } else {
-        if(this.stepNumber % 30 === 0) {
-          this.x = this.x + Math.cos(this.direction) * this.speed * delta / 1000;
-          this.y = this.y + Math.sin(this.direction) * this.speed * delta / 1000;
-        }
-      }
+
       app.layer
         .fillStyle(this.color)
         .save()
-        .translate(this.x, this.y)
+        .translate(this.x - center[0], this.y - center[1])
         .rotate(this.direction)
         .drawImage(
           this.image,
@@ -209,15 +211,15 @@ window.entities = window.entities || {};
           ", 0, 0.6)";
         app.layer.context.strokeStyle = "#555555";
         app.layer.fillRect(
-          this.x - 15,
-          this.y - 20,
+          this.x - center[0] - 15,
+          this.y - center[1] - 20,
           30 * xEnergy,
           5);
-        app.layer.moveTo(this.x - 15, this.y - 20);
-        app.layer.lineTo(this.x - 15 + 30 * xEnergy, this.y - 20);
-        app.layer.lineTo(this.x - 15 + 30 * xEnergy, this.y - 16);
-        app.layer.lineTo(this.x - 15, this.y - 16);
-        app.layer.lineTo(this.x - 15, this.y - 20);
+        app.layer.moveTo(this.x - center[0]- 15, this.y- center[1] - 20);
+        app.layer.lineTo(this.x - center[0]- 15 + 30 * xEnergy, this.y- center[1] - 20);
+        app.layer.lineTo(this.x - center[0]- 15 + 30 * xEnergy, this.y- center[1] - 16);
+        app.layer.lineTo(this.x - center[0]- 15, this.y- center[1] - 16);
+        app.layer.lineTo(this.x - center[0]- 15, this.y- center[1] - 20);
         app.layer.stroke();
         app.layer
           .restore();
@@ -314,7 +316,7 @@ window.entities = window.entities || {};
       return speed / 100;
     },
     getDirection: function() {
-      return this.horse.direction;º
+      return this.horse.direction;
     }
 
   };

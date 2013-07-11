@@ -1,8 +1,10 @@
 var app = new window.engine.Application({
 
   /* get width and height of a window */
-  width: 800,
+  width: 1800,
   height: 600,
+  canvasWidth: 800,
+  canvasHeight: 600,
 
   /* for now we don't do anything on creation */
   oncreate: function() {

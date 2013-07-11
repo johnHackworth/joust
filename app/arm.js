@@ -70,14 +70,14 @@ window.entities = window.entities || {};
       }
     },
 
-    render: function(delta) {
+    render: function(delta, center) {
       var armPoint = this.owner.getArmPosition();
       this.x = armPoint[0];
       this.y = armPoint[1];
       app.layer
         .fillStyle(this.color)
         .save()
-        .translate(this.x, this.y)
+        .translate(this.x- center[0], this.y- center[1])
         .rotate(this.direction)
         .drawImage(this.image, -this.image.width / 2, -this.image.height / 2)
         .restore();

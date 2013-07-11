@@ -67,19 +67,30 @@ window.onload = function() {
       });
     },
     onstep: function(delta) {
-      this.entities.step(delta);
-      this.entities.call("step", delta);
+      this.getCenter();
+      this.entities.step(delta, this.center);
+      this.entities.call("step", delta, this.center);
     },
 
+    getCenter: function() {
+      var midY = app.canvasHeight / 2;
+      var midX = app.canvasWidth / 2;
+      this.deltaY = Math.floor(this.hero.y - midY);
+      this.deltaX = Math.floor(this.hero.x - midX);
+      this.center = [this.deltaX, this.deltaY];
+      console.log(this.center);
+    },
     onrender: function(delta) {
-
+      this.getCenter();
       /* fill whole canvas layer with a black paint */
       app.layer
         .save()
-        .drawImage(this.image, 0, 0)
-        .drawImage(this.image, this.image.width, 0)
+        .drawImage(this.image, 0 - this.center[0], 0 - this.center[1])
+        .drawImage(this.image, (-1)* this.image.width - this.center[0], 0 - this.center[1])
+        .drawImage(this.image, this.image.width- this.center[0], 0- this.center[1])
       /* call render method of each entity in the collection */
-      this.entities.call("render", delta);
+
+      this.entities.call("render", delta, this.center);
 
       this.drawNames();
 
