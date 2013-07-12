@@ -133,27 +133,34 @@ window.entities = window.entities || {};
       var angHorse = this.horse.direction;
       var changed = false;
       if(
-        (angRider - angHorse > 0) &&
-        (angRider - angHorse > this.MAX_TURN)
+        angHorse - angRider > Math.PI
       ) {
-        changed = true;
-        this.direction = angHorse + this.MAX_TURN;
+        if(2*Math.PI + angRider - angHorse > this.MAX_TURN) {
+          this.direction = (this.MAX_TURN + angHorse) % (2*Math.PI );
+        }
       } else if(
-        (angHorse - angRider > 0) &&
-        (angHorse - angRider < Math.PI) &&
-        (angHorse - angRider > this.MAX_TURN)
-      ) {
-        changed = true;
-        this.direction = angHorse - this.MAX_TURN;
-      } else if(
-        (angHorse - angRider > 0) &&
-        (angHorse - angRider >= Math.PI) &&
-        (angHorse - angRider > this.MAX_TURN)
-      ) {
-        /** fallo aquí **/
-        changed = true;
-        this.direction = angHorse + this.MAX_TURN;
+        angRider - angHorse > Math.PI
+      ){
+        if(2*Math.PI + angHorse - angRider > this.MAX_TURN) {
+          this.direction = (angHorse - this.MAX_TURN) % (2*Math.PI );
+        }
+      } else {
+        if(
+          (angRider - angHorse > 0) &&
+          (angRider - angHorse > this.MAX_TURN)
+        ) {
+          changed = true;
+          this.direction = angHorse + this.MAX_TURN;
+        } else if(
+          (angHorse - angRider > 0) &&
+          (angHorse - angRider > this.MAX_TURN)
+        ) {
+          changed = true;
+          this.direction = angHorse - this.MAX_TURN;
+        }
       }
+
+
     },
 
     render: function(delta, center) {
@@ -264,7 +271,6 @@ window.entities = window.entities || {};
         if(!this.knight.player) {
           this.arm.intendedDirection = otherHorse.getSaddlePosition();
           this.spurHorse();
-          console.log('yeeeha')
         }
       } else {
         if(this.isFront(otherHorse.getPosition()) > 0) {

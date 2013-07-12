@@ -74,7 +74,6 @@ window.onload = function() {
       this.deltaY = Math.floor(this.hero.y - midY);
       this.deltaX = Math.floor(this.hero.x - midX);
       this.center = [this.deltaX, this.deltaY];
-      console.log(this.center);
     },
     onrender: function(delta) {
       this.getCenter();
@@ -192,6 +191,17 @@ window.onload = function() {
     },
     onclick: function() {
       this.hero.spurHorse();
+    },
+    onkeydown: function(key) {
+      if(key === 'a' || key === 'left') {
+        this.hero.intendedDirection = (2*Math.PI  + (this.hero.direction - (Math.PI / 45))) % (2*Math.PI);
+      }
+      if(key === 'd' || key === 'right') {
+        this.hero.intendedDirection = (2*Math.PI  + (this.hero.direction + (Math.PI / 45))) % (2*Math.PI);
+      }
+      if(key === 'space' || key === ' ') {
+        this.hero.spurHorse();
+      }
     }
 
   });
