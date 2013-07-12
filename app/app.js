@@ -1,8 +1,8 @@
 var app = new window.engine.Application({
 
   /* get width and height of a window */
-  width: 1800,
-  height: 600,
+  width: 2000,
+  height: 900,
   canvasWidth: 800,
   canvasHeight: 600,
 

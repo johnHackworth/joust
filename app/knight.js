@@ -196,8 +196,8 @@ window.entities = window.entities || {};
           .fillStyle('#AA0000')
           .font('arial 24px #000000')
           .wrappedText("" + this.currentDamage,
-            this.x - 3,
-            this.y - 10,
+            this.x - center[0] - 3,
+            this.y - center[1] - 10,
             20)
       }
 

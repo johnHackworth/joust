@@ -34,17 +34,13 @@ window.onload = function() {
     oncreate: function() {
 
       var image = app.assets.image('grass')
-      var wrapper = cq(image).blend('#333333', "addition", 1.0);
+      var wrapper = cq(image).blend('#333333', "addition", 1.0).resize(0.8);
       this.image = wrapper.canvas;
       /* create new collection of entities */
       this.entities = new window.entities.GameObjects(this);
 
-
       this.spriteShields = app.assets.image("shields");
-
-
     },
-
     spawnHorse: function() {
       var posx = Math.floor(app.width - (Math.random() * app.width));
       var posy = Math.floor(app.height - (Math.random() * app.height));
@@ -82,19 +78,47 @@ window.onload = function() {
     },
     onrender: function(delta) {
       this.getCenter();
+
       /* fill whole canvas layer with a black paint */
       app.layer
         .save()
-        .drawImage(this.image, 0 - this.center[0], 0 - this.center[1])
-        .drawImage(this.image, (-1)* this.image.width - this.center[0], 0 - this.center[1])
-        .drawImage(this.image, this.image.width- this.center[0], 0- this.center[1])
+        .drawImage(this.image, 0 - this.center[0], -250 - this.center[1])
+        .drawImage(this.image, (-1)* this.image.width - this.center[0], -250 - this.center[1])
+        .drawImage(this.image, this.image.width- this.center[0], -250- this.center[1])
       /* call render method of each entity in the collection */
-
+      this.drawLimits();
       this.entities.call("render", delta, this.center);
 
+
       this.drawNames();
-
-
+    },
+    drawLimits: function() {
+      app.layer.beginPath();
+      app.layer.context.fillStyle = "rgba(100,50,0,0.9)";
+      app.layer.context.strokeStyle = "#555555";
+      app.layer.fillRect(
+        0 - this.center[0],
+        0 - 5 - this.center[1],
+        2 * app.width,
+        5);
+      app.layer.fillRect(
+        0 - this.center[0],
+        app.height - this.center[1],
+        2 * this.image.width,
+        5);
+      app.layer.fillRect(
+        0 - 5 - this.center[0],
+        0 - this.center[1],
+        5,
+        app.height);
+      app.layer.fillRect(
+        app.width - this.center[0],
+        0 - this.center[1],
+        5,
+        app.height);
+      app.layer.stroke();
+      app.layer
+        .restore();
     },
     drawNames: function() {
       app.layer
