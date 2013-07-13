@@ -13,7 +13,9 @@ window.entities = window.entities || {};
       brainDelta: 0,
       player: false,
       turning: 0.1,
-      color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
+      color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6),
+      honor: args.honor || 0,
+      fame: args.honor || 0
     }, args);
     this.shieldType = args.shield || 1;
     this.name = args.name || this._DEFAULT_NAME;
@@ -40,7 +42,9 @@ window.entities = window.entities || {};
       var imageOuch = app.assets.image("ouch")
       var wrapperOuch = cq(imageOuch).resizePixel(2);
       this.imageOuch = wrapperOuch.canvas;
-
+      var markerImage = app.assets.image('mark');
+      var wrapperMark = cq(markerImage).blend(this.color, "addition", 1.0);
+      this.markImage = wrapperMark.canvas;
     },
 
     step: function(delta) {
@@ -231,6 +235,43 @@ window.entities = window.entities || {};
         app.layer
           .restore();
       }
+      if(this.outOfCanvas(center) && !this.dead) {
+        this.drawMark(center)
+      }
+    },
+
+    outOfCanvas: function(center) {
+      var outY = false;
+      var outX = false;
+      if(
+        this.x < (center[0] ) ||
+        this.x > (center[0] + app.canvasWidth)
+      ) {
+        outX = true;
+      }
+      if(
+        this.y < (center[1]) ||
+        this.y > (center[1] + app.canvasHeight)
+      ) {
+        outY = true;
+      }
+      return outX || outY;
+    },
+    drawMark: function(center) {
+      var posX = center[0] > this.x? 10 : app.canvasWidth - 10;
+      var posY = this.y- center[1];
+      if(posY > app.canvasHeight - 10) {
+        posY = app.canvasHeight - 10;
+      }
+      if(posY < 5) {
+        posY = 5;
+      }
+      app.layer
+        .save()
+        .translate(posX , posY)
+        .rotate(this.direction)
+        .drawImage(this.markImage, -this.markImage.width / 2, -this.markImage.height / 2)
+        .restore();
     },
 
     remove: function() {
@@ -289,14 +330,28 @@ window.entities = window.entities || {};
     spurHorse: function() {
       this.horse.spur();
     },
+    adHonor: function(amount) {
+      this.honor += amount;
+    },
+    adFame: function(amount) {
+      this.fame += amount;
+    },
 
     hitBy: function(arm) {
       var damage = arm.getDamageTo(this);
       if(this.ouchTime > 0) {
         if(this.currentDamage < damage) {
+          if(this.health === this.maxHealth) {
+            arm.owner.adHonor(5);
+          }
           this.ouchTime = 10;
           this.health -= damage - this.currentDamage;
           this.currentDamage = damage;
+          arm.owner.adHonor(damage);
+          if(damage > this.maxHealth) {
+            arm.owner.adHonor(10);
+            arm.owner.adFame(20);
+          }
         }
       } else {
         this.ouchTime = 10;
@@ -305,6 +360,8 @@ window.entities = window.entities || {};
       }
 
       if(this.health <= 0) {
+        arm.owner.adFame(10);
+        this.adFame(-5);
         this.arm.remove();
         this.horse.knight = false;
         // this.horse = false;

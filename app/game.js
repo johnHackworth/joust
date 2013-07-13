@@ -25,6 +25,7 @@ window.onload = function() {
         horse: this.heroHorse,
         name: this.playerName,
         player: true,
+        turning: 0.3,
         color: '#330000'
       })
       this.hero.name = this.playerName;
@@ -87,8 +88,6 @@ window.onload = function() {
       /* call render method of each entity in the collection */
       this.drawLimits();
       this.entities.call("render", delta, this.center);
-
-
       this.drawNames();
     },
     drawLimits: function() {
@@ -131,7 +130,8 @@ window.onload = function() {
         .save()
         .fillStyle('#FFFFFF')
         .font('arial 24px #000000')
-        .wrappedText('( ' + this.hero.health +' / ' + this.hero.maxHealth + ')', 30,45, 200)
+        .wrappedText('( ' + this.hero.health +' / ' + this.hero.maxHealth + ') ' +
+         this.hero.honor + ' honor, ' + this.hero.fame + ' fame', 30,45, 200)
         .restore();
       for(var i = 0, l = this.knights.length; i < l; i++) {
         var color = '#FFFFFF';
@@ -153,7 +153,8 @@ window.onload = function() {
           .fillStyle(color)
           .font('arial 24px #000000')
           .wrappedText(this.knights[i].health > 0?
-            '( ' + this.knights[i].health  +' / ' + this.knights[i].maxHealth + ')' :
+            '( ' + this.knights[i].health  +' / ' + this.knights[i].maxHealth + ') ' +
+         this.knights[i].honor + ' honor, ' + this.knights[i].fame + ' fame' :
             'out of combat'
             , 30,45+ (i+1) * 30, 200)
           .restore();

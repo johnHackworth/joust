@@ -23,6 +23,7 @@ var app = new window.engine.Application({
     this.assets.addImage("grass.jpg");
     this.assets.addImage("ouch.png");
     this.assets.addImage("shields.png");
+    this.assets.addImage("mark.png");
   },
 
   /* and when the assets are loaded select the game screen */
