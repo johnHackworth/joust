@@ -15,12 +15,16 @@ window.entities = window.entities || {};
       turning: 0.1,
       color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6),
       honor: args.honor || 0,
-      fame: args.honor || 0
+      fame: args.honor || 0,
+      strength:  args.strength || 5,
+      horsemanship: args.horsemanship || 5,
+      hability: args.hability || 5
     }, args);
+    this.turning = 1 * this.horsemanship / 10;
+    this.health = 5 + this.strength;
     this.shieldType = args.shield || 1;
     this.name = args.name || this._DEFAULT_NAME;
     this.size = [5, 5];
-    this.health = args.health || this._DEFAULT_HEALTH;
     this.maxHealth = this.health;
     this.x = this.horse.x;
     this.y = this.horse.y;
@@ -341,21 +345,23 @@ window.entities = window.entities || {};
       var damage = arm.getDamageTo(this);
       if(this.ouchTime > 0) {
         if(this.currentDamage < damage) {
-          if(this.health === this.maxHealth) {
-            arm.owner.adHonor(5);
-          }
+
           this.ouchTime = 10;
           this.health -= damage - this.currentDamage;
           this.currentDamage = damage;
           arm.owner.adHonor(damage);
-          if(damage > this.maxHealth) {
-            arm.owner.adHonor(10);
-            arm.owner.adFame(20);
-          }
+
         }
       } else {
+        if(this.health === this.maxHealth) {
+          arm.owner.adHonor(5);
+        }
         this.ouchTime = 10;
         this.currentDamage = damage;
+        if(damage > this.maxHealth) {
+          arm.owner.adHonor(10);
+          arm.owner.adFame(20);
+        }
         this.health -= this.currentDamage;
       }
 
@@ -366,12 +372,22 @@ window.entities = window.entities || {};
         this.horse.knight = false;
         // this.horse = false;
         this.die();
+        if(arm.owner.player) {
+          this.announceDeath(this, arm.owner);
+        }
       }
+    },
+    announceDeath: function() {
+
     },
     die: function() {
       this.speed = 20;
       this.dead = true;
+      this.onDeath(this);
       this.direction = (Math.random() * 2 * Math.PI)
+    },
+    onDeath: function() {
+
     },
     getInertia: function() {
       var angle = Math.abs(this.arm.direction - this.horse.direction)

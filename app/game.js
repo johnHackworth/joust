@@ -1,6 +1,7 @@
 window.onload = function() {
   app.game = new window.engine.Scene({
     playerName: 'knight',
+    texts: [],
     onenter: function() {
       this.knights = [];
       for(var i = 0; i < 8; i++) {
@@ -13,6 +14,7 @@ window.onload = function() {
         knight.shield = cq(this.spriteShields).blend(knight.color1, "addition", 1.0).canvas;
         this.knights.push(knight);
         this.spawnArm(knight);
+        knight.announceDeath = this.announceDeath.bind(this);
       }
       this.heroHorse = this.entities.add(window.entities.Horse, {
         x: app.width / 2,
@@ -29,6 +31,7 @@ window.onload = function() {
         color: '#330000'
       })
       this.hero.name = this.playerName;
+      this.hero.onDeath = this.gameOver.bind(this);
       this.spawnArm(this.hero)
 
     },
@@ -39,8 +42,9 @@ window.onload = function() {
       this.image = wrapper.canvas;
       /* create new collection of entities */
       this.entities = new window.entities.GameObjects(this);
-
       this.spriteShields = app.assets.image("shields");
+      // this.adText("FIGHT!", [-81 + app.canvasWidth / 2 , 99], "41pt", 80, '50, 50, 50')
+      this.adText("FIGHT!", [-80 + app.canvasWidth / 2 , 100], "40pt", 80, '255, 255, 100')
     },
     spawnHorse: function() {
       var posx = Math.floor(app.width - (Math.random() * app.width));
@@ -88,7 +92,42 @@ window.onload = function() {
       /* call render method of each entity in the collection */
       this.drawLimits();
       this.entities.call("render", delta, this.center);
+      this.drawTexts();
       this.drawNames();
+    },
+    drawTexts: function() {
+      var newTexts = [];
+      for(var i = 0, l = this.texts.length; i < l; i++) {
+        this.texts[i].time--;
+        app.layer
+          .save()
+        var alpha = 1;
+        var yPos = this.texts[i].position[1];
+        if(this.texts[i].time < 30) {
+          alpha = this.texts[i].time / 30
+          yPos = yPos -  (30 - this.texts[i].time)
+        }
+        app.layer
+          .strokeStyle = "rgba(30,30,30,"+alpha+")";
+        app.layer
+          .lineWidth = 8;
+        app.layer
+          .fillStyle("rgba("+this.texts[i].color+","+alpha+")")
+          .font(' '+this.texts[i].size+' MS UI Gothic')
+
+        app.layer
+          .fillText(this.texts[i].text,
+            this.texts[i].position[0],
+            yPos)
+          .strokeText(this.texts[i].text, this.texts[i].position[0],
+          yPos)
+          .restore()
+
+        if(this.texts[i].time > 0) {
+          newTexts.push(this.texts[i]);
+        }
+      }
+      this.texts = newTexts;
     },
     drawLimits: function() {
       app.layer.beginPath();
@@ -195,15 +234,59 @@ window.onload = function() {
     },
     onkeydown: function(key) {
       if(key === 'a' || key === 'left') {
-        this.hero.intendedDirection = (2*Math.PI  + (this.hero.direction - (Math.PI / 45))) % (2*Math.PI);
+        this.hero.intendedDirection = (2*Math.PI  + (this.hero.direction - (Math.PI / 25))) % (2*Math.PI);
       }
       if(key === 'd' || key === 'right') {
-        this.hero.intendedDirection = (2*Math.PI  + (this.hero.direction + (Math.PI / 45))) % (2*Math.PI);
+        this.hero.intendedDirection = (2*Math.PI  + (this.hero.direction + (Math.PI / 25))) % (2*Math.PI);
       }
       if(key === 'space' || key === ' ') {
         this.hero.spurHorse();
       }
-    }
+    },
+    adText: function(text, position, size, time, color) {
+      color = color || "255,255,255";
+      time = time || 100;
+      this.texts.push({
+        text: text,
+        position: position,
+        size: size,
+        time: time,
+        color: color
+      })
+    },
+    gameOver: function(knight) {
+      if(knight.player) {
+        this.adText("You have been",
+          [320, 110],
+          "30px",
+          300,
+          '255,50,50'
+          )
 
+        this.adText("Knocked out!!",
+          [250, 160],
+          "60px",
+          300,
+          '255,0,0'
+          )
+      }
+    },
+    announceDeath: function(knight, killer) {
+      if(killer.player) {
+        this.adText("You have Knocked out",
+          [320, 50],
+          "20px",
+          300,
+          '55,200,50'
+          )
+
+        this.adText(knight.name,
+          [330, 90],
+          "30px",
+          300,
+          '30,30,0'
+          )
+      }
+    }
   });
 }
