@@ -9,8 +9,8 @@ window.entities = window.entities || {};
       /* direction the ant is facing (in radians) */
       direction: 0,
       speed: -10,
-      maxSpeed: 150,
-      currentMaxSpeed: 150,
+      maxSpeed: 250,
+      currentMaxSpeed: 250,
       turning: 0.02,
       /* brain cooldown - AI will be called in random periods of time
          so can ants move more naturally */
