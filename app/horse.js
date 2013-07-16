@@ -11,7 +11,7 @@ window.entities = window.entities || {};
       speed: -10,
       maxSpeed: 250,
       currentMaxSpeed: 250,
-      turning: 0.02,
+      turning: 0.03,
       /* brain cooldown - AI will be called in random periods of time
          so can ants move more naturally */
       brainDelta: 0,
@@ -20,6 +20,9 @@ window.entities = window.entities || {};
       color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
     }, args);
     this.size = [30, 10];
+    this.awareness = 5;
+    this.cruisingSpeed = Math.floor(0.60 * this.currentMaxSpeed);
+    this.walkingSpeed = Math.floor(0.30 * this.currentMaxSpeed);
     this.baseTurning = this.turning;
     this.oncreate();
   };
@@ -41,7 +44,11 @@ window.entities = window.entities || {};
       if(this.spurredLeft) {
         this.spurredLeft--;
         this.spurred = true;
-        this.turning = this.baseTurning / 2;
+        if(this.spurredLeft > 15) {
+          this.turning = this.baseTurning / 2;
+        } else {
+          this.turning = 2* this.baseTurning / 3;
+        }
       } else {
         this.spurred = false;
         this.turning = this.baseTurning;
@@ -62,13 +69,27 @@ window.entities = window.entities || {};
         this.brainDelta = Math.random() * 2000;
       }
 
-      this.speed += 40 * delta / 5000;
+      // NAtural horse speed increase
+      if(this.speed < this.walkingSpeed) {
+        this.speed += 40 * delta / 5000;
+      }
+      // horse-ridden speed increase
+      if(this.awareness > 5 && this.speed < this.cruisingSpeed) {
+        this.speed += 40 * delta / 5000;
+      } else {
+        if(this.speed > this.walkingSpeed) {
+          this.speed -= 20 * delta / 5000;
+        }
+      }
+
+      if(this.spurred) {
+        this.speed = this.speed + 50 * delta / 5000;
+      } else {
+        this.awareness -= 0.01;
+      }
+
       if(this.speed > this.currentMaxSpeed) {
         this.speed = this.currentMaxSpeed * ( (0.10 * Math.random()) + 0.90);
-      }
-      if(this.spurred) {
-        this.speed = this.speed * 1.30;
-        this.energy--;
       }
 
       if(this.energy <= 0 && !this.exahusted) {
@@ -247,10 +268,11 @@ window.entities = window.entities || {};
       if(this.spurred) {
 
       } else {
+        var angle = utils.atanxy(otherHorse.x - this.x, otherHorse.y - this.y);
         if(this.isFront(otherHorse.getPosition()) > 0) {
-         this.intendedDirection += Math.PI;
+          this.intendedDirection = angle;
         } else {
-          this.intendedDirection -= Math.PI;
+          this.intendedDirection = angle;
         }
       }
     },
@@ -265,6 +287,9 @@ window.entities = window.entities || {};
 
     spur: function() {
       this.spurred = true;
+      this.speed = this.speed * 1.50;
+      this.energy--;
+      this.awareness = 10;
       this.spurredLeft = 100;
     }
 

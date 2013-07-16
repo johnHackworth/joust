@@ -20,6 +20,7 @@ window.entities = window.entities || {};
       horsemanship: args.horsemanship || 5,
       hability: args.hability || 5
     }, args);
+    this.lastFollowingDistance = 1000;
     this.turning = 1 * this.horsemanship / 10;
     this.health = 5 + this.strength;
     this.shieldType = args.shield || 1;
@@ -54,7 +55,9 @@ window.entities = window.entities || {};
 
     step: function(delta) {
       this.stepNumber++;
-
+      if(this.lastSpurred) {
+        this.lastSpurred--;
+      }
       if(this.dead) {
         return;
       }
@@ -73,11 +76,42 @@ window.entities = window.entities || {};
         }
 
         /* delay next ai invocation */
-        this.brainDelta = Math.random() * 2000;
+        this.brainDelta = Math.random() * 1500;
+      }
+
+      if(this.following && this.followingRounds) {
+        var lastFollowingDistance = this.followingDistance;
+        this.followingDistance = this.getDistanceTo(this.following);
+        if(this.followingDistance - lastFollowingDistance <= -1) {
+          this.stopFollowing();
+        }
+      }
+      if(this.following && this.followingRounds) {
+        if(this.isFront([this.following.x, this.following.y])) {
+          this.intendedDirection = this.getCollisionCourse(this.following);
+          this.spurHorse();
+          if(this.name === 'Jon Umber') console.log('Umber following '+this.following.name + ' at ' + this.getDistanceTo(this.following));
+        } else { // our target is escaping
+          if(Math.random() > 0.80) {
+            // let him go
+            if(this.name === 'Jon Umber') console.log('Umber let go '+this.following.name);
+            this.stopFollowing();
+          } else {
+            // he won't go very far!!!
+            this.intendedDirection = this.getCollisionCourse(this.following);
+            if(this.name === 'Jon Umber') console.log('Umber INSISTS '+this.following.name);
+          }
+
+        }
       }
 
       if(this.horse) {
         this.horse.intendedDirection = this.intendedDirection;
+        if(this.horse.speed < this.horse.cruisingSpeed &&
+          Math.random() > 0.10
+        ) {
+          this.spurHorse();
+        }
       }
       if(this.arm) {
         this.arm.intendedDirection = this.direction;
@@ -98,6 +132,26 @@ window.entities = window.entities || {};
 
     },
 
+    stopFollowing: function() {
+      this.following = undefined;
+      this.followingRounds = 0;
+      this.lastFollowingDistance = 1000;
+    },
+
+    getCollisionCourse: function(other) {
+      if(this.getDistanceTo(other) < (2 * this.arm.size[0])) {
+        return angle = this.getDirectionTo(other.x, other.y);
+      } else {
+        var angle = this.getDirectionTo(other.x, other.y);
+        var otherDirection = other.direction;
+        return (angle + otherDirection) / 2;
+      }
+    },
+    getDistanceTo: function(other) {
+      var dX = Math.abs(this.x - other.x);
+      var dY = Math.abs(this.y - other.y);
+      return Math.sqrt(dX*dX + dY*dY);
+    },
     turn: function() {
       if(
           Math.abs(this.intendedDirection - this.direction) <= Math.PI
@@ -295,13 +349,16 @@ window.entities = window.entities || {};
                this.horse.y + sina + cosa ];
     },
     isFront: function(point) {
-      var angle = utils.atanxy(point[0] - this.x, point[1] - this.y);
+      var angle = this.getDirectionTo(point[0], point[1])
       return Math.abs(angle - this.direction) < (Math.PI / 4)
+    },
+    getDirectionTo: function(point0, point1) {
+      return utils.atanxy(point0 - this.x, point1 - this.y);
     },
 
     isNear: function(point) {
-      if(Math.abs(point[0] - this.x) <= this.size[0]) {
-        if(Math.abs(point[1] - this.y) <= this.size[0]) {
+      if(Math.abs(point[0] - this.x) <= 100 * this.size[0]) {
+        if(Math.abs(point[1] - this.y) <= 100 * this.size[0]) {
           return true;
         }
       }
@@ -312,20 +369,20 @@ window.entities = window.entities || {};
       return [this.x, this.y];
     },
 
-    notifyFront: function(otherHorse) {
-      if(otherHorse.knight) {
-        if(!this.knight.player) {
-          this.arm.intendedDirection = otherHorse.getSaddlePosition();
-          this.spurHorse();
-        }
-      } else {
-        if(this.isFront(otherHorse.getPosition()) > 0) {
-         this.intendedDirection += Math.PI;
-        } else {
-          this.intendedDirection -= Math.PI;
-        }
-
+    notifyFront: function(other) {
+      if(!this.player && Math.random() < 0.05 &&
+        !this.followingRounds &&
+        !this.following &&
+        this.getDistanceTo(other) < 500
+      ) {
+        console.log('locked');
+        this.following = other;
+        this.followingRounds = 100;
+        var angle = this.getDirectionTo(other.x, other.y);
+        this.arm.intendedDirection = angle;
+        this.spurHorse();
       }
+
     },
 
     notifyNear: function(otherHorse) {
@@ -333,7 +390,10 @@ window.entities = window.entities || {};
     },
 
     spurHorse: function() {
-      this.horse.spur();
+      if(!this.lastSpurred) {
+        this.lastSpurred = 30;
+        this.horse.spur();
+      }
     },
     adHonor: function(amount) {
       this.honor += amount;
@@ -365,7 +425,7 @@ window.entities = window.entities || {};
         }
         this.health -= this.currentDamage;
       }
-
+      if(arm.owner.name === 'Jon Umber') console.log('Umber hits '+this.name + ' with ' + damage);
       if(this.health <= 0) {
         arm.owner.adFame(10);
         this.adFame(-5);
@@ -394,7 +454,7 @@ window.entities = window.entities || {};
     getInertia: function() {
       var angle = Math.abs(this.arm.direction - this.horse.direction)
       var speed = Math.cos(angle) * this.horse.speed;
-      return speed / 100;
+      return this.strength * speed / 1000;
     },
     getDirection: function() {
       return this.horse.direction;

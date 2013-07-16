@@ -33,6 +33,7 @@ window.onload = function() {
       })
       this.hero.name = this.playerName;
       this.hero.onDeath = this.gameOver.bind(this);
+      this.focusedKnight = this.hero;
       this.spawnArm(this.hero)
 
     },
@@ -82,8 +83,8 @@ window.onload = function() {
     getCenter: function() {
       var midY = app.canvasHeight / 2;
       var midX = app.canvasWidth / 2;
-      this.deltaY = Math.floor(this.hero.y - midY);
-      this.deltaX = Math.floor(this.hero.x - midX);
+      this.deltaY = Math.floor(this.focusedKnight.y - midY);
+      this.deltaX = Math.floor(this.focusedKnight.x - midX);
       this.center = [this.deltaX, this.deltaY];
     },
     onrender: function(delta) {
