@@ -28,11 +28,13 @@ window.entities = window.entities || {};
     blockType: 2,
     renderLevel: 3,
     oncreate: function() {
-
-      var image = app.assets.image('arm')
-      var wrapper = cq(image).blend(this.color, "addition", 1.0).resizePixel(1);
-      this.image = wrapper.canvas;
+      this.prepareImage();
     },
+    prepareImage: function() {
+      var image = app.assets.image('arm')
+      var wrapper = cq(image).blend(this.color, "addition", 1.0).resizePixel(1* app.zoom);
+      this.image = wrapper.canvas;
+     },
 
     step: function(delta) {
       this.turn();
@@ -109,8 +111,8 @@ window.entities = window.entities || {};
       var angle_rad = this.direction; //angle_degrees * Math.PI / 180;
       var cosa = Math.cos(angle_rad);
       var sina = Math.sin(angle_rad);
-      return [ this.x + cosa * this.size[0]/2 - sina * this.size[1]/2 ,
-               this.y + sina * this.size[0]/2 + cosa * this.size[1]/2];
+      return [ this.x + cosa * this.size[0] * app.zoom/2 - sina * this.size[1] * app.zoom/2 ,
+               this.y + sina * this.size[0] * app.zoom/2 + cosa * this.size[1] * app.zoom/2];
     },
 
     getDamageTo: function(knight) {

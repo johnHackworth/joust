@@ -5,6 +5,7 @@ var app = new window.engine.Application({
   height: 900,
   canvasWidth: 800,
   canvasHeight: 600,
+  zoom: 1,
 
   /* for now we don't do anything on creation */
   oncreate: function() {

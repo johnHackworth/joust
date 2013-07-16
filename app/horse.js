@@ -34,11 +34,13 @@ window.entities = window.entities || {};
     oncreate: function() {
       this.stepNumber = 0;
       this.stepRound = 0;
+      this.prepareImage();
+    },
+    prepareImage: function() {
       var image = app.assets.image("horses2")
-      var wrapper = cq(image).resizePixel(1.5);
+      var wrapper = cq(image).resizePixel(1.5 * app.zoom);
       this.image = wrapper.canvas;
     },
-
     step: function(delta) {
       this.stepNumber++;
       if(this.spurredLeft) {
@@ -104,15 +106,15 @@ window.entities = window.entities || {};
 
       // this.direction = 1
       /* move the ant towards its current direction */
-      var newX = this.x + Math.cos(this.direction) * this.speed * delta / 1000;
-      var newY = this.y + Math.sin(this.direction) * this.speed * delta / 1000;
-      if(newX > 0 && newX <= app.width) {
+      var newX = this.x + (Math.cos(this.direction) * this.speed * delta / 1000)* app.zoom;
+      var newY = this.y + (Math.sin(this.direction) * this.speed * delta / 1000)* app.zoom;
+      if(newX > 0 && newX <= app.width* app.zoom) {
         this.x = newX;
       } else {
         this.speed = 0;
         this.intendedDirection *= -1;
       }
-      if(newY > 0 && newY <= app.height) {
+      if(newY > 0 && newY <= app.height* app.zoom) {
         this.y = newY;
       } else {
         this.speed = 0;
@@ -183,39 +185,40 @@ window.entities = window.entities || {};
         .translate(this.x - center[0], this.y - center[1])
         .rotate(-1 * Math.PI /2 + this.direction)
         .drawImage(this['image'],
-          60 * round,
-          orientation * 60,
-          60,
-          60,
-         -60 / 2,
-         -60 / 2,
-          60,
-          60
+          60 * round * app.zoom,
+          orientation * 60 * app.zoom,
+          60 * app.zoom,
+          60 * app.zoom,
+         -60* app.zoom / 2,
+         -60* app.zoom / 2,
+          60* app.zoom,
+          60* app.zoom
         )
         .restore();
     },
 
     checkBorders: function() {
       if(
-        this.x > (7 * app.width/8) ||
-        this.x < (app.width/8) ||
-        this.y > (7 * app.height/8) ||
-        this.y < (app.height/8)) {
+        this.x > (7 * app.width * app.zoom/8) ||
+        this.x < (app.width* app.zoom/8 ) ||
+        this.y > (7 * app.height/8 * app.zoom) ||
+        this.y < (app.height/8 * app.zoom)) {
         this.currentMaxSpeed = this.maxSpeed / 2;
+        this.currentMaxSpeed = this.walkingSpeed > this.currentMaxSpeed? this.walkingSpeed : this.currentMaxSpeed;
       } else {
         this.currentMaxSpeed = this.maxSpeed;
       }
 
-      if(this.x > (7 * app.width/8)) {
+      if(this.x > (7 * app.zoom * app.width/8)) {
         this.intendedDirection = Math.PI
       }
-      if(this.x < (app.width/8)) {
+      if(this.x < (app.width * app.zoom /8)) {
         this.intendedDirection = 0;
       }
-      if(this.y > (7 * app.height/8)) {
+      if(this.y > (7 * app.height * app.zoom /8)) {
         this.intendedDirection = 3 * Math.PI / 2;
       }
-      if(this.y < (app.height/8)) {
+      if(this.y < (app.height * app.zoom /8)) {
         this.intendedDirection = 1 * Math.PI / 2;
       }
 
@@ -236,8 +239,8 @@ window.entities = window.entities || {};
     },
 
     isNear: function(point) {
-      if(Math.abs(point[0] - this.x) <= this.size[0]) {
-        if(Math.abs(point[1] - this.y) <= this.size[0]) {
+      if(Math.abs(point[0] - this.x) <= this.size[0] * app.zoom) {
+        if(Math.abs(point[1] - this.y) <= this.size[0] * app.zoom) {
           return true;
         }
       }
@@ -249,8 +252,8 @@ window.entities = window.entities || {};
     },
 
     DeprecatedgetSaddlePosition: function() {
-      var middlePointX = this.size[0] / 1;
-      var middlePointY = this.size[1] / 1;
+      var middlePointX = this.size[0] * app.zoom / 1;
+      var middlePointY = this.size[1] * app.zoom / 1;
       var displacementX = Math.abs(Math.cos(this.direction) * middlePointX);
       var x = Math.floor(this.x - displacementX);
       var displacementY = Math.abs(Math.sin(this.direction) * middlePointY);

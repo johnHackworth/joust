@@ -42,14 +42,17 @@ window.entities = window.entities || {};
     oncreate: function() {
 
       this.stepNumber = 0;
+      this.prepareImage();
+    },
+    prepareImage: function() {
       var image = app.assets.image("knight")
-      var wrapper = cq(image).blend(this.color, "addition", 1.0).resizePixel(0.8);
+      var wrapper = cq(image).blend(this.color, "addition", 1.0).resizePixel(0.8 * app.zoom);
       this.image = wrapper.canvas;
       var imageOuch = app.assets.image("ouch")
-      var wrapperOuch = cq(imageOuch).resizePixel(2);
+      var wrapperOuch = cq(imageOuch).resizePixel(2 * app.zoom);
       this.imageOuch = wrapperOuch.canvas;
       var markerImage = app.assets.image('mark');
-      var wrapperMark = cq(markerImage).blend(this.color, "addition", 1.0);
+      var wrapperMark = cq(markerImage).blend(this.color, "addition", 1.0).resizePixel(1 * app.zoom);
       this.markImage = wrapperMark.canvas;
     },
 
@@ -139,7 +142,7 @@ window.entities = window.entities || {};
     },
 
     getCollisionCourse: function(other) {
-      if(this.getDistanceTo(other) < (2 * this.arm.size[0])) {
+      if(this.getDistanceTo(other) < (2 * this.arm.size[0] * app.zoom)) {
         return angle = this.getDirectionTo(other.x, other.y);
       } else {
         var angle = this.getDirectionTo(other.x, other.y);
@@ -242,14 +245,14 @@ window.entities = window.entities || {};
         .rotate(this.direction)
         .drawImage(
           this.image,
-          0,
-          23  * this.currentPosition,
-          15,
-          21,
-          -15 / 2,
-          -21 / 2,
-          15,
-          21)
+          0* app.zoom,
+          23* app.zoom  * this.currentPosition,
+          15* app.zoom,
+          21* app.zoom,
+          -15* app.zoom / 2,
+          -21* app.zoom / 2,
+          15* app.zoom,
+          21* app.zoom)
       if(this.ouchTime && !this.dead) {
         app.layer
           .drawImage(
@@ -357,8 +360,8 @@ window.entities = window.entities || {};
     },
 
     isNear: function(point) {
-      if(Math.abs(point[0] - this.x) <= 100 * this.size[0]) {
-        if(Math.abs(point[1] - this.y) <= 100 * this.size[0]) {
+      if(Math.abs(point[0] - this.x) <= 100 * this.size[0] * app.zoom) {
+        if(Math.abs(point[1] - this.y) <= 100 * this.size[0] * app.zoom) {
           return true;
         }
       }

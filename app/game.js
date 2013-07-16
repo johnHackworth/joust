@@ -4,6 +4,7 @@ window.onload = function() {
     texts: [],
     onenter: function() {
       this.knights = [];
+      this.zoomLevel = app.zoom;
       for(var i = 0; i < 8; i++) {
         var horse = this.spawnHorse();
         var pos = Math.floor(Math.random() * this.knightsData.length)
@@ -39,23 +40,26 @@ window.onload = function() {
     },
     oncreate: function() {
 
-      var image = app.assets.image('grass')
-      var wrapper = cq(image).resize(1);
-      this.image = wrapper.canvas;
+      this.prepareImage();
       /* create new collection of entities */
       this.entities = new window.entities.GameObjects(this);
       this.spriteShields = app.assets.image("shields");
       // this.adText("FIGHT!", [-81 + app.canvasWidth / 2 , 99], "41pt", 80, '50, 50, 50')
       this.adText("FIGHT!", [-80 + app.canvasWidth / 2 , 100], "40pt", 80, '255, 255, 100')
     },
+    prepareImage: function() {
+      var image = app.assets.image('grass')
+      var wrapper = cq(image).resize(1 * app.zoom);
+      this.image = wrapper.canvas;
+    },
     spawnHorse: function() {
-      var posy = app.height - 20;
+      var posy = app.height * app.zoom - 20;
       var direction = 3 * Math.PI / 2;
-      if(Math.random > 0.5) {
-        posy = 20;
+      if(Math.random() > 0.5) {
+        posy = 20 * app.zoom;
         direction = Math.PI / 2;
       }
-      var posx = Math.floor(app.width - (Math.random() * app.width));
+      var posx = Math.floor(app.width * app.zoom - (Math.random() * app.width * app.zoom));
       return this.entities.add(window.entities.Horse, {
         x: posx,
         y: posy,
@@ -150,25 +154,25 @@ window.onload = function() {
       app.layer.context.fillStyle = "rgba(100,50,0,0.9)";
       app.layer.context.strokeStyle = "#555555";
       app.layer.fillRect(
-        0 - this.center[0],
-        0 - 5 - this.center[1],
-        2 * app.width,
-        5);
+        (0 - this.center[0]) * app.zoom,
+        (0 - 5 - this.center[1]) * app.zoom,
+        2 * app.width * app.zoom,
+        5 * app.zoom);
       app.layer.fillRect(
-        0 - this.center[0],
-        app.height - this.center[1],
-        2 * this.image.width,
-        5);
+        (0 - this.center[0]) * app.zoom,
+        (app.height - this.center[1]) * app.zoom,
+        2 * this.image.width * app.zoom,
+        5 * app.zoom);
       app.layer.fillRect(
-        0 - 5 - this.center[0],
-        0 - this.center[1],
-        5,
-        app.height);
+        (0 - 5 - this.center[0]) * app.zoom,
+        (0 - this.center[1]) * app.zoom,
+        5 * app.zoom,
+        app.height * app.zoom);
       app.layer.fillRect(
-        app.width - this.center[0],
-        0 - this.center[1],
-        5,
-        app.height);
+        (app.width - this.center[0]) * app.zoom,
+        (0 - this.center[1]) * app.zoom,
+        5 * app.zoom,
+        app.height * app.zoom);
       app.layer.stroke();
       app.layer
         .restore();
@@ -302,6 +306,23 @@ window.onload = function() {
           300,
           '30,30,0'
           )
+      }
+    },
+    setZoom: function() {
+      if(this.zoomLevel > app.zoom) {
+        app.zoom -= 0.1;
+      } else if(this.zoomLevel < app.zoom) {
+        app.zoom += 0.1;
+      } else {
+        return;
+      }
+      this.prepareImage();
+      for(var i = 0, l = this.entities.length; i < l; i++) {
+        if(this.entities[i].prepareImage) {
+          this.entities[i].prepareImage();
+          this.entities[i].x = this.entities[i].x * app.zoom;
+          this.entities[i].y = this.entities[i].y * app.zoom;
+        }
       }
     }
   });
