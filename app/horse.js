@@ -26,12 +26,13 @@ window.entities = window.entities || {};
 
   Horse.prototype = {
     blockType: 1,
+    renderLevel: 2,
     energy: 5,
     oncreate: function() {
       this.stepNumber = 0;
       this.stepRound = 0;
-      var image = app.assets.image("horses")
-      var wrapper = cq(image).resizePixel(1);
+      var image = app.assets.image("horses2")
+      var wrapper = cq(image).resizePixel(1.5);
       this.image = wrapper.canvas;
     },
 
@@ -134,6 +135,7 @@ window.entities = window.entities || {};
     },
 
     render: function(delta, center) {
+      // this.speed = 0;
       var round = 1;
       if(this.speed < 25) {
         round = (Math.floor(this.stepNumber / 15) % 4);
@@ -144,20 +146,30 @@ window.entities = window.entities || {};
       } else {
         round = (Math.floor(this.stepNumber / 4) % 4);
       }
+      var orientation = 1;
+      if(this.direction > 0 && this.direction <=  Math.PI) {
+        orientation = 0;
+      // }
+      // if(this.direction > 3 * Math.PI /4 && this.direction <= 5 * Math.PI /4) {
+      //   orientation = 2;
+      }
+      // if(this.direction > 5 * Math.PI /4 && this.direction <= 7 * Math.PI /4) {
+      //   orientation = 1;
+      // }
       app.layer
         .fillStyle(this.color)
         .save()
         .translate(this.x - center[0], this.y - center[1])
-        .rotate(this.direction)
+        .rotate(-1 * Math.PI /2 + this.direction)
         .drawImage(this['image'],
-          0,
-          20 * round,
+          60 * round,
+          orientation * 60,
           60,
-          15,
+          60,
          -60 / 2,
-         -15 / 2,
+         -60 / 2,
           60,
-          15
+          60
         )
         .restore();
     },

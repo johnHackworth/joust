@@ -37,6 +37,7 @@ window.entities = window.entities || {};
     _DEFAULT_HEALTH: 10,
     _DEFAULT_NAME: 'knight',
     blockType: 3,
+    renderLevel: 4,
     oncreate: function() {
 
       this.stepNumber = 0;
@@ -383,6 +384,7 @@ window.entities = window.entities || {};
     die: function() {
       this.speed = 20;
       this.dead = true;
+      setTimeout((function() { this.renderLevel = 1}).bind(this), 1000);
       this.onDeath(this);
       this.direction = (Math.random() * 2 * Math.PI)
     },

@@ -15,7 +15,7 @@ window.entities = window.entities || {};
       player: false,
       color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
     }, args);
-    this.size = [40, 5];
+    this.size = [70, 18];
     this.owner = args.owner;
     this.owner.arm = this;
 
@@ -26,10 +26,11 @@ window.entities = window.entities || {};
     type: 'arm',
     image: 'arm',
     blockType: 2,
+    renderLevel: 3,
     oncreate: function() {
 
       var image = app.assets.image('arm')
-      var wrapper = cq(image).blend(this.color, "addition", 1.0).resizePixel(2);
+      var wrapper = cq(image).blend(this.color, "addition", 1.0).resizePixel(1);
       this.image = wrapper.canvas;
     },
 
@@ -108,8 +109,8 @@ window.entities = window.entities || {};
       var angle_rad = this.direction; //angle_degrees * Math.PI / 180;
       var cosa = Math.cos(angle_rad);
       var sina = Math.sin(angle_rad);
-      return [ this.x + cosa * this.size[0] - sina * this.size[1] ,
-               this.y + sina * this.size[0] + cosa * this.size[1]];
+      return [ this.x + cosa * this.size[0]/2 - sina * this.size[1]/2 ,
+               this.y + sina * this.size[0]/2 + cosa * this.size[1]/2];
     },
 
     getDamageTo: function(knight) {

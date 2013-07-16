@@ -17,7 +17,7 @@ var app = new window.engine.Application({
       }
     })
     this.loader.foo(2500);
-    this.assets.addImage("horses.png");
+    this.assets.addImage("horses2.png");
     this.assets.addImage("knight.png");
     this.assets.addImage("arm.png");
     this.assets.addImage("grass.jpg");

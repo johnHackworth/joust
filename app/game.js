@@ -17,8 +17,9 @@ window.onload = function() {
         knight.announceDeath = this.announceDeath.bind(this);
       }
       this.heroHorse = this.entities.add(window.entities.Horse, {
-        x: app.width / 2,
+        x: 20,
         y: app.height / 2,
+        direction: 0,
         player: true,
         color: '#FFFFFF',
         turning: 0.03
@@ -38,7 +39,7 @@ window.onload = function() {
     oncreate: function() {
 
       var image = app.assets.image('grass')
-      var wrapper = cq(image).blend('#333333', "addition", 1.0).resize(0.8);
+      var wrapper = cq(image).resize(1);
       this.image = wrapper.canvas;
       /* create new collection of entities */
       this.entities = new window.entities.GameObjects(this);
@@ -47,12 +48,17 @@ window.onload = function() {
       this.adText("FIGHT!", [-80 + app.canvasWidth / 2 , 100], "40pt", 80, '255, 255, 100')
     },
     spawnHorse: function() {
+      var posy = app.height - 20;
+      var direction = 3 * Math.PI / 2;
+      if(Math.random > 0.5) {
+        posy = 20;
+        direction = Math.PI / 2;
+      }
       var posx = Math.floor(app.width - (Math.random() * app.width));
-      var posy = Math.floor(app.height - (Math.random() * app.height));
       return this.entities.add(window.entities.Horse, {
         x: posx,
         y: posy,
-        direction: Math.PI
+        direction: direction
       });
     },
     setHeroName: function(name) {
@@ -91,9 +97,18 @@ window.onload = function() {
         .drawImage(this.image, this.image.width- this.center[0], -250- this.center[1])
       /* call render method of each entity in the collection */
       this.drawLimits();
-      this.entities.call("render", delta, this.center);
+      this.drawEntities(delta);
       this.drawTexts();
       this.drawNames();
+    },
+    drawEntities: function(delta) {
+      for(var i=0; i <= 4; i++) {
+        for(var j = 0, l = this.entities.length; j < l; j++) {
+          if(this.entities[j].renderLevel === i) {
+            this.entities[j].render(delta, this.center)
+          }
+        }
+      }
     },
     drawTexts: function() {
       var newTexts = [];
@@ -272,7 +287,7 @@ window.onload = function() {
       }
     },
     announceDeath: function(knight, killer) {
-      if(killer.player) {
+      if(killer.player === true) {
         this.adText("You have Knocked out",
           [320, 50],
           "20px",
