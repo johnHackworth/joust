@@ -34,7 +34,20 @@ window.entities = window.entities || {};
       var image = app.assets.image('arm')
       var wrapper = cq(image).blend(this.color, "addition", 1.0).resizePixel(1* app.zoom);
       this.image = wrapper.canvas;
-     },
+      var wrapperSmall = cq(image).resize(1 * app.zoom * 0.8);
+      this.imageSmall = wrapperSmall.canvas;
+      this.imageNormal = wrapper.canvas;
+      this.imageSize = 'normal';
+    },
+    changeImageSize: function() {
+      if(this.imageSize === 'normal') {
+        this.image = this.imageSmall;
+        this.imageSize = 'small'
+      } else {
+        this.image = this.imageNormal;
+        this.imageSize = 'normal'
+      }
+    },
 
     step: function(delta) {
       this.turn();

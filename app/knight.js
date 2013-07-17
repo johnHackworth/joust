@@ -48,12 +48,38 @@ window.entities = window.entities || {};
       var image = app.assets.image("knight")
       var wrapper = cq(image).blend(this.color, "addition", 1.0).resizePixel(0.8 * app.zoom);
       this.image = wrapper.canvas;
+      var wrapperSmall = cq(image).resize(1 * app.zoom * 0.8);
+      this.imageSmall = wrapperSmall.canvas;
+      this.imageNormal = wrapper.canvas;
+
       var imageOuch = app.assets.image("ouch")
       var wrapperOuch = cq(imageOuch).resizePixel(2 * app.zoom);
       this.imageOuch = wrapperOuch.canvas;
+      var wrapperOuchSmall = cq(imageOuch).resize(1 * app.zoom * 0.8);
+      this.imageOuchSmall = wrapperOuchSmall.canvas;
+      this.imageOuchNormal = wrapperOuch.canvas;
+
       var markerImage = app.assets.image('mark');
       var wrapperMark = cq(markerImage).blend(this.color, "addition", 1.0).resizePixel(1 * app.zoom);
       this.markImage = wrapperMark.canvas;
+      var wrapperMarkerSmall = cq(markerImage).resize(1 * app.zoom * 0.8);
+      this.imageMarkerSmall = wrapperMarkerSmall.canvas;
+      this.imageMarkerNormal = wrapperMark.canvas;
+
+      this.imageSize = 'normal';
+    },
+    changeImageSize: function() {
+      if(this.imageSize === 'normal') {
+        this.image = this.imageSmall;
+        this.markImage = this.imageMarkerSmall;
+        this.imageOuch = this.imageOuchSmall;
+        this.imageSize = 'small'
+      } else {
+        this.image = this.imageNormal;
+        this.markImage = this.imageMarkerNormal;
+        this.imageOuch = this.imageOuchNormal;
+        this.imageSize = 'normal'
+      }
     },
 
     step: function(delta) {

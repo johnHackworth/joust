@@ -2,6 +2,7 @@ window.onload = function() {
   app.game = new window.engine.Scene({
     playerName: 'knight',
     texts: [],
+    step: 0,
     onenter: function() {
       this.knights = [];
       this.zoomLevel = app.zoom;
@@ -51,6 +52,19 @@ window.onload = function() {
       var image = app.assets.image('grass')
       var wrapper = cq(image).resize(1 * app.zoom);
       this.image = wrapper.canvas;
+      var wrapperSmall = cq(image).resize(1 * app.zoom * 0.8);
+      this.imageSmall = wrapperSmall.canvas;
+      this.imageNormal = wrapper.canvas;
+      this.imageSize = 'normal';
+    },
+    changeImageSize: function() {
+      if(this.imageSize === 'normal') {
+        this.image = this.imageSmall;
+        this.imageSize = 'small'
+      } else {
+        this.image = this.imageNormal;
+        this.imageSize = 'normal'
+      }
     },
     spawnHorse: function() {
       var posy = app.height * app.zoom - 20;
@@ -79,9 +93,12 @@ window.onload = function() {
       });
     },
     onstep: function(delta) {
+      this.step++;
       this.getCenter();
+      this.zoomStep();
       this.entities.step(delta, this.center);
       this.entities.call("step", delta, this.center);
+
     },
 
     getCenter: function() {
@@ -308,18 +325,14 @@ window.onload = function() {
           )
       }
     },
-    setZoom: function() {
-      if(this.zoomLevel > app.zoom) {
-        app.zoom -= 0.1;
-      } else if(this.zoomLevel < app.zoom) {
-        app.zoom += 0.1;
-      } else {
-        return;
-      }
+    zoomStep: function() {
+    },
+    smallZoom: function() {
+      app.zoom = 0.8;
       this.prepareImage();
       for(var i = 0, l = this.entities.length; i < l; i++) {
-        if(this.entities[i].prepareImage) {
-          this.entities[i].prepareImage();
+        if(this.entities[i].changeImageSize) {
+          this.entities[i].changeImageSize();
           this.entities[i].x = this.entities[i].x * app.zoom;
           this.entities[i].y = this.entities[i].y * app.zoom;
         }
