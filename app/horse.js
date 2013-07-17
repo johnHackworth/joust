@@ -195,6 +195,7 @@ window.entities = window.entities || {};
       app.layer
         .fillStyle(this.color)
         .save()
+        .scale(app.zoom, app.zoom)
         .translate(this.x - center[0], this.y - center[1])
         .rotate(-1 * Math.PI /2 + this.direction)
         .drawImage(this['image'],

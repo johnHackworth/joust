@@ -3,6 +3,8 @@ window.onload = function() {
     playerName: 'knight',
     texts: [],
     step: 0,
+    currentZoom: 1,
+    textAntiScale: 1,
     onenter: function() {
       this.knights = [];
       this.zoomLevel = app.zoom;
@@ -195,14 +197,14 @@ window.onload = function() {
         .restore();
     },
     drawNames: function() {
-      app.layer
+      this.heroNames = app.layer
         .save()
         .fillStyle('#FFFFFF')
         .font('arial 24px #000000')
         .wrappedText(this.hero.name, 30,30, 200)
         .restore();
 
-      app.layer
+      this.heroHealth = app.layer
         .save()
         .fillStyle('#FFFFFF')
         .font('arial 24px #000000')
@@ -220,6 +222,7 @@ window.onload = function() {
         app.layer
           .save()
           .fillStyle(color)
+          .scale(this.textAntiScale, this.textAntiScale)
           .font('arial 24px #000000')
           .wrappedText(this.knights[i].name, 30,30+(i+1)*30, 200)
           .restore();
@@ -227,6 +230,7 @@ window.onload = function() {
         app.layer
           .save()
           .fillStyle(color)
+          .scale(this.textAntiScale, this.textAntiScale)
           .font('arial 24px #000000')
           .wrappedText(this.knights[i].health > 0?
             '( ' + this.knights[i].health  +' / ' + this.knights[i].maxHealth + ') ' +
@@ -237,6 +241,7 @@ window.onload = function() {
         app.layer
           .save()
           .fillStyle('#FFFFFF')
+          .scale(this.textAntiScale, this.textAntiScale)
           .drawImage(
             this.knights[i].shield,
             0,
@@ -326,17 +331,22 @@ window.onload = function() {
       }
     },
     zoomStep: function() {
-    },
-    smallZoom: function() {
-      app.zoom = 0.8;
-      this.prepareImage();
-      for(var i = 0, l = this.entities.length; i < l; i++) {
-        if(this.entities[i].changeImageSize) {
-          this.entities[i].changeImageSize();
-          this.entities[i].x = this.entities[i].x * app.zoom;
-          this.entities[i].y = this.entities[i].y * app.zoom;
-        }
+      if(this.step % 2 != 0) return;
+      if(this.zoomObjetive && this.zoomObjetive < this.currentZoom) {
+        var nextZoom = Math.floor((this.currentZoom - 0.05)*1000) / 1000;
+        app.layer.scale(nextZoom, nextZoom);
+        this.textAntiScale = 1/ nextZoom;
+        this.currentZoom = nextZoom;
       }
+    },
+
+    smallZoom: function() {
+      this.currentZoom = 1;
+      this.zoomObjetive = 0.8;
+    },
+    normalZoom: function() {
+      this.currentZoom = 0.8;
+      this.zoomObjetive = 1;
     }
   });
 }

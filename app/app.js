@@ -38,6 +38,10 @@ var app = new window.engine.Application({
       self.selectScene(self.game);
     })
     // this.selectScene(this.game);
+  },
+  smallZoom: function() {
+    // this.zoom = 0.8;
+    this.layer.scale(0.75, 0.8);
   }
 
 });
