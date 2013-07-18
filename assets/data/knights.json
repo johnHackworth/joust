@@ -47,8 +47,8 @@
   {
     "name": "Robb Stark",
     "shield": 4,
-    "color1": "#FFFFF",
-    "color2": "#666666",
+    "color1": "#999999",
+    "color2": "#FFFFF",
     "horsemanship": 6,
     "strength": 7,
     "hability": 8
@@ -88,6 +88,15 @@
     "horsemanship": 3,
     "strength": 6,
     "hability": 2
+  },
+  {
+    "name": "Theon Greyjoy",
+    "shield": 1,
+    "color1": "#222222",
+    "color2": "#AAAAAA",
+    "horsemanship": 3,
+    "strength": 9,
+    "hability": 4
   }
 
 ]

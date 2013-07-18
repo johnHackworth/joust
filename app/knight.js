@@ -4,6 +4,7 @@ window.entities = window.entities || {};
 
   var Knight = function(args) {
     this.horse = args.horse;
+    this.horse.knightRide(this);
     _.extend(this, {
 
       /* direction the ant is facing (in radians) */
@@ -483,7 +484,7 @@ window.entities = window.entities || {};
     getInertia: function() {
       var angle = Math.abs(this.arm.direction - this.horse.direction)
       var speed = Math.cos(angle) * this.horse.speed;
-      return this.strength * speed / 1000;
+      return speed / 100;
     },
     getDirection: function() {
       return this.horse.direction;

@@ -5,15 +5,12 @@ window.entities = window.entities || {};
   var Horse = function(args) {
 
     _.extend(this, {
-
-      /* direction the ant is facing (in radians) */
       direction: 0,
       speed: -10,
       maxSpeed: 250,
       currentMaxSpeed: 250,
       turning: 0.03,
-      /* brain cooldown - AI will be called in random periods of time
-         so can ants move more naturally */
+      /* brain cooldown */
       brainDelta: 0,
       player: false,
       spurred: false,
@@ -35,6 +32,9 @@ window.entities = window.entities || {};
       this.stepNumber = 0;
       this.stepRound = 0;
       this.prepareImage();
+    },
+    knightRide: function(knight) {
+      this.rider = knight;
     },
     prepareImage: function() {
       var image = app.assets.image("horses2")
@@ -134,30 +134,41 @@ window.entities = window.entities || {};
         this.intendedDirection *= -1;
       }
     },
-
+    getTurningHability: function() {
+      var riderHability = this.rider? this.rider.horsemanship : 1;
+      if(this.speed < this.maxSpeed /4) {
+        return 4 * this.turning * (riderHability / 5);
+      } else if(this.speed < 2 * this.maxSpeed / 4) {
+        return 2 * this.turning * (riderHability / 5);
+      } else if(this.speed < 3 * this.maxSpeed / 4) {
+        return this.turning * (riderHability / 5);
+      } else {
+        return 2/3 * this.turning * (riderHability/5)
+      }
+    },
     turn: function() {
       this.checkBorders();
       if(
           Math.abs(this.intendedDirection - this.direction) <= Math.PI
         ) {
         if(this.direction < this.intendedDirection) {
-          if(this.intendedDirection - this.direction <= this.turning) {
+          if(this.intendedDirection - this.direction <= this.getTurningHability()) {
             this.direction = this.intendedDirection;
           } else {
-            this.direction = this.direction + this.turning;
+            this.direction = this.direction + this.getTurningHability();
           }
         } else {
-          if(this.direction - this.intendedDirection <= this.turning) {
+          if(this.direction - this.intendedDirection <= this.getTurningHability()) {
             this.direction = this.intendedDirection;
           } else {
-            this.direction = this.direction - this.turning;
+            this.direction = this.direction - this.getTurningHability();
           }
         }
       } else {
         if(this.direction < this.intendedDirection) {
-          this.direction = this.direction - this.turning;
+          this.direction = this.direction - this.getTurningHability();
         } else {
-          this.direction = this.direction + this.turning;
+          this.direction = this.direction + this.getTurningHability();
         }
 
       }
@@ -253,8 +264,8 @@ window.entities = window.entities || {};
     },
 
     isNear: function(point) {
-      if(Math.abs(point[0] - this.x) <= this.size[0] * app.zoom) {
-        if(Math.abs(point[1] - this.y) <= this.size[0] * app.zoom) {
+      if(Math.abs(point[0] - this.x) <= this.size[0] * app.zoom * 1 / app.game.currentZoom) {
+        if(Math.abs(point[1] - this.y) <= this.size[0] * app.zoom * 1 / app.game.currentZoom) {
           return true;
         }
       }

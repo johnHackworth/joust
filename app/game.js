@@ -3,6 +3,7 @@ window.onload = function() {
     playerName: 'knight',
     texts: [],
     step: 0,
+    lastZoomSet:0,
     currentZoom: 1,
     textAntiScale: 1,
     onenter: function() {
@@ -100,13 +101,7 @@ window.onload = function() {
       this.zoomStep();
       this.entities.step(delta, this.center);
       this.entities.call("step", delta, this.center);
-      if(this.heroDistance() > 500) {
-        this.smallZoom();
-      } else if(this.heroDistance() < 100) {
-        this.bigZoom();
-      } else {
-        this.normalZoom();
-      }
+      this.selectZoomLevel();
     },
     heroDistance: function() {
       var heroPos = [this.hero.x, this.hero.y];
@@ -196,8 +191,8 @@ window.onload = function() {
       app.layer.context.fillStyle = "rgba(100,50,0,0.9)";
       app.layer.context.strokeStyle = "#555555";
       app.layer.fillRect(
-        (0 - this.center[0]) * app.zoom,
-        (0 - 5 - this.center[1]) * app.zoom,
+        (-10 - this.center[0]) * app.zoom,
+        (- 5 - this.center[1]) * app.zoom,
         2 * app.width * app.zoom,
         5 * app.zoom);
       app.layer.fillRect(
@@ -223,6 +218,7 @@ window.onload = function() {
       this.heroNames = app.layer
         .save()
         .fillStyle('#FFFFFF')
+        .scale(this.textAntiScale, this.textAntiScale)
         .font('arial 24px #000000')
         .wrappedText(this.hero.name, 30,30, 200)
         .restore();
@@ -230,6 +226,7 @@ window.onload = function() {
       this.heroHealth = app.layer
         .save()
         .fillStyle('#FFFFFF')
+        .scale(this.textAntiScale, this.textAntiScale)
         .font('arial 24px #000000')
         .wrappedText('( ' + this.hero.health +' / ' + this.hero.maxHealth + ') ' +
          this.hero.honor + ' honor, ' + this.hero.fame + ' fame', 30,45, 200)
@@ -325,14 +322,14 @@ window.onload = function() {
     gameOver: function(knight) {
       if(knight.player) {
         this.adText("You have been",
-          [320, 110],
+          [320- this.center[0], 110- this.center[1]],
           "30px",
           300,
           '255,50,50'
           )
 
         this.adText("Knocked out!!",
-          [250, 160],
+          [250 - this.center[0], 160- this.center[1]],
           "60px",
           300,
           '255,0,0'
@@ -342,14 +339,14 @@ window.onload = function() {
     announceDeath: function(knight, killer) {
       if(killer.player === true) {
         this.adText("You have Knocked out",
-          [320, 50],
+          [320- this.center[0], 50- this.center[1]],
           "20px",
           300,
           '55,200,50'
           )
 
         this.adText(knight.name,
-          [330, 90],
+          [330- this.center[0], 90- this.center[1]],
           "30px",
           300,
           '30,30,0'
@@ -357,7 +354,6 @@ window.onload = function() {
       }
     },
     zoomStep: function() {
-      // if(this.step % 2 != 0) return;
       if(this.zoomObjetive &&
         this.zoomObjetive < this.currentZoom &&
         this.currentZoom - this.zoomObjetive > 0.02
@@ -377,18 +373,52 @@ window.onload = function() {
         this.currentZoom = this.currentZoom * nextZoom;
       }
     },
+    zoomLevels: {
+      "smaller": 0.60,
+      "small": 0.80,
+      "normal": 1,
+      "big": 1.20,
+      "bigger": 1.50
+    },
+    setZoom: function(level) {
+      if(this.step - this.lastZoomSet > 50) {
+        this.lastZoomSte = this.step;
+        this.zoomObjetive = this.zoomLevels[level];
+      } else {
+        return;
+      }
 
-    smallZoom: function() {
-      // this.currentZoom = 1;
-      this.zoomObjetive = 0.80;
     },
-    normalZoom: function() {
-      // this.currentZoom = 1;
-      this.zoomObjetive = 1;
-    },
-    bigZoom: function() {
-      // this.currentZoom = 1;
-      this.zoomObjetive = 1.25;
+    selectZoomLevel: function() {
+      if(this.hero.horse.speed < this.hero.horse.maxSpeed / 4) {
+        if(this.heroDistance() > 500) {
+          this.setZoom('normal');
+        } else if(this.heroDistance() < 100) {
+          this.setZoom('bigger');
+        } else {
+          this.setZoom('big');
+        }
+      } else if(this.hero.horse.speed < 3* this.hero.horse.maxSpeed / 4) {
+        if(this.heroDistance() > 600) {
+          this.setZoom('smaller');
+        } else if(this.heroDistance() > 400) {
+          this.setZoom('small');
+        } else if(this.heroDistance() < 100) {
+          this.setZoom('big');
+        } else {
+          this.setZoom('normal');
+        }
+      } else {
+        if(this.heroDistance() > 500) {
+          this.setZoom('smaller');
+        } else if(this.heroDistance() < 100) {
+          this.setZoom('normal');
+        } else {
+          this.setZoom('small');
+        }
+      }
+
     }
+
   });
 }
