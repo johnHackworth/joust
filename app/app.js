@@ -25,6 +25,7 @@ var app = new window.engine.Application({
     this.assets.addImage("ouch.png");
     this.assets.addImage("shields.png");
     this.assets.addImage("mark.png");
+    this.assets.addImage("sparks.png");
   },
 
   /* and when the assets are loaded select the game screen */

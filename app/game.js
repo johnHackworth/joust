@@ -14,7 +14,6 @@ window.onload = function() {
         var pos = Math.floor(Math.random() * this.knightsData.length)
         var knightData = this.knightsData.splice(pos, 1)[0] ;
         knightData.horse = horse;
-        knightData.color = knightData.color1;
         var knight = this.spawnKnight(knightData);
         knight.shield = cq(this.spriteShields).blend(knight.color1, "addition", 1.0).canvas;
         this.knights.push(knight);
@@ -34,7 +33,8 @@ window.onload = function() {
         name: this.playerName,
         player: true,
         turning: 0.3,
-        color: '#330000'
+        color1: '#CCCCCC',
+        color2: '#113388'
       })
       this.hero.name = this.playerName;
       this.hero.onDeath = this.gameOver.bind(this);
@@ -49,7 +49,7 @@ window.onload = function() {
       this.entities = new window.entities.GameObjects(this);
       this.spriteShields = app.assets.image("shields");
       // this.adText("FIGHT!", [-81 + app.canvasWidth / 2 , 99], "41pt", 80, '50, 50, 50')
-      this.adText("FIGHT!", [-80 + app.canvasWidth / 2 , 100], "40pt", 80, '255, 255, 100')
+      this.adText("FIGHT!", [-80 + app.canvasWidth / 2 , 100], 80, 80, '255, 255, 100')
     },
     prepareImage: function() {
       var image = app.assets.image('grass')
@@ -92,7 +92,8 @@ window.onload = function() {
     },
     spawnArm: function(knight) {
       return this.entities.add(window.entities.Arm, {
-        owner: knight
+        owner: knight,
+        color: knight.color2
       });
     },
     onstep: function(delta) {
@@ -159,7 +160,7 @@ window.onload = function() {
         app.layer
           .save()
         var alpha = 1;
-        var yPos = this.texts[i].position[1];
+        var yPos = this.texts[i].position[1] * 1 / this.currentZoom;
         if(this.texts[i].time < 30) {
           alpha = this.texts[i].time / 30
           yPos = yPos -  (30 - this.texts[i].time)
@@ -170,13 +171,13 @@ window.onload = function() {
           .lineWidth = 8;
         app.layer
           .fillStyle("rgba("+this.texts[i].color+","+alpha+")")
-          .font(' '+this.texts[i].size+' MS UI Gothic')
+          .font(' '+this.texts[i].size *1/this.currentZoom+'px MS UI Gothic')
 
         app.layer
           .fillText(this.texts[i].text,
-            this.texts[i].position[0],
+            this.texts[i].position[0] * 1 / this.currentZoom,
             yPos)
-          .strokeText(this.texts[i].text, this.texts[i].position[0],
+          .strokeText(this.texts[i].text, this.texts[i].position[0] * 1 / this.currentZoom,
           yPos)
           .restore()
 
@@ -254,9 +255,9 @@ window.onload = function() {
           .scale(this.textAntiScale, this.textAntiScale)
           .font('arial 24px #000000')
           .wrappedText(this.knights[i].health > 0?
-            '( ' + this.knights[i].health  +' / ' + this.knights[i].maxHealth + ') ' +
-            this.knights[i].honor + ' honor, ' + this.knights[i].fame + ' fame' :
-            'out of combat'
+            '( ' + this.knights[i].health  +' / ' + this.knights[i].maxHealth + ') '
+            //+ this.knights[i].honor + ' honor, ' + this.knights[i].fame + ' fame'
+            : 'out of combat'
             , 30,45+ (i+1) * 30, 200)
           .restore();
         app.layer
@@ -322,15 +323,16 @@ window.onload = function() {
     gameOver: function(knight) {
       if(knight.player) {
         this.adText("You have been",
-          [320- this.center[0], 110- this.center[1]],
-          "30px",
+          [350, 50],
+          30,
           300,
           '255,50,50'
           )
 
         this.adText("Knocked out!!",
-          [250 - this.center[0], 160- this.center[1]],
-          "60px",
+          // [app.width / 2 + this.center[0])* this.currentZoom , 160*this.currentZoom- 1/this.center[1]],
+          [260,100],
+          60,
           300,
           '255,0,0'
           )
@@ -340,14 +342,14 @@ window.onload = function() {
       if(killer.player === true) {
         this.adText("You have Knocked out",
           [320- this.center[0], 50- this.center[1]],
-          "20px",
+          20,
           300,
           '55,200,50'
           )
 
         this.adText(knight.name,
           [330- this.center[0], 90- this.center[1]],
-          "30px",
+          30,
           300,
           '30,30,0'
           )

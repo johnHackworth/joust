@@ -21,6 +21,9 @@ window.entities = window.entities || {};
       horsemanship: args.horsemanship || 5,
       hability: args.hability || 5
     }, args);
+    if(this.color1) {
+      this.color = this.color1;
+    }
     this.lastFollowingDistance = 1000;
     this.turning = 1 * this.horsemanship / 10;
     this.health = 5 + this.strength;
@@ -41,7 +44,7 @@ window.entities = window.entities || {};
     blockType: 3,
     renderLevel: 4,
     oncreate: function() {
-
+      this.texts = [];
       this.stepNumber = 0;
       this.prepareImage();
     },
@@ -67,6 +70,10 @@ window.entities = window.entities || {};
       this.imageMarkerSmall = wrapperMarkerSmall.canvas;
       this.imageMarkerNormal = wrapperMark.canvas;
 
+      var sparksImage = app.assets.image("sparks")
+      var wrapperSparks = cq(sparksImage).resize(1 * app.zoom);
+      this.sparksImage = wrapperSparks.canvas;
+
       this.imageSize = 'normal';
     },
     changeImageSize: function() {
@@ -85,6 +92,9 @@ window.entities = window.entities || {};
 
     step: function(delta) {
       this.stepNumber++;
+      if(this.ouchTime) {
+        this.ouchTime--;
+      }
       if(this.lastSpurred) {
         this.lastSpurred--;
       }
@@ -93,9 +103,7 @@ window.entities = window.entities || {};
       }
       /* decrease brain cooldown  */
       this.brainDelta -= delta;
-      if(this.ouchTime) {
-        this.ouchTime--;
-      }
+
 
       if (this.brainDelta < 0) {
 
@@ -264,7 +272,11 @@ window.entities = window.entities || {};
       if(this.dead) {
         this.currentPosition = 3;
       }
+      this.drawTexts(center)
 
+      if(this.ouchTime || this.dead) {
+        this.drawOuch(center);
+      }
       app.layer
         .fillStyle(this.color)
         .save()
@@ -280,26 +292,8 @@ window.entities = window.entities || {};
           -21* app.zoom / 2,
           15* app.zoom,
           21* app.zoom)
-      if(this.ouchTime && !this.dead) {
-        app.layer
-          .drawImage(
-            this.imageOuch,
-            -this.imageOuch.width / 4,
-            -this.imageOuch.height / 4
-          );
-      }
       app.layer
         .restore();
-
-      if(this.ouchTime && !this.dead) {
-        app.layer
-          .fillStyle('#AA0000')
-          .font('arial 24px #000000')
-          .wrappedText("" + this.currentDamage,
-            this.x - center[0] - 3,
-            this.y - center[1] - 10,
-            20)
-      }
 
       if(!this.dead) {
         app.layer.beginPath();
@@ -328,7 +322,85 @@ window.entities = window.entities || {};
         this.drawMark(center)
       }
     },
+    testOuch: function() {
+      this.ouchTime = 20;
+      this.ouchDirection = 0;
+      this.currentDamage = 1;
+    },
+    drawOuch: function(center) {
+      if(!this.dead) {
+        app.layer
+          .fillStyle('#AA0000')
+          .font('arial 24px #000000')
+          .wrappedText("" + this.currentDamage,
+            this.x - center[0] - 3,
+            this.y - center[1] - 10,
+            20)
+      }
+      if(this.dead) {
+        this.deathlyDamage(center);
+      } else if(this.currentDamage > 0 && this.currentDamage <= 6) {
+        this.smallDamage(center);
+      } else if(this.currentDamage > 0 && this.currentDamage <= 12) {
+        this.bigDamage(center);
+      } else if(this.currentDamage > 0) {
+        this.deathlyDamage(center);
+      }
+    },
+    bigDamage: function(center) {
+      var x = this.x - center[0] + Math.cos(this.ouchDirection) * 5 * (20 - this.ouchTime);
+      var y = this.y - center[1] + Math.sin(this.ouchDirection) * 5 * (20 - this.ouchTime);
 
+      var phase = Math.floor((20 - this.ouchTime) / 4)
+      app.layer
+        .drawImage(
+          this.sparksImage,
+          55 * app.zoom * phase,
+          0 * app.zoom,
+          55* app.zoom,
+          45* app.zoom,
+          x,
+          y,
+          55* app.zoom,
+          45* app.zoom)
+    },
+    smallDamage: function(center) {
+      var x = this.x - center[0] + Math.cos(this.ouchDirection) * 1 * (20 - this.ouchTime);
+      var y = this.y - center[1] + Math.sin(this.ouchDirection) * 1 * (20 - this.ouchTime);
+
+      var phase = Math.floor((20 - this.ouchTime) / 4)
+      app.layer
+        .drawImage(
+          this.sparksImage,
+          30 * app.zoom * phase,
+          45 * app.zoom,
+          30 * app.zoom,
+          30* app.zoom,
+          x,
+          y,
+          30 * app.zoom,
+          30 * app.zoom)
+    },
+    deathlyDamage: function(center) {
+      var x = this.x - center[0] + Math.cos(this.ouchDirection) * 1 * (20 - this.ouchTime);
+      var y = this.y - center[1] + Math.sin(this.ouchDirection) * 1 * (20 - this.ouchTime);
+
+      var phase = this.bloodStain || Math.floor((20 - this.ouchTime) / 4)
+      if(!this.ouchTime && this.dead && !this.bloodStain) {
+        this.bloodStain = Math.floor(Math.random() * 6);
+      }
+      app.layer
+        .drawImage(
+          this.sparksImage,
+          55 * app.zoom * phase,
+          75 * app.zoom,
+          55 * app.zoom,
+          45* app.zoom,
+          x,
+          y,
+          55 * app.zoom,
+          45 * app.zoom)
+    },
     outOfCanvas: function(center) {
       var outY = false;
       var outX = false;
@@ -427,27 +499,29 @@ window.entities = window.entities || {};
     },
     adHonor: function(amount) {
       this.honor += amount;
+      this.adText('+'+amount+' honor', 10, 100, '255,225,105')
     },
     adFame: function(amount) {
       this.fame += amount;
+      app.game.hero.adText('+'+amount+'fame', 10, 100, '255,105,155');
     },
 
     hitBy: function(arm) {
       var damage = arm.getDamageTo(this);
       if(this.ouchTime > 0) {
         if(this.currentDamage < damage) {
-
-          this.ouchTime = 10;
+          this.ouchTime = 20;
+          this.ouchDirection = arm.direction;
           this.health -= damage - this.currentDamage;
           this.currentDamage = damage;
           arm.owner.adHonor(damage);
-
         }
       } else {
         if(this.health === this.maxHealth) {
           arm.owner.adHonor(5);
         }
         this.ouchTime = 10;
+        this.ouchDirection = arm.direction;
         this.currentDamage = damage;
         if(damage > this.maxHealth) {
           arm.owner.adHonor(10);
@@ -472,11 +546,13 @@ window.entities = window.entities || {};
 
     },
     die: function() {
+      if(this.dead) return;
       this.speed = 20;
       this.dead = true;
       setTimeout((function() { this.renderLevel = 1}).bind(this), 1000);
       this.onDeath(this);
       this.direction = (Math.random() * 2 * Math.PI)
+      this.deathDamageTime = 20
     },
     onDeath: function() {
 
@@ -488,6 +564,50 @@ window.entities = window.entities || {};
     },
     getDirection: function() {
       return this.horse.direction;
+    },
+    drawTexts: function(center) {
+      var newTexts = [];
+      for(var i = 0, l = this.texts.length; i < l; i++) {
+        this.texts[i].time--;
+        app.layer
+          .save()
+        var alpha = 1;
+        var yPos = this.y  - center[1] - 12 * (i+1) * 1 / app.game.currentZoom;
+        if(this.texts[i].time < 30) {
+          alpha = this.texts[i].time / 30
+          yPos = yPos -  (30 - this.texts[i].time)
+        }
+        app.layer
+          .strokeStyle = "rgba(30,30,30,"+alpha+")";
+        app.layer
+          .lineWidth = 8;
+        app.layer
+          .fillStyle("rgba("+this.texts[i].color+","+alpha+")")
+          .font(' '+this.texts[i].size *1/app.game.currentZoom+'px MS UI Gothic')
+
+        app.layer
+          .fillText(this.texts[i].text,
+            this.x  - center[0] - 40 * 1 / app.game.currentZoom,
+            yPos)
+          // .strokeText(this.texts[i].text, this.x  - center[0] - 40 * 1 / app.game.currentZoom,
+          // yPos)
+          .restore()
+
+        if(this.texts[i].time > 0) {
+          newTexts.push(this.texts[i]);
+        }
+      }
+      this.texts = newTexts;
+    },
+    adText: function(text, size, time, color) {
+      color = color || "255,255,255";
+      time = time || 100;
+      this.texts.push({
+        text: text,
+        size: size,
+        time: time,
+        color: color
+      })
     }
 
   };
