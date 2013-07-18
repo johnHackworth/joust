@@ -346,7 +346,7 @@ window.entities = window.entities || {};
       return outX || outY;
     },
     drawMark: function(center) {
-      var posX = center[0] > this.x? 10 : app.canvasWidth - 10;
+      var posX = center[0] > this.x? 10 : (app.canvasWidth - 10) * 1 / app.game.currentZoom;
       var posY = this.y- center[1];
       if(posY > app.canvasHeight - 10) {
         posY = app.canvasHeight - 10;

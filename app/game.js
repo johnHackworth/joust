@@ -100,12 +100,35 @@ window.onload = function() {
       this.zoomStep();
       this.entities.step(delta, this.center);
       this.entities.call("step", delta, this.center);
-
+      if(this.heroDistance() > 500) {
+        this.smallZoom();
+      } else if(this.heroDistance() < 100) {
+        this.bigZoom();
+      } else {
+        this.normalZoom();
+      }
     },
-
+    heroDistance: function() {
+      var heroPos = [this.hero.x, this.hero.y];
+      var minDistance = 10000;
+      for(var i=0,l=this.entities.length; i < l; i++) {
+        if(this.entities[i].type=='knight' &&
+          !this.entities[i].dead &&
+          !this.entities[i].player
+        ) {
+          var knight = this.entities[i];
+          var distance = Math.abs(heroPos[0] - knight.x) +
+            Math.abs(heroPos[1] - knight.y);
+          if(distance < minDistance) {
+            minDistance = distance;
+          }
+        }
+      }
+      return minDistance;
+    },
     getCenter: function() {
-      var midY = app.canvasHeight / 2;
-      var midX = app.canvasWidth / 2;
+      var midY = (app.canvasHeight / 2) * 1 / app.game.currentZoom;
+      var midX = (app.canvasWidth / 2) * 1 / app.game.currentZoom;
       this.deltaY = Math.floor(this.focusedKnight.y - midY);
       this.deltaX = Math.floor(this.focusedKnight.x - midX);
       this.center = [this.deltaX, this.deltaY];
@@ -225,6 +248,7 @@ window.onload = function() {
           .scale(this.textAntiScale, this.textAntiScale)
           .font('arial 24px #000000')
           .wrappedText(this.knights[i].name, 30,30+(i+1)*30, 200)
+
           .restore();
 
         app.layer
@@ -234,7 +258,7 @@ window.onload = function() {
           .font('arial 24px #000000')
           .wrappedText(this.knights[i].health > 0?
             '( ' + this.knights[i].health  +' / ' + this.knights[i].maxHealth + ') ' +
-         this.knights[i].honor + ' honor, ' + this.knights[i].fame + ' fame' :
+            this.knights[i].honor + ' honor, ' + this.knights[i].fame + ' fame' :
             'out of combat'
             , 30,45+ (i+1) * 30, 200)
           .restore();
@@ -252,8 +276,10 @@ window.onload = function() {
             60 + i * 30,
             20,
             20
-          ).restore();
+          )
+          .restore();
       }
+
 
 
     },
@@ -331,22 +357,38 @@ window.onload = function() {
       }
     },
     zoomStep: function() {
-      if(this.step % 2 != 0) return;
-      if(this.zoomObjetive && this.zoomObjetive < this.currentZoom) {
-        var nextZoom = Math.floor((this.currentZoom - 0.05)*1000) / 1000;
+      // if(this.step % 2 != 0) return;
+      if(this.zoomObjetive &&
+        this.zoomObjetive < this.currentZoom &&
+        this.currentZoom - this.zoomObjetive > 0.02
+      ) {
+        var nextZoom = 0.99; //Math.floor((this.currentZoom - 0.005)*1000) / 1000;
         app.layer.scale(nextZoom, nextZoom);
-        this.textAntiScale = 1/ nextZoom;
-        this.currentZoom = nextZoom;
+        this.textAntiScale = 1/ this.currentZoom;
+        this.currentZoom = this.currentZoom * nextZoom;
+      }
+      if(this.zoomObjetive &&
+        this.zoomObjetive > this.currentZoom &&
+        this.zoomObjetive - this.currentZoom > 0.02
+      ) {
+        var nextZoom = 1.01; //Math.floor((this.currentZoom + 0.005)*1000) / 1000;
+        app.layer.scale(nextZoom, nextZoom);
+        this.textAntiScale = 1/ this.currentZoom;
+        this.currentZoom = this.currentZoom * nextZoom;
       }
     },
 
     smallZoom: function() {
-      this.currentZoom = 1;
-      this.zoomObjetive = 0.8;
+      // this.currentZoom = 1;
+      this.zoomObjetive = 0.80;
     },
     normalZoom: function() {
-      this.currentZoom = 0.8;
+      // this.currentZoom = 1;
       this.zoomObjetive = 1;
+    },
+    bigZoom: function() {
+      // this.currentZoom = 1;
+      this.zoomObjetive = 1.25;
     }
   });
 }
