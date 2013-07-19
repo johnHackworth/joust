@@ -498,14 +498,17 @@ window.entities = window.entities || {};
       }
     },
     adHonor: function(amount) {
-      this.honor += amount;
-      this.adText('+'+amount+' honor', 10, 100, '255,225,105')
+      if(amount) {
+        this.honor += amount;
+        this.adText('+honor!', 10, 100, '255,225,105')
+      }
     },
     adFame: function(amount) {
-      this.fame += amount;
-      app.game.hero.adText('+'+amount+'fame', 10, 100, '255,105,155');
+      if(amount) {
+        this.fame += amount;
+        app.game.hero.adText('+fame!', 10, 100, '255,105,155');
+      }
     },
-
     hitBy: function(arm) {
       var damage = arm.getDamageTo(this);
       if(this.ouchTime > 0) {
@@ -573,10 +576,24 @@ window.entities = window.entities || {};
           .save()
         var alpha = 1;
         var yPos = this.y  - center[1] - 12 * (i+1) * 1 / app.game.currentZoom;
-        if(this.texts[i].time < 30) {
-          alpha = this.texts[i].time / 30
-          yPos = yPos -  (30 - this.texts[i].time)
+        if(this.texts[i].time < 100) {
+          alpha = this.texts[i].time / 100
+          yPos = yPos -  (100 - this.texts[i].time)
         }
+
+        // app.layer
+        //   .font(' '+this.texts[i].size *1/app.game.currentZoom+'px MS UI Gothic')
+        //   .gradientText(this.texts[i].text,
+        //     this.x  - center[0] - 40 * 1 / app.game.currentZoom,
+        //     yPos,
+        //     100,
+        //     [
+        //       0.05, "#FFFFCC",
+        //       0.50, "#FF9900",
+        //       0.85, "#AAAA33"
+        //     ]
+        //     )
+
         app.layer
           .strokeStyle = "rgba(30,30,30,"+alpha+")";
         app.layer
@@ -602,12 +619,20 @@ window.entities = window.entities || {};
     adText: function(text, size, time, color) {
       color = color || "255,255,255";
       time = time || 100;
-      this.texts.push({
-        text: text,
-        size: size,
-        time: time,
-        color: color
-      })
+      var existing = false;
+      for(var i = 0, l = this.texts.length; i < l; i++) {
+        if(this.texts[i].text ===  text) {
+          existing = true;
+        }
+      }
+      if(!existing) {
+        this.texts.push({
+          text: text,
+          size: size,
+          time: time,
+          color: color
+        })
+      }
     }
 
   };

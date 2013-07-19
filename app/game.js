@@ -34,7 +34,10 @@ window.onload = function() {
         player: true,
         turning: 0.3,
         color1: '#CCCCCC',
-        color2: '#113388'
+        color2: '#113388',
+        strength: 10,
+        horsemanship: 10,
+        hability: 10
       })
       this.hero.name = this.playerName;
       this.hero.onDeath = this.gameOver.bind(this);
@@ -301,6 +304,7 @@ window.onload = function() {
     onkeydown: function(key) {
       if(key === 'a' || key === 'left') {
         this.hero.intendedDirection = (2*Math.PI  + (this.hero.direction - (Math.PI / 25))) % (2*Math.PI);
+        this.hero.direction = this.hero.intendedDirection;
       }
       if(key === 'd' || key === 'right') {
         this.hero.intendedDirection = (2*Math.PI  + (this.hero.direction + (Math.PI / 25))) % (2*Math.PI);
