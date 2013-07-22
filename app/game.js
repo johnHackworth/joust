@@ -51,8 +51,8 @@ window.onload = function() {
       /* create new collection of entities */
       this.entities = new window.entities.GameObjects(this);
       this.spriteShields = app.assets.image("shields");
-      // this.adText("FIGHT!", [-81 + app.canvasWidth / 2 , 99], "41pt", 80, '50, 50, 50')
-      this.adText("FIGHT!", [-80 + app.canvasWidth / 2 , 100], 80, 80, '255, 255, 100')
+      // this.addText("FIGHT!", [-81 + app.canvasWidth / 2 , 99], "41pt", 80, '50, 50, 50')
+      this.addText("FIGHT!", [-80 + app.canvasWidth / 2 , 100], 80, 80, '255, 255, 100')
     },
     prepareImage: function() {
       var image = app.assets.image('grass')
@@ -102,10 +102,11 @@ window.onload = function() {
     onstep: function(delta) {
       this.step++;
       this.getCenter();
+      this.selectZoomLevel();
       this.zoomStep();
       this.entities.step(delta, this.center);
       this.entities.call("step", delta, this.center);
-      this.selectZoomLevel();
+
     },
     heroDistance: function() {
       var heroPos = [this.hero.x, this.hero.y];
@@ -160,29 +161,20 @@ window.onload = function() {
       var newTexts = [];
       for(var i = 0, l = this.texts.length; i < l; i++) {
         this.texts[i].time--;
-        app.layer
-          .save()
         var alpha = 1;
-        var yPos = this.texts[i].position[1] * 1 / this.currentZoom;
+        var yPos = this.texts[i].position[1];
         if(this.texts[i].time < 30) {
           alpha = this.texts[i].time / 30
           yPos = yPos -  (30 - this.texts[i].time)
         }
         app.layer
-          .strokeStyle = "rgba(30,30,30,"+alpha+")";
-        app.layer
-          .lineWidth = 8;
-        app.layer
+          .save()
+          .scale(this.textAntiScale, this.textAntiScale)
           .fillStyle("rgba("+this.texts[i].color+","+alpha+")")
-          .font(' '+this.texts[i].size *1/this.currentZoom+'px MS UI Gothic')
-
-        app.layer
-          .fillText(this.texts[i].text,
-            this.texts[i].position[0] * 1 / this.currentZoom,
-            yPos)
-          .strokeText(this.texts[i].text, this.texts[i].position[0] * 1 / this.currentZoom,
-          yPos)
-          .restore()
+          .font(this.texts[i].size + 'px Arial')
+          .wrappedText(this.texts[i].text, this.texts[i].position[0],yPos, 400)
+          // .scale(this.textAntiScale, this.textAntiScale)
+          .restore();
 
         if(this.texts[i].time > 0) {
           newTexts.push(this.texts[i]);
@@ -191,6 +183,35 @@ window.onload = function() {
       this.texts = newTexts;
     },
     drawLimits: function() {
+      app.layer.beginPath();
+      app.layer.context.fillStyle = "rgba(50,50,50,0.3)";
+      app.layer.context.strokeStyle = "#555555";
+
+      app.layer.fillRect(
+        (-10 - this.center[0]) * app.zoom,
+        (0 - this.center[1]) * app.zoom,
+        2 * app.width * app.zoom,
+        10 * app.zoom);
+      app.layer.fillRect(
+        (0 - this.center[0]) * app.zoom,
+        (app.height + 5 - this.center[1]) * app.zoom,
+        2 * this.image.width * app.zoom,
+        10 * app.zoom);
+      app.layer.fillRect(
+        (0 - this.center[0]) * app.zoom,
+        (0 - this.center[1]) * app.zoom,
+        10 * app.zoom,
+        app.height * app.zoom);
+      app.layer.fillRect(
+        (app.width + 5 - this.center[0]) * app.zoom,
+        (0 - this.center[1]) * app.zoom,
+        10 * app.zoom,
+        app.height * app.zoom);
+      app.layer.stroke();
+      app.layer
+        .restore();
+
+
       app.layer.beginPath();
       app.layer.context.fillStyle = "rgba(100,50,0,0.9)";
       app.layer.context.strokeStyle = "#555555";
@@ -221,17 +242,16 @@ window.onload = function() {
     drawNames: function() {
       this.heroNames = app.layer
         .save()
-        .fillStyle('#FFFFFF')
         .scale(this.textAntiScale, this.textAntiScale)
+        .fillStyle('#FFFFFF')
         .font('arial 24px #000000')
         .wrappedText(this.hero.name, 30,30, 200)
         .restore();
 
       this.heroHealth = app.layer
         .save()
-        .fillStyle('#FFFFFF')
         .scale(this.textAntiScale, this.textAntiScale)
-        .font('arial 24px #000000')
+        .fillStyle('#FFFFFF')
         .wrappedText('( ' + this.hero.health +' / ' + this.hero.maxHealth + ') ' +
          this.hero.honor + ' honor, ' + this.hero.fame + ' fame', 30,45, 200)
         .restore();
@@ -313,7 +333,7 @@ window.onload = function() {
         this.hero.spurHorse();
       }
     },
-    adText: function(text, position, size, time, color) {
+    addText: function(text, position, size, time, color) {
       color = color || "255,255,255";
       time = time || 100;
       this.texts.push({
@@ -326,14 +346,14 @@ window.onload = function() {
     },
     gameOver: function(knight) {
       if(knight.player) {
-        this.adText("You have been",
+        this.addText("You have been",
           [350, 50],
           30,
           300,
           '255,50,50'
           )
 
-        this.adText("Knocked out!!",
+        this.addText("Knocked out!!",
           // [app.width / 2 + this.center[0])* this.currentZoom , 160*this.currentZoom- 1/this.center[1]],
           [260,100],
           60,
@@ -344,19 +364,26 @@ window.onload = function() {
     },
     announceDeath: function(knight, killer) {
       if(killer.player === true) {
-        this.adText("You have Knocked out",
-          [320- this.center[0], 50- this.center[1]],
+        this.addText("You have Knocked out",
+          [330, 50],
           20,
           300,
           '55,200,50'
           )
 
-        this.adText(knight.name,
-          [330- this.center[0], 90- this.center[1]],
+        this.addText(knight.name,
+          [330, 90],
           30,
           300,
           '30,30,0'
           )
+      } else {
+        this.addText(killer.name + ' has knocked out ' + knight.name,
+          [250, 550],
+          15,
+          300,
+          '250,250,250'
+        )
       }
     },
     zoomStep: function() {

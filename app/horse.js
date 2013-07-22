@@ -16,7 +16,7 @@ window.entities = window.entities || {};
       spurred: false,
       color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
     }, args);
-    this.size = [30, 10];
+    this.size = [30, 30];
     this.awareness = 5;
     this.cruisingSpeed = Math.floor(0.60 * this.currentMaxSpeed);
     this.walkingSpeed = Math.floor(0.30 * this.currentMaxSpeed);
@@ -264,8 +264,8 @@ window.entities = window.entities || {};
     },
 
     isNear: function(point) {
-      if(Math.abs(point[0] - this.x) <= this.size[0] * app.zoom * 1 / app.game.currentZoom) {
-        if(Math.abs(point[1] - this.y) <= this.size[0] * app.zoom * 1 / app.game.currentZoom) {
+      if(Math.abs(point[0] - this.x)*  app.game.currentZoom <= this.size[0]){ // * app.zoom * 1 / app.game.currentZoom) {
+        if(Math.abs(point[1] - this.y)*  app.game.currentZoom <= this.size[0]){ // * app.zoom * 1 / app.game.currentZoom) {
           return true;
         }
       }
@@ -304,12 +304,27 @@ window.entities = window.entities || {};
         }
       }
     },
+    getDistanceTo: function(other) {
+      var dX = Math.abs(this.x - other.x);
+      var dY = Math.abs(this.y - other.y);
+      return Math.sqrt(dX*dX + dY*dY);
+    },
 
     notifyNear: function(otherHorse) {
-      if(this.spurred) {
-        this.speed = Math.floor(this.speed / 2);
+      if(this.getDistanceTo(otherHorse) <= this.size[0] &&
+        !this.isFront(otherHorse)
+      ) {
+        if(this.spurred) {
+          this.speed = Math.floor(this.speed / 2);
+        } else {
+          this.speed = Math.floor(this.speed / 3);
+        }
       } else {
-        this.speed = Math.floor(this.speed / 3);
+        if(this.spurred) {
+          this.speed = Math.floor(3 * this.speed / 4);
+        } else {
+          this.speed = Math.floor(2*this.speed / 3);
+        }
       }
     },
 

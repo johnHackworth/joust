@@ -26,19 +26,18 @@ var app = new window.engine.Application({
     this.assets.addImage("shields.png");
     this.assets.addImage("mark.png");
     this.assets.addImage("sparks.png");
+    this.assets.addImage("intro.jpg");
   },
 
   /* and when the assets are loaded select the game screen */
   onready: function() {
     var self = this;
-    document.getElementById('fightButton').addEventListener('click', function(ev) {
-      var playerName = document.getElementById('name').value;
-      self.game.setHeroName(playerName);
-      document.getElementById('presentation').setAttribute('class','hidden');
-      self.game.knightsData = self.knightsData;
+    this.selectScene(self.presentation)
+    self.game.setHeroName('knight');
+    self.game.knightsData = self.knightsData;
+    this.presentation.next = function() {
       self.selectScene(self.game);
-    })
-    // this.selectScene(this.game);
+    }
   },
   smallZoom: function() {
     // this.zoom = 0.8;
