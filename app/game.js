@@ -407,11 +407,11 @@ window.onload = function() {
       }
     },
     zoomLevels: {
-      "smaller": 0.60,
+      "smaller": 0.50,
       "small": 0.80,
-      "normal": 1.2,
-      "big": 1.50,
-      "bigger": 1.90
+      "normal": 1.1,
+      "big": 1.40,
+      "bigger": 1.70
     },
     setZoom: function(level) {
       if(this.step - this.lastZoomSet > 50) {
