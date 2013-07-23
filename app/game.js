@@ -2,6 +2,7 @@ window.onload = function() {
   app.game = new window.engine.Scene({
     playerName: 'knight',
     texts: [],
+    gameLog: [],
     step: 0,
     lastZoomSet:0,
     currentZoom: 1,
@@ -131,6 +132,11 @@ window.onload = function() {
       var midX = (app.canvasWidth / 2) * 1 / app.game.currentZoom;
       this.deltaY = Math.floor(this.focusedKnight.y - midY);
       this.deltaX = Math.floor(this.focusedKnight.x - midX);
+      if(this.deltaY < -100) {
+        this.deltaY = -100;
+      } else if(this.deltaY > 350) {
+        this.deltaY = 350;
+      }
       this.center = [this.deltaX, this.deltaY];
     },
     onrender: function(delta) {
@@ -146,6 +152,7 @@ window.onload = function() {
       this.drawLimits();
       this.drawEntities(delta);
       this.drawTexts();
+      this.drawGameLog();
       this.drawNames();
     },
     drawEntities: function(delta) {
@@ -182,6 +189,31 @@ window.onload = function() {
       }
       this.texts = newTexts;
     },
+    drawGameLog: function() {
+      var newTexts = [];
+      for(var i = 0, l = this.gameLog.length; i < l; i++) {
+        this.gameLog[i].time--;
+        var alpha = 0.90;
+        var yPos = Math.floor(app.canvasHeight - app.canvasHeight / 8) + 15 * i;
+        if(this.gameLog[i].time < 30) {
+          alpha = this.gameLog[i].time / 30
+          yPos = yPos -  (30 - this.gameLog[i].time)
+        }
+        app.layer
+          .save()
+          .scale(this.textAntiScale, this.textAntiScale)
+          .fillStyle("rgba(255,255,255,"+alpha+")")
+          .font('12px Arial')
+          .wrappedText(this.gameLog[i].text, 200,yPos, 400)
+          .restore();
+
+        if(this.gameLog[i].time > 0) {
+          newTexts.push(this.gameLog[i]);
+        }
+      }
+      this.gameLog = newTexts;
+    },
+
     drawLimits: function() {
       app.layer.beginPath();
       app.layer.context.fillStyle = "rgba(50,50,50,0.3)";
@@ -344,6 +376,20 @@ window.onload = function() {
         color: color
       })
     },
+    addGameLog: function(text) {
+      var color = "255,255,255";
+      var time = 400;
+      for(var i = 0, l = this.gameLog.length; i < l; i++) {
+        if(this.gameLog[i].text === text) {
+          return;
+        }
+      }
+      this.gameLog.push({
+        text: text,
+        time: time,
+        color: color
+      })
+    },
     gameOver: function(knight) {
       if(knight.player) {
         this.addText("You have been",
@@ -378,12 +424,7 @@ window.onload = function() {
           '30,30,0'
           )
       } else {
-        this.addText(killer.name + ' has knocked out ' + knight.name,
-          [250, 550],
-          15,
-          300,
-          '250,250,250'
-        )
+        this.addGameLog(killer.name + ' has knocked out ' + knight.name)
       }
     },
     zoomStep: function() {

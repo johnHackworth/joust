@@ -555,9 +555,9 @@ window.entities = window.entities || {};
         this.horse.knight = false;
         // this.horse = false;
         this.die();
-        if(arm.owner.player) {
+        // if(arm.owner.player) {
           this.announceDeath(this, arm.owner);
-        }
+        // }
       }
     },
     announceDeath: function() {
