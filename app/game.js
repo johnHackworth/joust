@@ -43,7 +43,7 @@ window.onload = function() {
       this.hero.name = this.playerName;
       this.hero.onDeath = this.gameOver.bind(this);
       this.focusedKnight = this.hero;
-      this.spawnArm(this.hero)
+      this.spawnArm(this.hero, 1)
 
     },
     oncreate: function() {
@@ -94,8 +94,15 @@ window.onload = function() {
     spawnKnight: function(knightData) {
       return this.entities.add(window.entities.Knight,knightData);
     },
-    spawnArm: function(knight) {
-      return this.entities.add(window.entities.Arm, {
+    spawnArm: function(knight, type) {
+      if(!type) {
+        type = 0;
+      }
+      var armsFactory = {
+        0: window.entities.Lance,
+        1: window.entities.LongSword
+      }
+      return this.entities.add(armsFactory[type], {
         owner: knight,
         color: knight.color2
       });

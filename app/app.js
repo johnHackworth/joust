@@ -21,6 +21,7 @@ var app = new window.engine.Application({
     this.assets.addImage("horses2.png");
     this.assets.addImage("knight.png");
     this.assets.addImage("arm.png");
+    this.assets.addImage("longsword.png");
     this.assets.addImage("grass.jpg");
     this.assets.addImage("ouch.png");
     this.assets.addImage("shields.png");
