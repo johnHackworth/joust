@@ -17,6 +17,7 @@ window.entities = window.entities || {};
       color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
     }, args);
     this.size = [30, 30];
+    this.horseType = Math.floor(Math.random() * 2);
     this.awareness = 5;
     this.cruisingSpeed = Math.floor(0.60 * this.currentMaxSpeed);
     this.walkingSpeed = Math.floor(0.30 * this.currentMaxSpeed);
@@ -183,6 +184,7 @@ window.entities = window.entities || {};
 
     render: function(delta, center) {
       // this.speed = 0;
+      var type = this.horseType;
       var round = 1;
       if(this.speed < 25) {
         round = (Math.floor(this.stepNumber / 15) % 4);
@@ -210,7 +212,7 @@ window.entities = window.entities || {};
         .translate(this.x - center[0], this.y - center[1])
         .rotate(-1 * Math.PI /2 + this.direction)
         .drawImage(this['image'],
-          60 * round * app.zoom,
+          (type * 300) + 60 * round * app.zoom,
           orientation * 60 * app.zoom,
           60 * app.zoom,
           60 * app.zoom,

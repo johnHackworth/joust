@@ -25,7 +25,7 @@ window.onload = function() {
         y: app.height / 2,
         direction: 0,
         player: true,
-        color: '#FFFFFF',
+        color: '#FF6600',
         turning: 0.03
       });
       this.hero = this.entities.add(window.entities.Knight, {
@@ -33,7 +33,7 @@ window.onload = function() {
         name: this.playerName,
         player: true,
         turning: 0.3,
-        color1: '#CCCCCC',
+        color1: '#113388',
         color2: '#113388',
         strength: 10,
         horsemanship: 10,
@@ -409,9 +409,9 @@ window.onload = function() {
     zoomLevels: {
       "smaller": 0.60,
       "small": 0.80,
-      "normal": 1,
-      "big": 1.20,
-      "bigger": 1.50
+      "normal": 1.2,
+      "big": 1.50,
+      "bigger": 1.90
     },
     setZoom: function(level) {
       if(this.step - this.lastZoomSet > 50) {

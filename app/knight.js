@@ -19,11 +19,13 @@ window.entities = window.entities || {};
       fame: args.honor || 0,
       strength:  args.strength || 5,
       horsemanship: args.horsemanship || 5,
-      hability: args.hability || 5
+      hability: args.hability || 5,
+      knightType: args.knightType || Math.floor(Math.random() * 2)
     }, args);
     if(this.color1) {
       this.color = this.color1;
     }
+
     this.lastFollowingDistance = 1000;
     this.turning = 1 * this.horsemanship / 10;
     this.health = 5 + this.strength;
@@ -41,6 +43,7 @@ window.entities = window.entities || {};
     MAX_TURN: Math.PI / 4,
     _DEFAULT_HEALTH: 10,
     _DEFAULT_NAME: 'knight',
+    _MOD_IMAGE: 0.85,
     blockType: 3,
     renderLevel: 4,
     oncreate: function() {
@@ -50,7 +53,7 @@ window.entities = window.entities || {};
     },
     prepareImage: function() {
       var image = app.assets.image("knight")
-      var wrapper = cq(image).blend(this.color, "addition", 1.0).resizePixel(0.8 * app.zoom);
+      var wrapper = cq(image).blend(this.color, "softLight", 1.0).resizePixel(this._MOD_IMAGE * app.zoom);
       this.image = wrapper.canvas;
       var wrapperSmall = cq(image).resize(1 * app.zoom * 0.8);
       this.imageSmall = wrapperSmall.canvas;
@@ -265,6 +268,11 @@ window.entities = window.entities || {};
     },
 
     render: function(delta, center) {
+      var type = this.knightType || 0;
+      var orientation = 0;
+      if(this.direction > 0 && this.direction <=  Math.PI) {
+        orientation = 1;
+      }
       var round = 1;
       if(this.stepNumber % 5 === 0) {
         this.currentPosition = Math.floor(Math.random() * 3);
@@ -277,21 +285,28 @@ window.entities = window.entities || {};
       if(this.ouchTime || this.dead) {
         this.drawOuch(center);
       }
+      // if(this.player) {
+      //   console.log(orientation * 21 *  app.zoom * this._MOD_IMAGE);
+      // }
+      var xPos =
+          (((2*type) + orientation) * 21) *  app.zoom * this._MOD_IMAGE;
       app.layer
         .fillStyle(this.color)
         .save()
         .translate(this.x - center[0], this.y - center[1])
         .rotate(this.direction)
+        // .scale(2,2)
         .drawImage(
           this.image,
-          0* app.zoom,
-          23* app.zoom  * this.currentPosition,
-          15* app.zoom,
-          21* app.zoom,
-          -15* app.zoom / 2,
-          -21* app.zoom / 2,
-          15* app.zoom,
-          21* app.zoom)
+          xPos,
+          30* app.zoom  * this.currentPosition * this._MOD_IMAGE,
+          21* app.zoom * this._MOD_IMAGE,
+          30* app.zoom * this._MOD_IMAGE,
+          - 21* app.zoom / 2 * this._MOD_IMAGE,
+          - 30* app.zoom / 2 * this._MOD_IMAGE,
+          21* app.zoom * this._MOD_IMAGE,
+          30* app.zoom * this._MOD_IMAGE
+        )
       app.layer
         .restore();
 

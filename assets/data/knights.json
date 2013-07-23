@@ -6,7 +6,8 @@
     "color2": "#FFFFAA",
     "horsemanship": 8,
     "strength": 7,
-    "hability": 10
+    "hability": 10,
+    "knightType": 2
   },
   {
     "name": "Gregor Clegane",
