@@ -29,7 +29,16 @@ window.entities = window.entities || {};
       var wrapper = cq(image).resizePixel(1* app.zoom);
       this.image = wrapper.canvas;
     },
+    getSwingSpritePosition: function() {
+      if(this.swinging) {
+        return 4 - Math.floor(this.swinging/2);
+      } else {
+        return 0;
+      }
+    },
     render: function(delta, center) {
+      var armPoint = this.owner.getArmPosition();
+      var spriteX = this.getSwingSpritePosition();
       var armPoint = this.owner.getArmPosition();
       this.x = armPoint[0];
       this.y = armPoint[1];
@@ -37,7 +46,15 @@ window.entities = window.entities || {};
         .save()
         .translate(this.x- center[0], this.y- center[1])
         .rotate(this.direction)
-        .drawImage(this.image, -this.image.width / 2, 8)
+        .drawImage(this.image,
+          spriteX * 30 * app.zoom,
+          0,
+          30 * app.zoom,
+          30 * app.zoom,
+          -20 / 2,
+          8,
+          30 * app.zoom,
+          30 * app.zoom)
         .restore();
     },
 
