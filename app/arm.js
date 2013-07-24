@@ -51,6 +51,9 @@ window.entities = window.entities || {};
 
     step: function(delta) {
       this.turn();
+      if(this.swinging) {
+        this.swinging--;
+      }
     },
 
     turn: function() {
@@ -137,6 +140,11 @@ window.entities = window.entities || {};
         damage = 0;
       }
       return damage;
+    },
+    swing: function() {
+      if(!this.swinging) {
+        this.swinging = 6;
+      }
     }
 
 
