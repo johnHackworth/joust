@@ -90,12 +90,20 @@ window.entities = window.entities || {};
         this.currentMaxSpeed = 2 * this.currentMaxSpeed / 3;
         this.exahusted = true;
       }
+      var speedLimit = 0;
       if(this.spurredLeft) {
-        this.speed = this.maxSpeed * this.rider.horsemanship / 10 * ( (0.10 * Math.random()) + 0.90);
+        speedLimit = this.maxSpeed * this.rider.horsemanship / 10 * ( (0.10 * Math.random()) + 0.90);
+
       } else if(this.awareness > 5) {
-        this.speed = this.cruisingSpeed * this.rider.horsemanship / 10 * ( (0.10 * Math.random()) + 0.90);
+        var speedLimit = this.cruisingSpeed * this.rider.horsemanship / 10 * ( (0.10 * Math.random()) + 0.90);
       } else {
-        this.speed = this.walkingSpeed * this.rider.horsemanship / 10 * ( (0.10 * Math.random()) + 0.90);
+        var speedLimit = this.walkingSpeed * this.rider.horsemanship / 10 * ( (0.10 * Math.random()) + 0.90);
+      }
+
+      if(this.speed < speedLimit) {
+        this.speed++;
+      } else {
+        this.speed--;
       }
 
       if(!this.spurred) {

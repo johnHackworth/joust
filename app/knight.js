@@ -131,7 +131,7 @@ window.entities = window.entities || {};
         if(this.following && this.followingRounds) {
           if(this.isFront([this.following.x, this.following.y])) {
             this.intendedDirection = this.getCollisionCourse(this.following);
-            this.spurHorse();
+            this.specialAction();
             if(this.name === 'Jon Umber') console.log('Umber following '+this.following.name + ' at ' + this.getDistanceTo(this.following));
           } else { // our target is escaping
             if(Math.random() > 0.80) {
@@ -149,10 +149,11 @@ window.entities = window.entities || {};
       }
       if(this.horse) {
         this.horse.intendedDirection = this.intendedDirection;
-        if(this.horse.speed < this.horse.cruisingSpeed &&
-          Math.random() > 0.10
+        if(!this.player &&
+          this.horse.speed < this.horse.cruisingSpeed &&
+          10 * Math.random() > (12 - this.horsemanship)
         ) {
-          // this.spurHorse();
+          this.spurHorse();
         }
       }
       if(this.arm) {
@@ -648,6 +649,16 @@ window.entities = window.entities || {};
           time: time,
           color: color
         })
+      }
+    },
+    specialAction: function() {
+      if(this.arm.armtype === 'lance') {
+        this.spurHorse();
+      } else if(this.arm.armtype = 'longsword') {
+        if(this.horse.awareness < 5) {
+          this.spurHorse();
+        }
+        this.arm.swing();
       }
     }
 

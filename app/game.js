@@ -18,7 +18,7 @@ window.onload = function() {
         var knight = this.spawnKnight(knightData);
         knight.shield = cq(this.spriteShields).blend(knight.color1, "addition", 1.0).canvas;
         this.knights.push(knight);
-        this.spawnArm(knight);
+        this.spawnArm(knight, Math.floor(Math.random() * 2));
         knight.announceDeath = this.announceDeath.bind(this);
       }
       this.heroHorse = this.entities.add(window.entities.Horse, {
@@ -358,7 +358,7 @@ window.onload = function() {
       this.intendedDirection = Math.round(this.intendedDirection * 100) / 100
     },
     onclick: function() {
-      this.hero.spurHorse();
+      this.hero.specialAction();
     },
     onkeydown: function(key) {
       if(key === 'a' || key === 'left') {
@@ -369,7 +369,7 @@ window.onload = function() {
         this.hero.intendedDirection = (2*Math.PI  + (this.hero.direction + (Math.PI / 25))) % (2*Math.PI);
       }
       if(key === 'space' || key === ' ') {
-        this.hero.spurHorse();
+        this.hero.specialAction();
       }
     },
     addText: function(text, position, size, time, color) {

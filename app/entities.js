@@ -30,8 +30,7 @@ window.entities = window.entities || {};
         if(this[i].type == 'arm' && this[j].type=='knight') {
           if(
             this[i].owner != this[j] &&
-            (Math.abs(this[i].getFrontPosition()[0] - this[j].horse.getSaddlePosition()[0]) < 10) &&
-            (Math.abs(this[i].getFrontPosition()[1] - this[j].horse.getSaddlePosition()[1]) < 10)
+            this[i].isHitting(this[j])
 
           ) {
             this[j].hitBy(this[i]);

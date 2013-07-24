@@ -24,6 +24,7 @@ window.entities = window.entities || {};
 
   Lance.prototype = _.extend({}, window.entities.Arm.prototype);
   _.extend(Lance.prototype, {
+    armtype: 'lance'
   });
 
   window.entities.Lance = Lance;

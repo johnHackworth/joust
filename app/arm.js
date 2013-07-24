@@ -143,8 +143,12 @@ window.entities = window.entities || {};
     },
     swing: function() {
       if(!this.swinging) {
-        this.swinging = 6;
+        this.swinging = 12;
       }
+    },
+    isHitting: function(knight) {
+        return (Math.abs(this.getFrontPosition()[0] - knight.horse.getSaddlePosition()[0]) < 10) &&
+          (Math.abs(this.getFrontPosition()[1] - knight.horse.getSaddlePosition()[1]) < 10);
     }
 
 
