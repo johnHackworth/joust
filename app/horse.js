@@ -85,35 +85,22 @@ window.entities = window.entities || {};
         this.brainDelta = Math.random() * 2000;
       }
 
-      // NAtural horse speed increase
-      if(this.speed < this.walkingSpeed) {
-        this.speed += 40 * delta / 5000;
-      }
-      // horse-ridden speed increase
-      if(this.awareness > 5 && this.speed < this.cruisingSpeed) {
-        this.speed += 40 * delta / 5000;
-      } else {
-        if(this.speed > this.walkingSpeed) {
-          this.speed -= 20 * delta / 5000;
-        }
-      }
-
-      if(this.spurred) {
-        this.speed = this.speed + 50 * delta / 5000;
-      } else {
-        this.awareness -= 0.01;
-      }
-
-      if(this.speed > this.currentMaxSpeed) {
-        this.speed = this.currentMaxSpeed * ( (0.10 * Math.random()) + 0.90);
-      }
-
       if(this.energy <= 0 && !this.exahusted) {
         this.maxSpeed = 2 * this.maxSpeed / 3
         this.currentMaxSpeed = 2 * this.currentMaxSpeed / 3;
         this.exahusted = true;
       }
-      // this.speed = 0
+      if(this.spurredLeft) {
+        this.speed = this.maxSpeed * this.rider.horsemanship / 10 * ( (0.10 * Math.random()) + 0.90);
+      } else if(this.awareness > 5) {
+        this.speed = this.cruisingSpeed * this.rider.horsemanship / 10 * ( (0.10 * Math.random()) + 0.90);
+      } else {
+        this.speed = this.walkingSpeed * this.rider.horsemanship / 10 * ( (0.10 * Math.random()) + 0.90);
+      }
+
+      if(!this.spurred) {
+        this.awareness -= 0.01;
+      }
 
 
       this.turn();
@@ -331,11 +318,14 @@ window.entities = window.entities || {};
     },
 
     spur: function() {
-      this.spurred = true;
-      this.speed = this.speed * 1.50;
-      this.energy--;
-      this.awareness = 10;
-      this.spurredLeft = 100;
+      if(this.awareness > 5) {
+        this.spurred = true;
+        this.energy--;
+        this.awareness = 10;
+        this.spurredLeft = 100;
+      } else {
+        this.awareness = 7;
+      }
     }
 
   };

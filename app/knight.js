@@ -120,38 +120,39 @@ window.entities = window.entities || {};
         this.brainDelta = Math.random() * 1500;
       }
 
-      if(this.following && this.followingRounds) {
-        var lastFollowingDistance = this.followingDistance;
-        this.followingDistance = this.getDistanceTo(this.following);
-        if(this.followingDistance - lastFollowingDistance <= -1) {
-          this.stopFollowing();
-        }
-      }
-      if(this.following && this.followingRounds) {
-        if(this.isFront([this.following.x, this.following.y])) {
-          this.intendedDirection = this.getCollisionCourse(this.following);
-          this.spurHorse();
-          if(this.name === 'Jon Umber') console.log('Umber following '+this.following.name + ' at ' + this.getDistanceTo(this.following));
-        } else { // our target is escaping
-          if(Math.random() > 0.80) {
-            // let him go
-            if(this.name === 'Jon Umber') console.log('Umber let go '+this.following.name);
+      if(!this.player) {
+        if(this.following && this.followingRounds) {
+          var lastFollowingDistance = this.followingDistance;
+          this.followingDistance = this.getDistanceTo(this.following);
+          if(this.followingDistance - lastFollowingDistance <= -1) {
             this.stopFollowing();
-          } else {
-            // he won't go very far!!!
-            this.intendedDirection = this.getCollisionCourse(this.following);
-            if(this.name === 'Jon Umber') console.log('Umber INSISTS '+this.following.name);
           }
+        }
+        if(this.following && this.followingRounds) {
+          if(this.isFront([this.following.x, this.following.y])) {
+            this.intendedDirection = this.getCollisionCourse(this.following);
+            this.spurHorse();
+            if(this.name === 'Jon Umber') console.log('Umber following '+this.following.name + ' at ' + this.getDistanceTo(this.following));
+          } else { // our target is escaping
+            if(Math.random() > 0.80) {
+              // let him go
+              if(this.name === 'Jon Umber') console.log('Umber let go '+this.following.name);
+              this.stopFollowing();
+            } else {
+              // he won't go very far!!!
+              this.intendedDirection = this.getCollisionCourse(this.following);
+              if(this.name === 'Jon Umber') console.log('Umber INSISTS '+this.following.name);
+            }
 
+          }
         }
       }
-
       if(this.horse) {
         this.horse.intendedDirection = this.intendedDirection;
         if(this.horse.speed < this.horse.cruisingSpeed &&
           Math.random() > 0.10
         ) {
-          this.spurHorse();
+          // this.spurHorse();
         }
       }
       if(this.arm) {
@@ -497,7 +498,7 @@ window.entities = window.entities || {};
         this.followingRounds = 100;
         var angle = this.getDirectionTo(other.x, other.y);
         this.arm.intendedDirection = angle;
-        this.spurHorse();
+        // this.spurHorse();
       }
 
     },
