@@ -527,6 +527,8 @@ window.entities = window.entities || {};
       }
     },
     hitBy: function(arm) {
+
+      if(this.dead) return;
       var damage = arm.getDamageTo(this);
       if(this.ouchTime > 0) {
         if(this.currentDamage < damage) {

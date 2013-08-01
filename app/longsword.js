@@ -18,12 +18,12 @@ window.entities = window.entities || {};
     this.size = [50, 30];
     this.owner = args.owner;
     this.owner.arm = this;
-
     this.oncreate();
   };
 
   LongSword.prototype = _.extend({}, window.entities.Arm.prototype);
   _.extend(LongSword.prototype, {
+    cooldown: 30,
     armtype: 'longsword',
     prepareImage: function() {
       var image = app.assets.image('longsword')

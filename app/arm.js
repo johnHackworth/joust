@@ -25,6 +25,9 @@ window.entities = window.entities || {};
   Arm.prototype = {
     type: 'arm',
     image: 'arm',
+    currentStep: 0,
+    lastSwing: 0,
+    cooldown: 1,
     blockType: 2,
     renderLevel: 3,
     oncreate: function() {
@@ -50,6 +53,7 @@ window.entities = window.entities || {};
     },
 
     step: function(delta) {
+      this.currentStep++;
       this.turn();
       if(this.swinging) {
         this.swinging--;
@@ -142,8 +146,9 @@ window.entities = window.entities || {};
       return damage;
     },
     swing: function() {
-      if(!this.swinging) {
+      if(!this.swinging && (this.currentStep - this.lastSwing > this.cooldown) ) {
         this.swinging = 12;
+        this.lastSwing = this.currentStep;
       }
     },
     isHitting: function(knight) {

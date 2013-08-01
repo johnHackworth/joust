@@ -18,7 +18,7 @@ window.onload = function() {
         var knight = this.spawnKnight(knightData);
         knight.shield = cq(this.spriteShields).blend(knight.color1, "addition", 1.0).canvas;
         this.knights.push(knight);
-        this.spawnArm(knight, Math.floor(Math.random() * 2));
+        this.spawnArm(knight, Math.floor(Math.random() * 1.6));
         knight.announceDeath = this.announceDeath.bind(this);
       }
       this.heroHorse = this.entities.add(window.entities.Horse, {
@@ -43,7 +43,7 @@ window.onload = function() {
       this.hero.name = this.playerName;
       this.hero.onDeath = this.gameOver.bind(this);
       this.focusedKnight = this.hero;
-      this.spawnArm(this.hero, 1)
+      this.spawnArm(this.hero, 0)
 
     },
     oncreate: function() {
