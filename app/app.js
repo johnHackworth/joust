@@ -37,10 +37,12 @@ var app = new window.engine.Application({
     self.game.setHeroName('knight');
     self.game.knightsData = self.knightsData;
     this.presentation.next = function() {
+      self.layer.clear();
       self.selectScene(self.game);
     }
     this.game.next = function() {
       self.selectScene(self.presentation);
+      self.initializeLayer(self);
     }
   },
   smallZoom: function() {

@@ -7,9 +7,20 @@ window.onload = function() {
     lastZoomSet:0,
     currentZoom: 1,
     textAntiScale: 1,
+    gameEnded: false,
     onenter: function() {
+      console.log('ENTER');
       this.knights = [];
       this.zoomLevel = app.zoom;
+      this.gameEnded = false;
+      this.entities = new window.entities.GameObjects(this);
+      this.texts = [];
+      this.gameLog = [];
+      this.step = 0;
+      this.lastZoomSet = 0;
+      this.currentZoom = 1;
+      this.zoomObjetive = 1;
+      this.textAntiScale = 1;
       for(var i = 0; i < 1; i++) {
         var horse = this.spawnHorse();
         var pos = Math.floor(Math.random() * this.knightsData.length)
@@ -543,9 +554,10 @@ window.onload = function() {
         )
 
       var backButton = new window.entities.Button({
-        x: 5,
-        y: 5,
-        width: 450,
+        x: 270,
+        y: 500,
+        zoomable: true,
+        width: 500,
         height: 50,
         text: "back to menu",
         color: '#000000',
