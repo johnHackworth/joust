@@ -9,7 +9,6 @@ window.onload = function() {
     textAntiScale: 1,
     gameEnded: false,
     onenter: function() {
-      console.log('ENTER');
       this.knights = [];
       this.zoomLevel = app.zoom;
       this.gameEnded = false;
@@ -21,7 +20,7 @@ window.onload = function() {
       this.currentZoom = 1;
       this.zoomObjetive = 1;
       this.textAntiScale = 1;
-      for(var i = 0; i < 1; i++) {
+      for(var i = 0; i < 8; i++) {
         var horse = this.spawnHorse();
         var pos = Math.floor(Math.random() * this.knightsData.length)
         var knightData = this.knightsData.splice(pos, 1)[0] ;
@@ -49,8 +48,11 @@ window.onload = function() {
         color2: '#113388',
         strength: 10,
         horsemanship: 10,
-        hability: 10
+        hability: 10,
+        shield: 1
       })
+      this.hero.shield = cq(this.spriteShields).blend(this.hero.color1, "addition", 1.0).canvas;
+
       this.hero.name = this.playerName;
       this.hero.onDeath = this.gameOver.bind(this);
       this.focusedKnight = this.hero;
@@ -312,7 +314,22 @@ window.onload = function() {
         .font('arial 24px #000000')
         .wrappedText(this.hero.name, 30,30, 200)
         .restore();
-
+      app.layer
+        .save()
+        .fillStyle('#FFFFFF')
+        .scale(this.textAntiScale, this.textAntiScale)
+        .drawImage(
+          this.hero.shield,
+          0,
+          20 * (this.hero.shieldType-1),
+          20,
+          20,
+          5,
+          30 + 0 * 30,
+          20,
+          20
+        )
+        .restore();
       this.heroHealth = app.layer
         .save()
         .scale(this.textAntiScale, this.textAntiScale)
