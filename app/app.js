@@ -39,6 +39,9 @@ var app = new window.engine.Application({
     this.presentation.next = function() {
       self.selectScene(self.game);
     }
+    this.game.next = function() {
+      self.selectScene(self.presentation);
+    }
   },
   smallZoom: function() {
     // this.zoom = 0.8;

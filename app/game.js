@@ -10,7 +10,7 @@ window.onload = function() {
     onenter: function() {
       this.knights = [];
       this.zoomLevel = app.zoom;
-      for(var i = 0; i < 8; i++) {
+      for(var i = 0; i < 1; i++) {
         var horse = this.spawnHorse();
         var pos = Math.floor(Math.random() * this.knightsData.length)
         var knightData = this.knightsData.splice(pos, 1)[0] ;
@@ -91,6 +91,18 @@ window.onload = function() {
       this.playerName = name;
       this.heroHame = name;
     },
+    getAliveKnightsNumber: function() {
+      var n = 0;
+      for(var i = 0, l = this.knights.length; i < l; i++) {
+        if(!this.knights[i].dead) {
+          n++;
+        }
+      }
+      if(!this.hero.dead) {
+        n++;
+      }
+      return n;
+    },
     spawnKnight: function(knightData) {
       return this.entities.add(window.entities.Knight,knightData);
     },
@@ -114,7 +126,10 @@ window.onload = function() {
       this.zoomStep();
       this.entities.step(delta, this.center);
       this.entities.call("step", delta, this.center);
-
+      if(this.getAliveKnightsNumber() <= 1 && !this.gameEnded) {
+        this.gameEnded = true;
+        this.showWinner();
+      }
     },
     heroDistance: function() {
       var heroPos = [this.hero.x, this.hero.y];
@@ -186,7 +201,7 @@ window.onload = function() {
           .scale(this.textAntiScale, this.textAntiScale)
           .fillStyle("rgba("+this.texts[i].color+","+alpha+")")
           .font(this.texts[i].size + 'px Arial')
-          .wrappedText(this.texts[i].text, this.texts[i].position[0],yPos, 400)
+          .wrappedText(this.texts[i].text, this.texts[i].position[0],yPos, 800)
           // .scale(this.textAntiScale, this.textAntiScale)
           .restore();
 
@@ -357,8 +372,9 @@ window.onload = function() {
       );
       this.intendedDirection = Math.round(this.intendedDirection * 100) / 100
     },
-    onclick: function() {
+    onclick: function(x,y) {
       this.hero.specialAction();
+      this.entities.click([x,y])
     },
     onkeydown: function(key) {
       if(key === 'a' || key === 'left') {
@@ -499,6 +515,45 @@ window.onload = function() {
         }
       }
 
+    },
+    showWinner: function() {
+      var self = this;
+      var winner = {name:''};
+      if(!this.hero.dead) {
+        winner = this.hero;
+      } else {
+        for(var i = 0, l = this.knights.length; i < l; i++) {
+          if(!this.knights[i].dead) {
+            winner = this.knights[i];
+          }
+        }
+      }
+      this.addText("Glory to the winner",
+        [150, 150],
+        60,
+        800,
+        '255,250,50'
+        )
+
+      this.addText("Glory to " + winner.name,
+        [150,250],
+        80,
+        800,
+        '255,255,0'
+        )
+
+      var backButton = new window.entities.Button({
+        x: 5,
+        y: 5,
+        width: 450,
+        height: 50,
+        text: "back to menu",
+        color: '#000000',
+        clicked: function() {
+          self.next();
+        }
+      })
+      this.entities.push(backButton)
     }
 
   });

@@ -4,13 +4,14 @@ window.entities = window.entities || {};
 
   var Button = function(args) {
     _.extend(this, {
-      text: "" || args.text,
+      text: "" || args.text, // this is all upsidedown! fix!
       x: 0 || args.x,
       y: 0 || args.y,
       textSize: 40 || args.textSize,
       width: 100 || args.width,
       height: 50 || args.height,
-      color: '#000000' || args.color
+      color: '#000000' || args.color,
+      renderLevel: args.renderLevel || 0
     }, args);
     this.clicked = args.clicked;
   }
