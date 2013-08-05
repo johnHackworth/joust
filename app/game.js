@@ -56,7 +56,7 @@ window.onload = function() {
       this.hero.name = this.playerName;
       this.hero.onDeath = this.gameOver.bind(this);
       this.focusedKnight = this.hero;
-      this.spawnArm(this.hero, 0)
+      this.spawnArm(this.hero, 1)
 
     },
     oncreate: function() {
@@ -502,8 +502,8 @@ window.onload = function() {
       "smaller": 0.50,
       "small": 0.80,
       "normal": 1.1,
-      "big": 1.40,
-      "bigger": 1.70
+      "big": 1.30,
+      "bigger": 1.50
     },
     setZoom: function(level) {
       if(this.step - this.lastZoomSet > 50) {

@@ -27,7 +27,7 @@ window.entities = window.entities || {};
     armtype: 'longsword',
     prepareImage: function() {
       var image = app.assets.image('longsword')
-      var wrapper = cq(image).resizePixel(1* app.zoom);
+      var wrapper = cq(image);
       this.image = wrapper.canvas;
     },
     getSwingSpritePosition: function() {
@@ -62,7 +62,7 @@ window.entities = window.entities || {};
           0,
           30 * app.zoom,
           30 * app.zoom,
-          -20 / 2,
+          -10,
           8,
           30 * app.zoom,
           30 * app.zoom)
