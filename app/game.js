@@ -169,8 +169,8 @@ window.onload = function() {
       this.deltaX = Math.floor(this.focusedKnight.x - midX);
       if(this.deltaY < -100) {
         this.deltaY = -100;
-      } else if(this.deltaY > 350) {
-        this.deltaY = 350;
+      } else if(this.deltaY > 450) {
+        this.deltaY = 450;
       }
       this.center = [this.deltaX, this.deltaY];
     },
@@ -184,11 +184,12 @@ window.onload = function() {
         .drawImage(this.image, (-1)* this.image.width - this.center[0], -250 - this.center[1])
         .drawImage(this.image, this.image.width- this.center[0], -250- this.center[1])
       /* call render method of each entity in the collection */
-      this.drawLimits();
       this.drawEntities(delta);
+      this.drawLimits();
       this.drawTexts();
       this.drawGameLog();
       this.drawNames();
+
     },
     drawEntities: function(delta) {
       for(var i=0; i <= 4; i++) {
@@ -254,15 +255,16 @@ window.onload = function() {
       app.layer.context.fillStyle = "rgba(50,50,50,0.3)";
       app.layer.context.strokeStyle = "#555555";
 
+      // shadows
       app.layer.fillRect(
-        (-10 - this.center[0]) * app.zoom,
+        (-30 - this.center[0]) * app.zoom,
         (0 - this.center[1]) * app.zoom,
-        2 * app.width * app.zoom,
+        1 * app.width * app.zoom + 30,
         10 * app.zoom);
       app.layer.fillRect(
-        (0 - this.center[0]) * app.zoom,
+        (-30 - this.center[0]) * app.zoom,
         (app.height + 5 - this.center[1]) * app.zoom,
-        2 * this.image.width * app.zoom,
+        (1 * this.image.width )* app.zoom + 120,
         10 * app.zoom);
       app.layer.fillRect(
         (0 - this.center[0]) * app.zoom,
@@ -270,7 +272,7 @@ window.onload = function() {
         10 * app.zoom,
         app.height * app.zoom);
       app.layer.fillRect(
-        (app.width + 5 - this.center[0]) * app.zoom,
+        (app.width  - this.center[0]) * app.zoom,
         (0 - this.center[1]) * app.zoom,
         10 * app.zoom,
         app.height * app.zoom);
@@ -282,15 +284,16 @@ window.onload = function() {
       app.layer.beginPath();
       app.layer.context.fillStyle = "rgba(100,50,0,0.9)";
       app.layer.context.strokeStyle = "#555555";
+      // wood
       app.layer.fillRect(
-        (-10 - this.center[0]) * app.zoom,
+        (-30 - this.center[0]) * app.zoom,
         (- 5 - this.center[1]) * app.zoom,
-        2 * app.width * app.zoom,
+        1 * app.width * app.zoom + 30,
         5 * app.zoom);
       app.layer.fillRect(
-        (0 - this.center[0]) * app.zoom,
+        (-30 - this.center[0]) * app.zoom,
         (app.height - this.center[1]) * app.zoom,
-        2 * this.image.width * app.zoom,
+        1 * this.image.width * app.zoom + 120,
         5 * app.zoom);
       app.layer.fillRect(
         (0 - 5 - this.center[0]) * app.zoom,

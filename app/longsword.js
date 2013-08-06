@@ -27,7 +27,7 @@ window.entities = window.entities || {};
     armtype: 'longsword',
     prepareImage: function() {
       var image = app.assets.image('longsword')
-      var wrapper = cq(image).blend(this.color, "addition", 1.0);
+      var wrapper = cq(image);//.blend(this.color, "addition", 1.0);
       this.image = wrapper.canvas;
     },
     getSwingSpritePosition: function() {
