@@ -70,6 +70,9 @@ window.entities = window.entities || {};
     },
 
     getDamageTo: function(knight) {
+      if(!this.swinging) {
+        return 0;
+      }
       var inertia = this.owner.getInertia();
       var forceModifier = this.owner.strength / 10
       var damage =  Math.floor(3 * forceModifier * (1 + inertia));

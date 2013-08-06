@@ -20,7 +20,7 @@ window.onload = function() {
       this.currentZoom = 1;
       this.zoomObjetive = 1;
       this.textAntiScale = 1;
-      for(var i = 0; i < 8; i++) {
+      for(var i = 0; i < 1; i++) {
         var horse = this.spawnHorse();
         var pos = Math.floor(Math.random() * this.knightsData.length)
         var knightData = this.knightsData.splice(pos, 1)[0] ;
@@ -583,6 +583,16 @@ window.onload = function() {
         }
       })
       this.entities.push(backButton)
+    },
+    armsTest: function(x, y) {
+      this.hero.horse.step = function() { this.direction = 0;}
+      this.hero.horse.x = 20;
+      this.hero.horse.y = 20;
+      this.hero.health = 50;
+      this.knights[0].horse.step = function() { this.direction = Math.PI}
+      this.knights[0].horse.x = x || 30;
+      this.knights[0].horse.y = y || 30;
+      this.knights[0].health = 50;
     }
 
   });
