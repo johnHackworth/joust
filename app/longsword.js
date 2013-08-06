@@ -43,11 +43,11 @@ window.entities = window.entities || {};
       if(spriteX === 0) {
         this.size = [40, 30]
       } else if(spriteX === 1) {
-        this.size = [45, 25]
+        this.size = [15, 25]
       } else if(spriteX === 2) {
-        this.size = [50, 20]
+        this.size = [25, 15]
       } else if(spriteX === 3) {
-        this.size = [40, 30]
+        this.size = [30, 10]
       }
 
       var armPoint = this.owner.getArmPosition();

@@ -589,7 +589,7 @@ window.onload = function() {
       this.hero.horse.x = 20;
       this.hero.horse.y = 20;
       this.hero.health = 50;
-      this.knights[0].horse.step = function() { this.direction = Math.PI}
+      this.knights[0].horse.step = function() { this.direction = Math.PI; this.rider.direction = this.direction;}
       this.knights[0].horse.x = x || 30;
       this.knights[0].horse.y = y || 30;
       this.knights[0].health = 50;
