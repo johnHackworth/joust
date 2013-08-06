@@ -15,7 +15,7 @@ window.entities = window.entities || {};
       player: false,
       color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
     }, args);
-    this.size = [70, 18];
+    this.size = [65, 15];
     this.owner = args.owner;
     this.owner.arm = this;
 

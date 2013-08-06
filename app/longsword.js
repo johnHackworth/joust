@@ -15,7 +15,7 @@ window.entities = window.entities || {};
       player: false,
       color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
     }, args);
-    this.size = [50, 30];
+    this.size = [120, 30];
     this.owner = args.owner;
     this.owner.arm = this;
     this.oncreate();
@@ -27,12 +27,12 @@ window.entities = window.entities || {};
     armtype: 'longsword',
     prepareImage: function() {
       var image = app.assets.image('longsword')
-      var wrapper = cq(image);
+      var wrapper = cq(image).blend(this.color, "addition", 1.0);
       this.image = wrapper.canvas;
     },
     getSwingSpritePosition: function() {
       if(this.swinging) {
-        return 4 - Math.floor(this.swinging/4);
+        return 7 - Math.floor(this.swinging/2);
       } else {
         return 0;
       }
@@ -41,13 +41,19 @@ window.entities = window.entities || {};
       var armPoint = this.owner.getArmPosition();
       var spriteX = this.getSwingSpritePosition();
       if(spriteX === 0) {
-        this.size = [40, 30]
+        this.size = [5, 5]
       } else if(spriteX === 1) {
-        this.size = [15, 25]
+        this.size = [-10, 10]
       } else if(spriteX === 2) {
-        this.size = [25, 15]
+        this.size = [-5, 20]
       } else if(spriteX === 3) {
+        this.size = [10, 40]
+      } else if(spriteX === 4) {
+        this.size = [20, 35]
+      } else if(spriteX === 5) {
         this.size = [30, 10]
+      } else if(spriteX === 6) {
+        this.size = [15, -10]
       }
 
       var armPoint = this.owner.getArmPosition();
@@ -61,11 +67,11 @@ window.entities = window.entities || {};
           spriteX * 30 * app.zoom,
           0,
           30 * app.zoom,
+          90 * app.zoom,
+          -12,
+          -45,
           30 * app.zoom,
-          -10,
-          8,
-          30 * app.zoom,
-          30 * app.zoom)
+          90 * app.zoom)
         .restore();
     },
 
