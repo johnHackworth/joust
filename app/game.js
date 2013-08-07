@@ -32,7 +32,7 @@ window.onload = function() {
         knight.announceDeath = this.announceDeath.bind(this);
       }
       this.heroHorse = this.entities.add(window.entities.Horse, {
-        x: 20,
+        x: 40,
         y: app.height / 2,
         direction: 0,
         player: true,
@@ -56,7 +56,7 @@ window.onload = function() {
       this.hero.name = this.playerName;
       this.hero.onDeath = this.gameOver.bind(this);
       this.focusedKnight = this.hero;
-      this.spawnArm(this.hero, 1)
+      this.spawnArm(this.hero, 0)
 
     },
     oncreate: function() {
@@ -76,6 +76,8 @@ window.onload = function() {
       this.imageSmall = wrapperSmall.canvas;
       this.imageNormal = wrapper.canvas;
       this.imageSize = 'normal';
+      this.star = cq(app.assets.image('star')).canvas;
+      this.halfStar = cq(app.assets.image('halfstar')).canvas;
     },
     changeImageSize: function() {
       if(this.imageSize === 'normal') {
@@ -189,6 +191,7 @@ window.onload = function() {
       this.drawTexts();
       this.drawGameLog();
       this.drawNames();
+      this.drawStars();
 
     },
     drawEntities: function(delta) {
@@ -365,7 +368,7 @@ window.onload = function() {
           .wrappedText(this.knights[i].health > 0?
             '( ' + this.knights[i].health  +' / ' + this.knights[i].maxHealth + ') '
             //+ this.knights[i].honor + ' honor, ' + this.knights[i].fame + ' fame'
-            : 'out of combat'
+            : 'Knocked'
             , 30,45+ (i+1) * 30, 200)
           .restore();
         app.layer
@@ -384,6 +387,38 @@ window.onload = function() {
             20
           )
           .restore();
+      }
+
+
+
+    },
+    drawStars: function() {
+      for(var i = 0, l = this.knights.length; i < l; i++) {
+        var points = this.knights[i].fame + this.knights[i].honor;
+        var stars = Math.floor(points / 40)
+        var halfStar = (points % 40 > 20)
+        for(var j = 0; j < stars; j++) {
+          app.layer
+            .save()
+            .scale(this.textAntiScale, this.textAntiScale)
+            .drawImage(
+              this.star,
+              75 + 10 * j,
+              67 + 30 * i
+            )
+            .restore();
+        }
+        if(halfStar) {
+          app.layer
+            .save()
+            .scale(this.textAntiScale, this.textAntiScale)
+            .drawImage(
+              this.halfStar,
+              75 + 10 * stars,
+              67 + 30 * i
+            )
+            .restore();
+        }
       }
 
 
@@ -461,6 +496,7 @@ window.onload = function() {
           '255,0,0'
           )
       }
+      this.showBackButton();
     },
     announceDeath: function(knight, killer) {
       if(killer.player === true) {
@@ -573,6 +609,9 @@ window.onload = function() {
         '255,255,0'
         )
 
+        this.showBackButton();
+    },
+    showBackButton: function() {
       var backButton = new window.entities.Button({
         x: 270,
         y: 500,

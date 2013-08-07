@@ -28,6 +28,8 @@ var app = new window.engine.Application({
     this.assets.addImage("mark.png");
     this.assets.addImage("sparks.png");
     this.assets.addImage("intro.jpg");
+    this.assets.addImage("star.png");
+    this.assets.addImage("halfstar.png");
   },
 
   /* and when the assets are loaded select the game screen */

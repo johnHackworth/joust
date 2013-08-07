@@ -294,10 +294,12 @@ window.entities = window.entities || {};
 
       } else {
         var angle = utils.atanxy(otherHorse.x - this.x, otherHorse.y - this.y);
-        if(this.isFront(otherHorse.getPosition()) > 0) {
-          this.intendedDirection = angle;
-        } else {
-          this.intendedDirection = angle;
+        if(this.isNear(otherHorse)) {
+          if(this.isFront(otherHorse.getPosition()) > 0) {
+            this.intendedDirection = angle;
+          } else {
+            this.intendedDirection = angle;
+          }
         }
       }
     },
