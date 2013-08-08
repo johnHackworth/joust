@@ -53,7 +53,7 @@ window.entities = window.entities || {};
     },
     prepareImage: function() {
       var image = app.assets.image("knight")
-      var wrapper = cq(image).blend(this.color, "softLight", 1.0).resizePixel(this._MOD_IMAGE * app.zoom);
+      var wrapper = cq(image).blend(this.color, "softLight", 1.0);
       this.image = wrapper.canvas;
       var wrapperSmall = cq(image).resize(1 * app.zoom * 0.8);
       this.imageSmall = wrapperSmall.canvas;

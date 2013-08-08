@@ -39,7 +39,7 @@ window.entities = window.entities || {};
     },
     prepareImage: function() {
       var image = app.assets.image("horses2")
-      var wrapper = cq(image).resizePixel(1.5 * app.zoom);
+      var wrapper = cq(image);
       this.image = wrapper.canvas;
       var wrapperSmall = cq(image).resize(1 * app.zoom * 0.8);
       this.imageSmall = wrapperSmall.canvas;
