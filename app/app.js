@@ -28,6 +28,8 @@ var app = new window.engine.Application({
     this.assets.addImage("mark.png");
     this.assets.addImage("sparks.png");
     this.assets.addImage("intro.jpg");
+    this.assets.addImage("star.png");
+    this.assets.addImage("halfstar.png");
   },
 
   /* and when the assets are loaded select the game screen */
@@ -37,7 +39,12 @@ var app = new window.engine.Application({
     self.game.setHeroName('knight');
     self.game.knightsData = self.knightsData;
     this.presentation.next = function() {
+      self.layer.clear();
       self.selectScene(self.game);
+    }
+    this.game.next = function() {
+      self.selectScene(self.presentation);
+      self.initializeLayer(self);
     }
   },
   smallZoom: function() {

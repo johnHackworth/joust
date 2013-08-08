@@ -7,9 +7,19 @@ window.onload = function() {
     lastZoomSet:0,
     currentZoom: 1,
     textAntiScale: 1,
+    gameEnded: false,
     onenter: function() {
       this.knights = [];
       this.zoomLevel = app.zoom;
+      this.gameEnded = false;
+      this.entities = new window.entities.GameObjects(this);
+      this.texts = [];
+      this.gameLog = [];
+      this.step = 0;
+      this.lastZoomSet = 0;
+      this.currentZoom = 1;
+      this.zoomObjetive = 1;
+      this.textAntiScale = 1;
       for(var i = 0; i < 8; i++) {
         var horse = this.spawnHorse();
         var pos = Math.floor(Math.random() * this.knightsData.length)
@@ -18,11 +28,11 @@ window.onload = function() {
         var knight = this.spawnKnight(knightData);
         knight.shield = cq(this.spriteShields).blend(knight.color1, "addition", 1.0).canvas;
         this.knights.push(knight);
-        this.spawnArm(knight, Math.floor(Math.random() * 2));
+        this.spawnArm(knight, Math.floor(Math.random() * 1.6));
         knight.announceDeath = this.announceDeath.bind(this);
       }
       this.heroHorse = this.entities.add(window.entities.Horse, {
-        x: 20,
+        x: 40,
         y: app.height / 2,
         direction: 0,
         player: true,
@@ -38,13 +48,15 @@ window.onload = function() {
         color2: '#113388',
         strength: 10,
         horsemanship: 10,
-        hability: 10
+        hability: 10,
+        shield: 1
       })
+      this.hero.shield = cq(this.spriteShields).blend(this.hero.color1, "addition", 1.0).canvas;
+
       this.hero.name = this.playerName;
       this.hero.onDeath = this.gameOver.bind(this);
       this.focusedKnight = this.hero;
       this.spawnArm(this.hero, Math.floor(Math.random() *2))
-
     },
     oncreate: function() {
 
@@ -63,6 +75,8 @@ window.onload = function() {
       this.imageSmall = wrapperSmall.canvas;
       this.imageNormal = wrapper.canvas;
       this.imageSize = 'normal';
+      this.star = cq(app.assets.image('star')).canvas;
+      this.halfStar = cq(app.assets.image('halfstar')).canvas;
     },
     changeImageSize: function() {
       if(this.imageSize === 'normal') {
@@ -91,6 +105,18 @@ window.onload = function() {
       this.playerName = name;
       this.heroHame = name;
     },
+    getAliveKnightsNumber: function() {
+      var n = 0;
+      for(var i = 0, l = this.knights.length; i < l; i++) {
+        if(!this.knights[i].dead) {
+          n++;
+        }
+      }
+      if(!this.hero.dead) {
+        n++;
+      }
+      return n;
+    },
     spawnKnight: function(knightData) {
       return this.entities.add(window.entities.Knight,knightData);
     },
@@ -114,7 +140,10 @@ window.onload = function() {
       this.zoomStep();
       this.entities.step(delta, this.center);
       this.entities.call("step", delta, this.center);
-
+      if(this.getAliveKnightsNumber() <= 1 && !this.gameEnded) {
+        this.gameEnded = true;
+        this.showWinner();
+      }
     },
     heroDistance: function() {
       var heroPos = [this.hero.x, this.hero.y];
@@ -141,8 +170,8 @@ window.onload = function() {
       this.deltaX = Math.floor(this.focusedKnight.x - midX);
       if(this.deltaY < -100) {
         this.deltaY = -100;
-      } else if(this.deltaY > 350) {
-        this.deltaY = 350;
+      } else if(this.deltaY > 450) {
+        this.deltaY = 450;
       }
       this.center = [this.deltaX, this.deltaY];
     },
@@ -156,11 +185,13 @@ window.onload = function() {
         .drawImage(this.image, (-1)* this.image.width - this.center[0], -250 - this.center[1])
         .drawImage(this.image, this.image.width- this.center[0], -250- this.center[1])
       /* call render method of each entity in the collection */
-      this.drawLimits();
       this.drawEntities(delta);
+      this.drawLimits();
       this.drawTexts();
       this.drawGameLog();
       this.drawNames();
+      this.drawStars();
+
     },
     drawEntities: function(delta) {
       for(var i=0; i <= 4; i++) {
@@ -186,7 +217,7 @@ window.onload = function() {
           .scale(this.textAntiScale, this.textAntiScale)
           .fillStyle("rgba("+this.texts[i].color+","+alpha+")")
           .font(this.texts[i].size + 'px Arial')
-          .wrappedText(this.texts[i].text, this.texts[i].position[0],yPos, 400)
+          .wrappedText(this.texts[i].text, this.texts[i].position[0],yPos, 800)
           // .scale(this.textAntiScale, this.textAntiScale)
           .restore();
 
@@ -226,15 +257,16 @@ window.onload = function() {
       app.layer.context.fillStyle = "rgba(50,50,50,0.3)";
       app.layer.context.strokeStyle = "#555555";
 
+      // shadows
       app.layer.fillRect(
-        (-10 - this.center[0]) * app.zoom,
+        (-30 - this.center[0]) * app.zoom,
         (0 - this.center[1]) * app.zoom,
-        2 * app.width * app.zoom,
+        1 * app.width * app.zoom + 30,
         10 * app.zoom);
       app.layer.fillRect(
-        (0 - this.center[0]) * app.zoom,
+        (-30 - this.center[0]) * app.zoom,
         (app.height + 5 - this.center[1]) * app.zoom,
-        2 * this.image.width * app.zoom,
+        (1 * this.image.width )* app.zoom + 120,
         10 * app.zoom);
       app.layer.fillRect(
         (0 - this.center[0]) * app.zoom,
@@ -242,7 +274,7 @@ window.onload = function() {
         10 * app.zoom,
         app.height * app.zoom);
       app.layer.fillRect(
-        (app.width + 5 - this.center[0]) * app.zoom,
+        (app.width  - this.center[0]) * app.zoom,
         (0 - this.center[1]) * app.zoom,
         10 * app.zoom,
         app.height * app.zoom);
@@ -254,15 +286,16 @@ window.onload = function() {
       app.layer.beginPath();
       app.layer.context.fillStyle = "rgba(100,50,0,0.9)";
       app.layer.context.strokeStyle = "#555555";
+      // wood
       app.layer.fillRect(
-        (-10 - this.center[0]) * app.zoom,
+        (-30 - this.center[0]) * app.zoom,
         (- 5 - this.center[1]) * app.zoom,
-        2 * app.width * app.zoom,
+        1 * app.width * app.zoom + 30,
         5 * app.zoom);
       app.layer.fillRect(
-        (0 - this.center[0]) * app.zoom,
+        (-30 - this.center[0]) * app.zoom,
         (app.height - this.center[1]) * app.zoom,
-        2 * this.image.width * app.zoom,
+        1 * this.image.width * app.zoom + 120,
         5 * app.zoom);
       app.layer.fillRect(
         (0 - 5 - this.center[0]) * app.zoom,
@@ -286,7 +319,22 @@ window.onload = function() {
         .font('arial 24px #000000')
         .wrappedText(this.hero.name, 30,30, 200)
         .restore();
-
+      app.layer
+        .save()
+        .fillStyle('#FFFFFF')
+        .scale(this.textAntiScale, this.textAntiScale)
+        .drawImage(
+          this.hero.shield,
+          0,
+          20 * (this.hero.shieldType-1),
+          20,
+          20,
+          5,
+          30 + 0 * 30,
+          20,
+          20
+        )
+        .restore();
       this.heroHealth = app.layer
         .save()
         .scale(this.textAntiScale, this.textAntiScale)
@@ -319,7 +367,7 @@ window.onload = function() {
           .wrappedText(this.knights[i].health > 0?
             '( ' + this.knights[i].health  +' / ' + this.knights[i].maxHealth + ') '
             //+ this.knights[i].honor + ' honor, ' + this.knights[i].fame + ' fame'
-            : 'out of combat'
+            : 'Knocked'
             , 30,45+ (i+1) * 30, 200)
           .restore();
         app.layer
@@ -343,6 +391,38 @@ window.onload = function() {
 
 
     },
+    drawStars: function() {
+      for(var i = 0, l = this.knights.length; i < l; i++) {
+        var points = this.knights[i].fame + this.knights[i].honor;
+        var stars = Math.floor(points / 40)
+        var halfStar = (points % 40 > 20)
+        for(var j = 0; j < stars; j++) {
+          app.layer
+            .save()
+            .scale(this.textAntiScale, this.textAntiScale)
+            .drawImage(
+              this.star,
+              75 + 10 * j,
+              67 + 30 * i
+            )
+            .restore();
+        }
+        if(halfStar) {
+          app.layer
+            .save()
+            .scale(this.textAntiScale, this.textAntiScale)
+            .drawImage(
+              this.halfStar,
+              75 + 10 * stars,
+              67 + 30 * i
+            )
+            .restore();
+        }
+      }
+
+
+
+    },
     onmousemove: function(x, y) {
       this.hero.intendedDirection = utils.atanxy(
         x - this.hero.horse.x,
@@ -357,8 +437,9 @@ window.onload = function() {
       );
       this.intendedDirection = Math.round(this.intendedDirection * 100) / 100
     },
-    onclick: function() {
+    onclick: function(x,y) {
       this.hero.specialAction();
+      this.entities.click([x,y])
     },
     onkeydown: function(key) {
       if(key === 'a' || key === 'left') {
@@ -414,6 +495,7 @@ window.onload = function() {
           '255,0,0'
           )
       }
+      this.showBackButton();
     },
     announceDeath: function(knight, killer) {
       if(killer.player === true) {
@@ -458,8 +540,8 @@ window.onload = function() {
       "smaller": 0.50,
       "small": 0.80,
       "normal": 1.1,
-      "big": 1.40,
-      "bigger": 1.70
+      "big": 1.30,
+      "bigger": 1.50
     },
     setZoom: function(level) {
       if(this.step - this.lastZoomSet > 50) {
@@ -499,6 +581,59 @@ window.onload = function() {
         }
       }
 
+    },
+    showWinner: function() {
+      var self = this;
+      var winner = {name:''};
+      if(!this.hero.dead) {
+        winner = this.hero;
+      } else {
+        for(var i = 0, l = this.knights.length; i < l; i++) {
+          if(!this.knights[i].dead) {
+            winner = this.knights[i];
+          }
+        }
+      }
+      this.addText("Glory to the winner",
+        [150, 150],
+        60,
+        800,
+        '255,250,50'
+        )
+
+      this.addText("Glory to " + winner.name,
+        [150,250],
+        80,
+        800,
+        '255,255,0'
+        )
+
+        this.showBackButton();
+    },
+    showBackButton: function() {
+      var backButton = new window.entities.Button({
+        x: 270,
+        y: 500,
+        zoomable: true,
+        width: 500,
+        height: 50,
+        text: "back to menu",
+        color: '#000000',
+        clicked: function() {
+          self.next();
+        }
+      })
+      this.entities.push(backButton)
+    },
+    armsTest: function(x, y) {
+      this.hero.horse.step = function() { this.speed=0; this.direction = 0;}
+      this.hero.horse.x = 20;
+      this.hero.horse.y = 20;
+      this.hero.health = 50;
+      this.knights[0].horse.step = function() { this.direction = Math.PI; this.rider.direction = this.direction;}
+      this.knights[0].horse.x = x || 30;
+      this.knights[0].horse.y = y || 30;
+      this.knights[0].health = 50;
     }
 
   });

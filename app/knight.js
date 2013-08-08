@@ -187,7 +187,7 @@ window.entities = window.entities || {};
       } else {
         var angle = this.getDirectionTo(other.x, other.y);
         var otherDirection = other.direction;
-        return (angle + otherDirection) / 2;
+        return ((angle + otherDirection) / 2) % (Math.PI * 2);
       }
     },
     getDistanceTo: function(other) {
@@ -494,12 +494,11 @@ window.entities = window.entities || {};
         !this.following &&
         this.getDistanceTo(other) < 500
       ) {
-        console.log('locked');
         this.following = other;
-        this.followingRounds = 100;
+        this.followingRounds = 300;
         var angle = this.getDirectionTo(other.x, other.y);
         this.arm.intendedDirection = angle;
-        // this.spurHorse();
+        this.spurHorse();
       }
 
     },
@@ -527,6 +526,8 @@ window.entities = window.entities || {};
       }
     },
     hitBy: function(arm) {
+
+      if(this.dead) return;
       var damage = arm.getDamageTo(this);
       if(this.ouchTime > 0) {
         if(this.currentDamage < damage) {

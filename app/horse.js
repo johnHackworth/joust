@@ -7,8 +7,8 @@ window.entities = window.entities || {};
     _.extend(this, {
       direction: 0,
       speed: -10,
-      maxSpeed: 250,
-      currentMaxSpeed: 250,
+      maxSpeed: 280,
+      currentMaxSpeed: 280,
       turning: 0.03,
       /* brain cooldown */
       brainDelta: 0,
@@ -19,8 +19,8 @@ window.entities = window.entities || {};
     this.size = [30, 30];
     this.horseType = Math.floor(Math.random() * 2);
     this.awareness = 5;
-    this.cruisingSpeed = Math.floor(0.60 * this.currentMaxSpeed);
-    this.walkingSpeed = Math.floor(0.30 * this.currentMaxSpeed);
+    this.cruisingSpeed = Math.floor(0.75 * this.currentMaxSpeed);
+    this.walkingSpeed = Math.floor(0.50 * this.currentMaxSpeed);
     this.baseTurning = this.turning;
     this.oncreate();
   };
@@ -294,10 +294,12 @@ window.entities = window.entities || {};
 
       } else {
         var angle = utils.atanxy(otherHorse.x - this.x, otherHorse.y - this.y);
-        if(this.isFront(otherHorse.getPosition()) > 0) {
-          this.intendedDirection = angle;
-        } else {
-          this.intendedDirection = angle;
+        if(this.isNear(otherHorse)) {
+          if(this.isFront(otherHorse.getPosition()) > 0) {
+            this.intendedDirection = angle;
+          } else {
+            this.intendedDirection = angle;
+          }
         }
       }
     },
