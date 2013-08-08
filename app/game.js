@@ -43,7 +43,7 @@ window.onload = function() {
       this.hero.name = this.playerName;
       this.hero.onDeath = this.gameOver.bind(this);
       this.focusedKnight = this.hero;
-      this.spawnArm(this.hero, 1)
+      this.spawnArm(this.hero, Math.floor(Math.random() *2))
 
     },
     oncreate: function() {
