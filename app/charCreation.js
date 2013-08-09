@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  app.presentation = new window.engine.Scene({
+  app.charCreation = new window.engine.Scene({
     step: 0,
     onenter: function() {
       this.prepareImage();
@@ -12,29 +12,14 @@ $(document).ready(function() {
         x: 375,
         y: 300,
         width: 250,
-        height: 30,
+        height: 50,
         text: "Play",
-        textSize: 30,
         color: '#FFFFFF',
         clicked: function() {
           self.next();
         }
       })
       this.entities.push(playButton)
-
-      var charButton = new window.entities.Button({
-        x: 310,
-        y: 335,
-        width: 250,
-        height: 30,
-        text: "Choose knight",
-        textSize: 30,
-        color: '#EEEEFF',
-        clicked: function() {
-          self.char();
-        }
-      })
-      this.entities.push(charButton)
     },
     prepareImage: function() {
       var image = app.assets.image('intro')

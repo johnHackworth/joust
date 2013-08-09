@@ -38,11 +38,20 @@ var app = new window.engine.Application({
     this.selectScene(self.presentation)
     self.game.setHeroName('knight');
     self.game.knightsData = self.knightsData;
+    self.charCreation.knightsData = self.knightsData;
     this.presentation.next = function() {
       self.layer.clear();
       self.selectScene(self.game);
     }
+    this.presentation.char = function() {
+      self.layer.clear();
+      self.selectScene(self.charCreation);
+    }
     this.game.next = function() {
+      self.selectScene(self.presentation);
+      self.initializeLayer(self);
+    }
+    this.charCreation.next = function() {
       self.selectScene(self.presentation);
       self.initializeLayer(self);
     }

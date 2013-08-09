@@ -16,7 +16,7 @@ window.entities = window.entities || {};
       spurred: false,
       color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
     }, args);
-    this.size = [30, 30];
+    this.size = [50, 50];
     this.horseType = Math.floor(Math.random() * 2);
     this.awareness = 5;
     this.cruisingSpeed = Math.floor(0.75 * this.currentMaxSpeed);
