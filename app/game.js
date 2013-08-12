@@ -41,7 +41,7 @@ window.onload = function() {
       });
       this.hero = this.entities.add(window.entities.Knight, {
         horse: this.heroHorse,
-        name: this.playerName,
+        name: this.knightsData.name,
         player: true,
         turning: 0.3,
         color1: '#113388',
@@ -53,7 +53,7 @@ window.onload = function() {
       })
       this.hero.shield = cq(this.spriteShields).blend(this.hero.color1, "addition", 1.0).canvas;
 
-      this.hero.name = this.playerName;
+      // this.hero.name = this.playerName;
       this.hero.onDeath = this.gameOver.bind(this);
       this.focusedKnight = this.hero;
       this.spawnArm(this.hero, Math.floor(Math.random() *2))

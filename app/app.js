@@ -35,6 +35,7 @@ var app = new window.engine.Application({
   /* and when the assets are loaded select the game screen */
   onready: function() {
     var self = this;
+    console.log(1);
     this.selectScene(self.presentation)
     self.game.setHeroName('knight');
     self.game.knightsData = self.knightsData;
