@@ -874,24 +874,28 @@
      * @return {CanvasInput}
      */
     click: function(e, self) {
-      var mouse = self._mousePos(e),
-        x = mouse.x,
-        y = mouse.y;
+      try {
+        var mouse = self._mousePos(e),
+          x = mouse.x,
+          y = mouse.y;
 
-      if (self._endSelection) {
-        delete self._endSelection;
-        delete self._selectionUpdated;
-        return;
-      }
-
-      if (self._canvas && self._overInput(x, y) || !self._canvas) {
-        if (self._mouseDown) {
-          self._mouseDown = false;
-          self.click(e, self);
-          return self.focus(self._clickPos(x, y));
+        if (self._endSelection) {
+          delete self._endSelection;
+          delete self._selectionUpdated;
+          return;
         }
-      } else {
-        return self.blur();
+
+        if (self._canvas && self._overInput(x, y) || !self._canvas) {
+          if (self._mouseDown) {
+            self._mouseDown = false;
+            self.click(e, self);
+            return self.focus(self._clickPos(x, y));
+          }
+        } else {
+          return self.blur();
+        }
+      } catch(err) {
+        return null;
       }
     },
 

@@ -36,6 +36,22 @@ window.entities = window.entities || {};
         // .scale(this.zoom, this.zoom)
         .drawImage(this.options[i].img, xPos, this.y)
         .restore();
+      if(i === this.selected) {
+        app.layer.beginPath();
+        app.layer.rect(xPos - 3, this.y - 3, this.options[i].img.width + 6,  this.options[i].img.height + 6);
+        app.layer.fillStyle('rgba(222,222,222,0.8)');
+        app.layer.fill();
+      }
+      xPos += this.options[i].img.width + this.margin
+    }
+  }
+  Selector.prototype.click = function(pos) {
+    var xPos = this.x;
+    var currentOption = this.options[0];
+    for(var i = 0, l = this.options.length; i < l; i++) {
+      if(pos[0] > xPos && pos[0] <= (xPos + this.options[i].img.width)) {
+        this.selected = i;
+      }
       xPos += this.options[i].img.width + this.margin
     }
   }
