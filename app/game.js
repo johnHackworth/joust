@@ -49,7 +49,7 @@ window.onload = function() {
         strength: 10,
         horsemanship: 10,
         hability: 10,
-        shield: 1
+        shield: this.knightsData.shieldType || 1
       })
       this.hero.shield = cq(this.spriteShields).blend(this.hero.color1, "addition", 1.0).canvas;
 

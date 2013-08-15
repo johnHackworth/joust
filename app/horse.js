@@ -7,8 +7,8 @@ window.entities = window.entities || {};
     _.extend(this, {
       direction: 0,
       speed: -10,
-      maxSpeed: 280,
-      currentMaxSpeed: 280,
+      maxSpeed: 250,
+      currentMaxSpeed: 250,
       turning: 0.03,
       /* brain cooldown */
       brainDelta: 0,
@@ -16,7 +16,7 @@ window.entities = window.entities || {};
       spurred: false,
       color: '#'+(0x1000000+(Math.random())*0xffffff).toString(16).substr(1,6)
     }, args);
-    this.size = [40, 40];
+    this.size = [30, 30];
     this.horseType = Math.floor(Math.random() * 2);
     this.awareness = 5;
     this.cruisingSpeed = Math.floor(0.75 * this.currentMaxSpeed);
@@ -68,6 +68,9 @@ window.entities = window.entities || {};
       } else {
         this.spurred = false;
         this.turning = this.baseTurning;
+      }
+      if(this.speed <= this.walkingSpeed) {
+        this.turning = this.baseTurning * 2;
       }
 
       /* decrease brain cooldown  */
@@ -231,17 +234,29 @@ window.entities = window.entities || {};
         this.currentMaxSpeed = this.maxSpeed;
       }
 
-      if(this.x > (7 * app.zoom * app.width/8)) {
+      if(this.x > (75 * app.zoom * app.width/80)) {
         this.intendedDirection = Math.PI
-      }
-      if(this.x < (app.width * app.zoom /8)) {
+        if(this.direction != Math.PI) {
+          this.speed = this.walkingSpeed;
+        }
+      } else
+      if(this.x < (app.width * app.zoom /16)) {
         this.intendedDirection = 0;
-      }
+        if(this.direction != 0) {
+          this.speed = this.walkingSpeed;
+        }
+      } else
       if(this.y > (7 * app.height * app.zoom /8)) {
         this.intendedDirection = 3 * Math.PI / 2;
-      }
+        if(this.direction != 3 * Math.PI / 2) {
+          this.speed = this.walkingSpeed;
+        }
+      } else
       if(this.y < (app.height * app.zoom /8)) {
         this.intendedDirection = 1 * Math.PI / 2;
+        if(this.direction != Math.PI / 2) {
+          this.speed = this.walkingSpeed;
+        }
       }
 
     },

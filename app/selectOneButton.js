@@ -31,17 +31,18 @@ window.entities = window.entities || {};
   Selector.prototype.render = function(delta, center) {
     var xPos = this.x;
     for(var i = 0, l = this.options.length; i < l; i++) {
+      if(i === this.selected) {
+        app.layer.beginPath();
+        app.layer.rect(xPos - 3, this.y - 3, this.options[i].img.width + 6,  this.options[i].img.height + 6);
+        app.layer.fillStyle('rgba(256,186,22,0.95)');
+        app.layer.fill();
+      }
       app.layer
         .save()
         // .scale(this.zoom, this.zoom)
         .drawImage(this.options[i].img, xPos, this.y)
         .restore();
-      if(i === this.selected) {
-        app.layer.beginPath();
-        app.layer.rect(xPos - 3, this.y - 3, this.options[i].img.width + 6,  this.options[i].img.height + 6);
-        app.layer.fillStyle('rgba(222,222,222,0.8)');
-        app.layer.fill();
-      }
+
       xPos += this.options[i].img.width + this.margin
     }
   }
@@ -54,6 +55,7 @@ window.entities = window.entities || {};
       }
       xPos += this.options[i].img.width + this.margin
     }
+    this.trigger('click');
   }
 
   window.entities.Selector = Selector;

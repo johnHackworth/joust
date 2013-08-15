@@ -33,6 +33,9 @@ $(document).ready(function() {
         y: 100,
         options: this.shields
       })
+      this.shieldSelector.on('click', function() {
+        self.knightsData.shieldType = self.shieldSelector.selected + 1;
+      })
       this.entities.push(this.shieldSelector);
       // }
     },
@@ -87,7 +90,7 @@ $(document).ready(function() {
       // this.entities.call("step", delta, this.center);
     },
     onrender: function(delta) {
-      // app.layer
+        app.layer.clear();
       //   .save()
       //   .drawImage(this.image, 0,0)
         app.layer
