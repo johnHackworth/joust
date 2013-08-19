@@ -19,8 +19,8 @@ $(document).ready(function() {
         boxShadow: '1px 1px 0px #fff',
         innerShadow: '0px 0px 5px rgba(0, 0, 0, 0.5)',
         placeHolder: 'Enter message here...',
-        x: 150,
-        y: 20,
+        x: 280,
+        y: 115,
         value: this.knightsData.name,
         onkeyup: function() {
           self.knightsData.name = self.nameInput.value();
@@ -28,10 +28,16 @@ $(document).ready(function() {
       });
       this.entities.push(this.nameInput);
       this.loadShields();
+      this.loadArmors();
       this.shieldSelector = new window.entities.Selector({
-        x: 20,
-        y: 100,
+        x: 280,
+        y: 170,
         options: this.shields
+      })
+      this.knightSelector = new window.entities.Selector({
+        x: 280,
+        y: 230,
+        options: this.armors
       })
       this.shieldSelector.on('click', function() {
         self.knightsData.shieldType = self.shieldSelector.selected + 1;
@@ -45,8 +51,8 @@ $(document).ready(function() {
 
       this.entities = new window.entities.GameObjects(this);
       var backButton = new window.entities.Button({
-        x: 305,
-        y: 300,
+        x: 505,
+        y: 400,
         width: 250,
         height: 50,
 
@@ -78,6 +84,24 @@ $(document).ready(function() {
       }
 
     },
+
+    loadArmors: function() {
+      this.armorShields = app.assets.image("knight");
+      this.armors = [];
+      for(var i = 0; i < 4; i++) {
+        this.armors.push({
+          img: cq(this.armorShields).crop(
+            0,
+            21 * i,
+            30,
+            21
+            )
+          .resizePixel(2)
+          .canvas
+          }
+        )
+      }
+    },
     onselect: function() {
     },
     prepareImage: function() {
@@ -93,12 +117,24 @@ $(document).ready(function() {
         app.layer.clear();
       //   .save()
       //   .drawImage(this.image, 0,0)
-        app.layer
-          .save()
-          .fillStyle('#333333')
-          .font('normal 20px arial')
-          .fillText('Player name', 25,40)
-        .restore();
+      app.layer
+        .save()
+        .fillStyle('#333333')
+        .font('normal 20px arial')
+        .fillText('Player name', 150,140)
+      .restore();
+      app.layer
+        .save()
+        .fillStyle('#333333')
+        .font('normal 20px arial')
+        .fillText('Pick a shield', 150,190)
+      .restore();
+      app.layer
+        .save()
+        .fillStyle('#333333')
+        .font('normal 20px arial')
+        .fillText('Armor', 150,240)
+      .restore();
       this.drawButtonsBackground();
       for(var i=0, l = this.entities.length; i < l; i++) {
         this.entities[i].render(delta)

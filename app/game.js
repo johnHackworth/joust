@@ -4,7 +4,7 @@ window.onload = function() {
     texts: [],
     gameLog: [],
     step: 0,
-    lastZoomSet:0,
+    lastZoomSetero:0,
     currentZoom: 1,
     textAntiScale: 1,
     gameEnded: false,
@@ -611,6 +611,7 @@ window.onload = function() {
         this.showBackButton();
     },
     showBackButton: function() {
+      var self = this;
       var backButton = new window.entities.Button({
         x: 270,
         y: 500,
