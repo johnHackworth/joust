@@ -35,31 +35,47 @@ var app = new window.engine.Application({
   /* and when the assets are loaded select the game screen */
   onready: function() {
     var self = this;
-    console.log(1);
-    this.selectScene(self.presentation)
+    this.goToPresentation();
     self.game.setHeroName('knight');
     self.game.knightsData = self.knightsData;
     self.charCreation.knightsData = self.knightsData;
-    this.presentation.next = function() {
-      self.layer.clear();
-      self.selectScene(self.game);
-    }
-    this.presentation.char = function() {
-      self.layer.clear();
-      self.selectScene(self.charCreation);
-    }
-    this.game.next = function() {
-      self.selectScene(self.presentation);
-      self.initializeLayer(self);
-    }
-    this.charCreation.next = function() {
-      self.selectScene(self.presentation);
-      self.initializeLayer(self);
-    }
+    self.presentation.next = self.goToGame.bind(self);
+    self.presentation.char = self.goToCharCreation.bind(self);
+    self.game.next = self.goToPresentation.bind(self);
+    self.charCreation.next = self.goToPresentation.bind(self);
   },
   smallZoom: function() {
     // this.zoom = 0.8;
     this.layer.scale(0.75, 0.8);
+  },
+  playMusic: function() {
+    var currentFile = "./assets/sounds/MedievalC64.mp3";
+    if(!this.song) {
+      this.song = new Audio(currentFile);
+      this.song.volume = 0.3;
+    }
+    this.song.play();
+  },
+  stopMusic: function() {
+    if(this.song) {
+      this.song.pause();
+    }
+  },
+  goToCharCreation: function() {
+    this.layer.clear();
+    this.selectScene(this.charCreation);
+    this.stopMusic();
+    this.playMusic();
+  },
+  goToPresentation: function() {
+    this.selectScene(this.presentation);
+    this.initializeLayer(this);
+    this.stopMusic();
+    this.playMusic();
+  },
+  goToGame: function() {
+    this.selectScene(this.game);
+    this.initializeLayer(this);
+    this.stopMusic();
   }
-
 });

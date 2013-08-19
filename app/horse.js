@@ -33,6 +33,51 @@ window.entities = window.entities || {};
       this.stepNumber = 0;
       this.stepRound = 0;
       this.prepareImage();
+      setTimeout(this.makeSound.bind(this), Math.floor(Math.random() * 3000));
+    },
+    makeSound: function() {
+      var self = this;
+      var currentFile = "./assets/sounds/horse_gallop.mp3";
+      if(!this.sound) {
+        this.sound = new Audio(currentFile);
+        this.sound.addEventListener('canplay', function() {
+          self.sound.loop = true;
+        }, true);
+        this.sound.addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+        }, false);
+      }
+      this.sound.play();
+    },
+    setSoundBySpeed: function() {
+
+      if(this.distanceToCenter < 1000) {
+        if(this.stepNumber % 100 === 0 && this.sound) {
+          var speedDivider = this.speed / this.maxSpeed;
+          var volume = speedDivider * (this.distanceToCenter / 1000) * app.zoom;
+          if(volume < 0) {
+            volume = 0;
+          }
+          this.sound.volume = volume;
+        }
+      } else {
+        if(this.sound) {
+          this.sound.volume = 0;
+        }
+      }
+      if(this.sound) {
+        if(this.distanceToCenter > 1000) {
+          this.sound.pause();
+        } else {
+          this.sound.play();
+        }
+      }
+    },
+    stopSound: function() {
+      if(this.sound) {
+        this.sound.pause();
+      }
     },
     knightRide: function(knight) {
       this.rider = knight;
@@ -131,7 +176,9 @@ window.entities = window.entities || {};
       } else {
         this.speed = 0;
         this.intendedDirection *= -1;
-      }
+      };
+
+      this.setSoundBySpeed();
     },
     getTurningHability: function() {
       var riderHability = this.rider? this.rider.horsemanship : 1;
@@ -181,6 +228,7 @@ window.entities = window.entities || {};
     },
 
     render: function(delta, center) {
+      this.distanceToCenter = this.getDistanceTo({x: center[0], y: center[1]});
       // this.speed = 0;
       var type = this.horseType;
       var round = 1;

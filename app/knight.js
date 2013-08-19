@@ -40,6 +40,7 @@ window.entities = window.entities || {};
 
   Knight.prototype = {
     type: 'knight',
+    clankVolume: 0,
     MAX_TURN: Math.PI / 4,
     _DEFAULT_HEALTH: 10,
     _DEFAULT_NAME: 'knight',
@@ -50,6 +51,25 @@ window.entities = window.entities || {};
       this.texts = [];
       this.stepNumber = 0;
       this.prepareImage();
+    },
+    makeSound: function(force, distanceToCenter) {
+      var self = this;
+      var currentFile = "./assets/sounds/clank.mp3";
+      this.sound = new Audio(currentFile);
+      this.sound.volume = this.getClankVolume(force, distanceToCenter);
+      this.sound.play();
+    },
+    getClankVolume: function(force, distanceToCenter) {
+      console.log('clank', force, distanceToCenter);
+      if(this.distanceToCenter < 1000) {
+        var soundVolume = 1 * (distanceToCenter / 500) * app.zoom * (force / 5);
+        if(soundVolume > 1) {
+          soundVolume = 1;
+        }
+        console.log('sound volume', soundVolume, distanceToCenter, app.zoom, force);
+        return soundVolume;
+      }
+      return 0;
     },
     prepareImage: function() {
       var image = app.assets.image("knight")
@@ -132,16 +152,16 @@ window.entities = window.entities || {};
           if(this.isFront([this.following.x, this.following.y])) {
             this.intendedDirection = this.getCollisionCourse(this.following);
             this.specialAction();
-            if(this.name === 'Jon Umber') console.log('Umber following '+this.following.name + ' at ' + this.getDistanceTo(this.following));
+            if(app.debug && this.name === 'Jon Umber') console.log('Umber following '+this.following.name + ' at ' + this.getDistanceTo(this.following));
           } else { // our target is escaping
             if(Math.random() > 0.80) {
               // let him go
-              if(this.name === 'Jon Umber') console.log('Umber let go '+this.following.name);
+              if(app.debug && this.name === 'Jon Umber') console.log('Umber let go '+this.following.name);
               this.stopFollowing();
             } else {
               // he won't go very far!!!
               this.intendedDirection = this.getCollisionCourse(this.following);
-              if(this.name === 'Jon Umber') console.log('Umber INSISTS '+this.following.name);
+              if(app.debug && this.name === 'Jon Umber') console.log('Umber INSISTS '+this.following.name);
             }
 
           }
@@ -270,6 +290,7 @@ window.entities = window.entities || {};
     },
 
     render: function(delta, center) {
+      this.distanceToCenter = this.getDistanceTo({x: center[0], y: center[1]});
       var type = this.knightType || 0;
       var orientation = 0;
       if(this.direction > 0 && this.direction <=  Math.PI) {
@@ -526,9 +547,9 @@ window.entities = window.entities || {};
       }
     },
     hitBy: function(arm) {
-
       if(this.dead) return;
       var damage = arm.getDamageTo(this);
+      this.makeSound(damage, this.distanceToCenter);
       if(this.ouchTime > 0) {
         if(this.currentDamage < damage) {
           this.ouchTime = 20;
@@ -536,6 +557,7 @@ window.entities = window.entities || {};
           this.health -= damage - this.currentDamage;
           this.currentDamage = damage;
           arm.owner.adHonor(damage);
+
         }
       } else {
         if(this.health === this.maxHealth) {
@@ -549,6 +571,7 @@ window.entities = window.entities || {};
           arm.owner.adFame(20);
         }
         this.health -= this.currentDamage;
+
       }
       if(arm.owner.name === 'Jon Umber') console.log('Umber hits '+this.name + ' with ' + damage);
       if(this.health <= 0) {
