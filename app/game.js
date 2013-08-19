@@ -37,7 +37,7 @@ window.onload = function() {
         direction: 0,
         player: true,
         color: '#FF6600',
-        turning: 0.03
+        turning: 0.01
       });
       this.hero = this.entities.add(window.entities.Knight, {
         horse: this.heroHorse,
@@ -98,7 +98,8 @@ window.onload = function() {
       return this.entities.add(window.entities.Horse, {
         x: posx,
         y: posy,
-        direction: direction
+        direction: direction,
+        turning: 0.02
       });
     },
     setHeroName: function(name) {

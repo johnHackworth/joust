@@ -4,6 +4,8 @@ $(document).ready(function() {
     onenter: function() {
       this.prepareImage();
     },
+    onleave: function() {
+    },
     oncreate: function() {
       var self = this;
       this.entities = new window.entities.GameObjects(this);
