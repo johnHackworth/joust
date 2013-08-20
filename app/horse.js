@@ -40,22 +40,22 @@ window.entities = window.entities || {};
       var currentFile = "./assets/sounds/horse_gallop.mp3";
       if(!this.sound) {
         this.sound = new Audio(currentFile);
-        this.sound.addEventListener('canplay', function() {
-          self.sound.loop = true;
+        this.sound.canplayEvent = this.sound.addEventListener('canplay', function() {
+          if(self.sound) self.sound.loop = true;
         }, true);
-        this.sound.addEventListener('ended', function() {
-            this.currentTime = 0;
-            this.play();
-        }, false);
       }
       this.sound.play();
     },
+    removeSound: function() {
+      this.sound.pause();
+      this.sound.removeEventListener('canplay', this.sound.canplayEvent, true);
+      delete this.sound;
+    },
     setSoundBySpeed: function() {
-
       if(this.distanceToCenter < 1000) {
         if(this.stepNumber % 100 === 0 && this.sound) {
           var speedDivider = this.speed / this.maxSpeed;
-          var volume = speedDivider * (this.distanceToCenter / 1000) * app.zoom;
+          var volume = 0.5 * speedDivider * ((1000 - this.distanceToCenter) / 1000) * app.zoom;
           if(volume < 0) {
             volume = 0;
           }
@@ -68,7 +68,7 @@ window.entities = window.entities || {};
       }
       if(this.sound) {
         if(this.distanceToCenter > 1000) {
-          this.sound.pause();
+          this.removeSound();;
         } else {
           this.sound.play();
         }
@@ -228,7 +228,7 @@ window.entities = window.entities || {};
     },
 
     render: function(delta, center) {
-      this.distanceToCenter = this.getDistanceTo({x: center[0], y: center[1]});
+      this.distanceToCenter = this.getDistanceTo(app.game.hero); // <- you will die in fire for that reference, javi
       // this.speed = 0;
       var type = this.horseType;
       var round = 1;

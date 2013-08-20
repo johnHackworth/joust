@@ -61,21 +61,42 @@ var app = new window.engine.Application({
       this.song.pause();
     }
   },
+  playCrowd: function() {
+    var currentFile = "./assets/sounds/crowd.mp3";
+    var self = this;
+    if(!this.crowdSound) {
+      this.crowdSound = new Audio(currentFile);
+      this.crowdSound.volume = 0.2;
+      this.crowdSound.canplayEvent = this.crowdSound.addEventListener('canplay', function() {
+        if(self.crowdSound) self.crowdSound.loop = true;
+      }, true);
+    }
+    this.crowdSound.play();
+  },
+  stopCrowd: function() {
+    if(this.crowdSound) {
+      this.crowdSound.pause();
+    }
+  },
   goToCharCreation: function() {
     this.layer.clear();
     this.selectScene(this.charCreation);
     this.stopMusic();
     this.playMusic();
+    this.stopCrowd();
   },
   goToPresentation: function() {
     this.selectScene(this.presentation);
     this.initializeLayer(this);
     this.stopMusic();
     this.playMusic();
+    this.stopCrowd();
   },
   goToGame: function() {
     this.selectScene(this.game);
     this.initializeLayer(this);
     this.stopMusic();
+    this.stopCrowd();
+    this.playCrowd()
   }
 });

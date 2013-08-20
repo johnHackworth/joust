@@ -260,25 +260,25 @@ window.onload = function() {
 
       // shadows
       app.layer.fillRect(
-        (-30 - this.center[0]) * app.zoom,
-        (0 - this.center[1]) * app.zoom,
-        1 * app.width * app.zoom + 30,
+        (-50 - this.center[0]) * app.zoom,
+        (-50 - this.center[1]) * app.zoom,
+        1 * app.width * app.zoom + 100,
         10 * app.zoom);
       app.layer.fillRect(
-        (-30 - this.center[0]) * app.zoom,
-        (app.height + 5 - this.center[1]) * app.zoom,
-        (1 * this.image.width )* app.zoom + 120,
+        (-50 - this.center[0]) * app.zoom,
+        (app.height + 55 - this.center[1]) * app.zoom,
+        1 * app.width * app.zoom + 100,
         10 * app.zoom);
       app.layer.fillRect(
-        (0 - this.center[0]) * app.zoom,
-        (0 - this.center[1]) * app.zoom,
+        (0 - 55 - this.center[0]) * app.zoom,
+        (0 - 50 - this.center[1]) * app.zoom,
         10 * app.zoom,
-        app.height * app.zoom);
+        app.height * app.zoom + 100);
       app.layer.fillRect(
-        (app.width  - this.center[0]) * app.zoom,
-        (0 - this.center[1]) * app.zoom,
+        (app.width + 50 - this.center[0]) * app.zoom,
+        (0 - 55 - this.center[1]) * app.zoom,
         10 * app.zoom,
-        app.height * app.zoom);
+        app.height * app.zoom + 100);
       app.layer.stroke();
       app.layer
         .restore();
@@ -289,25 +289,25 @@ window.onload = function() {
       app.layer.context.strokeStyle = "#555555";
       // wood
       app.layer.fillRect(
-        (-30 - this.center[0]) * app.zoom,
-        (- 5 - this.center[1]) * app.zoom,
-        1 * app.width * app.zoom + 30,
+        (-50 - this.center[0]) * app.zoom,
+        (- 55 - this.center[1]) * app.zoom,
+        1 * app.width * app.zoom + 100,
         5 * app.zoom);
       app.layer.fillRect(
-        (-30 - this.center[0]) * app.zoom,
-        (app.height - this.center[1]) * app.zoom,
-        1 * this.image.width * app.zoom + 120,
+        (-50 - this.center[0]) * app.zoom,
+        (app.height +50 - this.center[1]) * app.zoom,
+        1 * app.width * app.zoom + 100,
         5 * app.zoom);
       app.layer.fillRect(
-        (0 - 5 - this.center[0]) * app.zoom,
-        (0 - this.center[1]) * app.zoom,
+        (0 - 50 - this.center[0]) * app.zoom,
+        (0 - 55 - this.center[1]) * app.zoom,
         5 * app.zoom,
-        app.height * app.zoom);
+        app.height * app.zoom + 100);
       app.layer.fillRect(
-        (app.width - this.center[0]) * app.zoom,
-        (0 - this.center[1]) * app.zoom,
+        (app.width + 50 - this.center[0]) * app.zoom,
+        (0 - 50 - this.center[1]) * app.zoom,
         5 * app.zoom,
-        app.height * app.zoom);
+        app.height * app.zoom + 100);
       app.layer.stroke();
       app.layer
         .restore();
@@ -444,11 +444,11 @@ window.onload = function() {
     },
     onkeydown: function(key) {
       if(key === 'a' || key === 'left') {
-        this.hero.intendedDirection = (2*Math.PI  + (this.hero.direction - (Math.PI / 25))) % (2*Math.PI);
-        this.hero.direction = this.hero.intendedDirection;
+        this.hero.intendedDirection = (2*Math.PI  + (this.hero.direction - (Math.PI / 15))) % (2*Math.PI);
+        // this.hero.direction = this.hero.intendedDirection;
       }
       if(key === 'd' || key === 'right') {
-        this.hero.intendedDirection = (2*Math.PI  + (this.hero.direction + (Math.PI / 25))) % (2*Math.PI);
+        this.hero.intendedDirection = (2*Math.PI  + (this.hero.direction + (Math.PI / 15))) % (2*Math.PI);
       }
       if(key === 'space' || key === ' ') {
         this.hero.specialAction();

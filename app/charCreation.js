@@ -89,12 +89,13 @@ $(document).ready(function() {
       this.armorShields = app.assets.image("knight");
       this.armors = [];
       for(var i = 0; i < 4; i++) {
+        debugger;
         this.armors.push({
           img: cq(this.armorShields).crop(
-            0,
             21 * i,
             30,
-            21
+            21,
+            30
             )
           .resizePixel(2)
           .canvas

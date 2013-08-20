@@ -27,7 +27,7 @@ window.entities = window.entities || {};
     }
 
     this.lastFollowingDistance = 1000;
-    this.turning = 1 * this.horsemanship / 10;
+    this.turning = 1 * this.horsemanship / 5;
     this.health = 5 + this.strength;
     this.shieldType = args.shield || 1;
     this.name = args.name || this._DEFAULT_NAME;
@@ -59,14 +59,20 @@ window.entities = window.entities || {};
       this.sound.volume = this.getClankVolume(force, distanceToCenter);
       this.sound.play();
     },
+    makeApplause: function() {
+      var self = this;
+      var currentFile = "./assets/sounds/applause.mp3";
+      this.applauseSound = new Audio(currentFile);
+      this.applauseSound.volume = 0.3;
+      this.applauseSound.play();
+    },
+
     getClankVolume: function(force, distanceToCenter) {
-      console.log('clank', force, distanceToCenter);
       if(this.distanceToCenter < 1000) {
         var soundVolume = 1 * (distanceToCenter / 500) * app.zoom * (force / 5);
         if(soundVolume > 1) {
           soundVolume = 1;
         }
-        console.log('sound volume', soundVolume, distanceToCenter, app.zoom, force);
         return soundVolume;
       }
       return 0;
@@ -591,6 +597,7 @@ window.entities = window.entities || {};
     },
     die: function() {
       if(this.dead) return;
+      this.makeApplause();
       this.speed = 20;
       this.dead = true;
       setTimeout((function() { this.renderLevel = 1}).bind(this), 1000);
