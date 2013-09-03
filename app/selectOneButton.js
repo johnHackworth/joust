@@ -11,6 +11,8 @@ window.entities = window.entities || {};
     _.extend(this, {
       x:  args.x || 0,
       y: args.y || 0,
+      height: args.height || 10,
+      width: args.width || 30,
       options: args.options || [],
       selected: args.selected || null,
       margin: args.margin || 5,
@@ -47,6 +49,9 @@ window.entities = window.entities || {};
     }
   }
   Selector.prototype.click = function(pos) {
+    if(!this.isInside(pos)) {
+      return;
+    }
     var xPos = this.x;
     var currentOption = this.options[0];
     for(var i = 0, l = this.options.length; i < l; i++) {

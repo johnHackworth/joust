@@ -32,17 +32,25 @@ $(document).ready(function() {
       this.shieldSelector = new window.entities.Selector({
         x: 280,
         y: 170,
+        height: 40,
+        width: 300,
         options: this.shields
       })
       this.knightSelector = new window.entities.Selector({
         x: 280,
         y: 230,
+        height: 45,
+        width: 300,
         options: this.armors
       })
       this.shieldSelector.on('click', function() {
         self.knightsData.shieldType = self.shieldSelector.selected + 1;
       })
+      this.knightSelector.on('click', function() {
+        self.knightsData.armorType = self.knightSelector.selected + 1;
+      })
       this.entities.push(this.shieldSelector);
+      this.entities.push(this.knightSelector);
       // }
     },
     oncreate: function() {
@@ -88,15 +96,15 @@ $(document).ready(function() {
     loadArmors: function() {
       this.armorShields = app.assets.image("knight");
       this.armors = [];
-      for(var i = 0; i < 4; i++) {
-        debugger;
+      for(var i = 0; i < 3; i++) {
         this.armors.push({
           img: cq(this.armorShields).crop(
-            21 * i,
-            30,
-            21,
-            30
+            17 + (2*18  * i),
+            0,
+            17,
+            25
             )
+          .rotate(Math.PI)
           .resizePixel(2)
           .canvas
           }

@@ -137,13 +137,13 @@ window.entities = window.entities || {};
       if (this.brainDelta < 0) {
 
         /* take some random direction (in radians) */
-        if(!this.player) {
+        if(!this.player && !this.following) {
           this.intendedDirection = Math.random() * Math.PI * 2;
           this.intendedDirection = Math.round(this.intendedDirection * 100) / 100;
         }
 
         /* delay next ai invocation */
-        this.brainDelta = Math.random() * 1500;
+        this.brainDelta = Math.random() * (3000 / this.hability);
       }
 
       if(!this.player) {
@@ -151,7 +151,9 @@ window.entities = window.entities || {};
           var lastFollowingDistance = this.followingDistance;
           this.followingDistance = this.getDistanceTo(this.following);
           if(this.followingDistance - lastFollowingDistance <= -1) {
-            this.stopFollowing();
+            if(Math.random() * 1000 < 100) {
+              this.stopFollowing();
+            }
           }
         }
         if(this.following && this.followingRounds) {
@@ -208,8 +210,10 @@ window.entities = window.entities || {};
     },
 
     getCollisionCourse: function(other) {
-      if(this.getDistanceTo(other) < (2 * this.arm.size[0] * app.zoom)) {
+      if(this.getDistanceTo(other) < (5 * this.arm.size[0] * app.zoom)) {
         return angle = this.getDirectionTo(other.x, other.y);
+      } else if(this.getDistanceTo(other) < (this.arm.size[0] * app.zoom / 2)) {
+        return angle = (this.getDirectionTo(other.x, other.y) + Math.PI) % (2 * Math.PI);
       } else {
         var angle = this.getDirectionTo(other.x, other.y);
         var otherDirection = other.direction;
@@ -226,23 +230,31 @@ window.entities = window.entities || {};
           Math.abs(this.intendedDirection - this.direction) <= Math.PI
         ) {
         if(this.direction < this.intendedDirection) {
-          if(this.intendedDirection - this.direction <= this.turning) {
+          if(this.intendedDirection - this.direction <= this.turning / 10) {
             this.direction = this.intendedDirection;
           } else {
-            this.direction = this.direction + this.turning;
+            this.direction = this.direction + this.turning / 10;
           }
         } else {
-          if(this.direction - this.intendedDirection <= this.turning) {
+          if(this.direction - this.intendedDirection <= this.turning / 10) {
             this.direction = this.intendedDirection;
           } else {
-            this.direction = this.direction - this.turning;
+            this.direction = this.direction - this.turning / 10;
           }
         }
       } else {
         if(this.direction < this.intendedDirection) {
-          this.direction = this.direction - this.turning;
+          if(this.intendedDirection - this.direction <= this.turning / 10) {
+            this.direction = this.intendedDirection;
+          } else {
+            this.direction = this.direction - this.turning / 10;
+          }
         } else {
-          this.direction = this.direction + this.turning;
+          if(this.direction - this.intendedDirection <= this.turning / 10) {
+            this.direction = this.intendedDirection;
+          } else {
+            this.direction = this.direction + this.turning / 10;
+          }
         }
 
       }
